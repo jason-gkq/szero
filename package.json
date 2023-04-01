@@ -1,0 +1,20 @@
+{
+  "name": "root",
+  "private": true,
+  "author": "guokeqin <guokeqin163@163.com>",
+  "homepage": "https://github.com/jason-gkq/szero",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jason-gkq/szero.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jason-gkq/szero/issues"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "lerna": "^6.6.1"
+  }
+}

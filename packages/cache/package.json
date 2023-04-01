@@ -1,0 +1,32 @@
+{
+  "name": "@szero/cache",
+  "version": "1.0.1",
+  "description": "缓存包",
+  "keywords": [
+    "szero-cache"
+  ],
+  "author": "guokeqin <guokeqin163@163.com>",
+  "homepage": "https://github.com/jason-gkq/szero",
+  "license": "ISC",
+  "main": "lib/cache.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jason-gkq/szero.git"
+  },
+  "scripts": {
+    "test": "node ./__tests__/cache.test.js"
+  },
+  "bugs": {
+    "url": "https://github.com/jason-gkq/szero/issues"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.11"
+  }
+}

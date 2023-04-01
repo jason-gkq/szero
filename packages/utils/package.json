@@ -1,0 +1,29 @@
+{
+  "name": "@szero/utils",
+  "version": "1.0.2",
+  "description": "工具包",
+  "keywords": [
+    "szero-utils"
+  ],
+  "author": "guokeqin <guokeqin163@163.com>",
+  "homepage": "https://github.com/jason-gkq/szero",
+  "license": "ISC",
+  "main": "lib/utils.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jason-gkq/szero.git"
+  },
+  "scripts": {
+    "test": "node ./__tests__/utils.test.js"
+  },
+  "bugs": {
+    "url": "https://github.com/jason-gkq/szero/issues"
+  }
+}

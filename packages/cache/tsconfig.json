@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "outDir": "lib",
+    "strict": true,
+    "declaration": true,
+    "strictNullChecks": false,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    // "jsx": "react",
+    // "jsxFactory": "React.createElement",
+    // "jsxFragmentFactory": "React.Fragment",
+    // "noUnusedParameters": true,
+    // "noUnusedLocals": true,
+    // "noImplicitAny": true,
+    "target": "es6",
+    "lib": ["dom", "es2017"],
+    "skipLibCheck": true,
+    "stripInternal": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "lib", "dist", "es"]
+}
