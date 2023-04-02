@@ -6,7 +6,10 @@
     "declaration": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
-    "lib": ["esnext", "es2017", "dom"],
+    "jsx": "react",
+    "jsxFactory": "React.createElement",
+    "jsxFragmentFactory": "React.Fragment",
+    "lib": ["dom", "es2017", "esnext"],
     "module": "esnext",
     "moduleResolution": "node",
     "outDir": "lib",
@@ -14,7 +17,7 @@
     "strictNullChecks": false,
     "skipLibCheck": true,
     "stripInternal": true,
-    "target": "esnext"
+    "target": "es6"
     // "noUnusedParameters": true,
     // "noUnusedLocals": true,
     // "noImplicitAny": true,
