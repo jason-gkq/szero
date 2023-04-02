@@ -14,7 +14,18 @@
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "prepare": "husky install",
+    "prettier:check": "prettier --check ./packages",
+    "prettier:write": "prettier --write ./packages"
+  },
   "devDependencies": {
-    "lerna": "^6.6.1"
+    "husky": "^8.0.3",
+    "lerna": "^6.6.1",
+    "lint-staged": "^13.2.0",
+    "prettier": "^2.8.7"
+  },
+  "lint-staged": {
+    "packages/**/*.{ts,tsx,less,json,css,md}": "prettier --write --ignore-unknown"
   }
 }

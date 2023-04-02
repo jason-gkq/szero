@@ -5,4 +5,4 @@
 /**
  * 网络请求
  */
-export { HttpClient, net } from "./netAxios";
+export { HttpClient, net } from './netAxios';

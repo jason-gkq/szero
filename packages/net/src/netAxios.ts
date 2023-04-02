@@ -7,14 +7,14 @@
  * https://segmentfault.com/a/1190000016457844
  * https://blog.csdn.net/qiushisoftware/article/details/80158593
  */
-import axios, { Cancel } from "axios";
+import axios, { Cancel } from 'axios';
 import type {
   AxiosRequestConfig,
   AxiosResponse,
   AxiosInstance,
   InternalAxiosRequestConfig,
-} from "axios";
-import { cloneDeep } from "@szero/utils";
+} from 'axios';
+import { cloneDeep } from '@szero/utils';
 
 /**
  * 正在进行中的请求
@@ -26,7 +26,6 @@ const pending: Record<string, any> = {};
  */
 const CancelToken = axios.CancelToken;
 
-let logList: Record<string, any> = {};
 let costTimeLog: Record<string, any> = {};
 /**
  * 执行取消重复请求操作
@@ -35,7 +34,7 @@ let costTimeLog: Record<string, any> = {};
  */
 const removePending = (key: string, isRequest = false) => {
   if (pending[key] && isRequest) {
-    pending[key]("取消重复请求");
+    pending[key]('取消重复请求');
   } else {
     delete pending[key];
   }
@@ -45,15 +44,15 @@ const removePending = (key: string, isRequest = false) => {
  * isReuest: 请求拦截器中 config.url = '/users', 响应拦截器中 config.url = 'http://localhost:3000/users'，所以加上一个标识来计算请求的全路径
  */
 const getRequestIdentify = (config: AxiosRequestConfig, isReuest = false) => {
-  const url: string = config.url || "";
-  const method: string = config.method || "";
+  const url: string = config.url || '';
+  const method: string = config.method || '';
   let data: any = {};
-  if (["post", "put", "patch"].includes(method) && config.data) {
+  if (['post', 'put', 'patch'].includes(method) && config.data) {
     data = isReuest
       ? cloneDeep(config.data)
       : JSON.parse(cloneDeep(config.data));
   }
-  if (method === "get" && config.params) {
+  if (method === 'get' && config.params) {
     data = cloneDeep(config.params);
   }
   return encodeURIComponent(url + method + JSON.stringify(data));
@@ -130,7 +129,7 @@ class Net {
    * @returns
    */
   requestHandler = async (config: InternalAxiosRequestConfig) => {
-    if (config.method && config.method === "options") {
+    if (config.method && config.method === 'options') {
       return config;
     }
     // 拦截重复请求(即当前正在进行的相同请求)
@@ -143,30 +142,13 @@ class Net {
      *
      */
     // 加入拦截器机制，请求拦截可以修改请求的配置，注：是在生成taro的request参数之前
-    let promise: Promise<AxiosRequestConfig> = Promise.resolve(config);
+    let promise: Promise<InternalAxiosRequestConfig> = Promise.resolve(config);
     for (let interceptor of this.interceptors.request.handlers) {
       config = await promise.then<any, any>(
         interceptor.fulfilled,
         interceptor.fulfilled
       );
     }
-    if (process.env.NODE_ENV === "development") {
-      logList[requestData] = {
-        "request：": config,
-        "请求地址：": config.baseURL,
-        "接口名称：": config.url,
-        "请求方法：": config.method,
-        "请求数据：": config.params || config.data,
-      };
-    }
-    // 慢接口测试
-    // if (config.url === "getUserInfo") {
-    //   await new Promise((resolve, reject) => {
-    //     setTimeout(() => {
-    //       resolve(0);
-    //     }, 5000);
-    //   });
-    // }
     /**
      * 赋值取消请求方法
      */
@@ -185,7 +167,7 @@ class Net {
    * @returns
    */
   responseHandler = async (resp: AxiosResponse) => {
-    if (resp.config.method && resp.config.method === "options") {
+    if (resp.config.method && resp.config.method === 'options') {
       return resp;
     }
     // 把已经完成的请求从 pending 中移除
@@ -214,33 +196,10 @@ class Net {
         costTimeLog = {};
       }
     }
-    if (process.env.NODE_ENV === "development" && logList[requestData]) {
-      this.consoleGroup(
-        `--- 接口请求 ${logList[requestData]["接口名称："]} ---`,
-        Object.assign({}, logList[requestData], {
-          "返回数据：": (errorData && errorData.data) || newData.data,
-          "请求耗时：": `${costTime}ms`,
-        })
-      );
-      delete logList[requestData];
-      if (Object.keys(logList).length > 100) {
-        logList = {};
-      }
-    }
     if (errorData) {
       return Promise.reject(Object.assign({}, errorData.data, { costTime }));
     }
     return Promise.resolve(Object.assign({}, newData.data, { costTime }));
-  };
-
-  consoleGroup = (title: string, msgs: any) => {
-    if (msgs) {
-      console.groupCollapsed(title);
-      for (let i in msgs) {
-        console.log(i, msgs[i]);
-      }
-      console.groupEnd();
-    }
   };
 
   // 网络异常拦截器
@@ -250,40 +209,40 @@ class Net {
       let msg;
       switch (status) {
         case 400:
-          msg = "错误请求";
+          msg = '错误请求';
           break;
         case 401:
-          msg = "未授权，请重新登录";
+          msg = '未授权，请重新登录';
           break;
         case 403:
-          msg = "拒绝访问";
+          msg = '拒绝访问';
           break;
         case 404:
-          msg = "请求错误,未找到该资源";
+          msg = '请求错误,未找到该资源';
           break;
         case 405:
-          msg = "请求方法未允许";
+          msg = '请求方法未允许';
           break;
         case 408:
-          msg = "请求超时";
+          msg = '请求超时';
           break;
         case 500:
-          msg = "服务器端出错";
+          msg = '服务器端出错';
           break;
         case 501:
-          msg = "网络未实现";
+          msg = '网络未实现';
           break;
         case 502:
-          msg = "网络错误";
+          msg = '网络错误';
           break;
         case 503:
-          msg = "服务不可用";
+          msg = '服务不可用';
           break;
         case 504:
-          msg = "网络超时";
+          msg = '网络超时';
           break;
         case 505:
-          msg = "http版本不支持该请求";
+          msg = 'http版本不支持该请求';
           break;
         default:
           msg = `连接错误${status}`;
@@ -296,27 +255,27 @@ class Net {
     /**
      * 重复请求，错误封装
      */
-    if (resp.toString() && resp.toString().startsWith("Cancel:")) {
+    if (resp.toString() && resp.toString().startsWith('Cancel:')) {
       return Promise.reject({
-        msg: resp.message || "",
+        msg: resp.message || '',
         code: 410,
       });
     } //Error: Network Error
-    if (resp.toString() && resp.toString().startsWith("Error: Network Error")) {
+    if (resp.toString() && resp.toString().startsWith('Error: Network Error')) {
       return Promise.reject({
-        msg: "未可知错误，大部分是由于后端不支持CORS或无效配置引起",
+        msg: '未可知错误，大部分是由于后端不支持CORS或无效配置引起',
         code: 404,
       });
     }
     if (resp && resp.message) {
       return Promise.reject({
-        msg: resp.message || "",
+        msg: resp.message || '',
         code: 410,
       });
     }
     return Promise.reject({
       msg:
-        resp.message || "未可知错误，大部分是由于后端不支持CORS或无效配置引起",
+        resp.message || '未可知错误，大部分是由于后端不支持CORS或无效配置引起',
       code: status || 403,
     });
   };
