@@ -1,0 +1,122 @@
+/**
+ * 
+ * 使用弹性盒子进行布局
+ * rem 设置字号、px设置边框、em设置其他大部分属性
+ * 1rem * 16 = 16px
+ * 其余用 em 进行 
+ */
+
+/* ********************************* */
+
+
+// 视网膜屏匹配
+// @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+
+// }
+
+*,
+::before ::after {
+  box-sizing: inherit;
+}
+
+// @media (max-device-width: 320px) {
+//   body {
+//     font-size: 13px;
+//   }
+// }
+
+* {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-text-size-adjust: none;
+}
+
+*:focus {
+  outline: none;
+}
+
+html {
+  height: 100%;
+  background: #eee;
+  touch-action: none;
+}
+
+:root {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 10px;
+  font-size:1.333333333vw
+  // font-size: 0.875rem;
+  // font-size: calc(0.8em + 0.2vw);
+}
+
+@media screen and (max-width: 320px) {
+  :root {
+      font-size:5px
+  }
+}
+
+@media screen and (min-width: 540px) {
+  :root {
+      font-size:8px
+  }
+}
+/*移除浏览器默认的`margin、padding`*/
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+form,
+fieldset,
+legend,
+input,
+textarea,
+p,
+blockquote,
+th,
+td,
+button,
+aside {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #f5f5f5;
+  font-family: "PingFang SC", Helvetica, Arial, "Lucida Grande", Verdana,
+    "Microsoft Yahei", STXihei, Sans-serif;
+  -webkit-user-select: none;
+  user-select: text;
+  margin: 0 auto;
+  height: 100vh;
+  min-width: 320px;
+  max-width: 540px;
+}
+
+/* 清除浮动 */
+.clearfix::before,
+.clearfix::after {
+  content: "";
+  display: table;
+}
+.clearfix::after {
+  clear: both;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+li {
+  list-style: none;
+}

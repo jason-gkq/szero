@@ -1,0 +1,28 @@
+@import url(./normalize.less);
+@import url(./base.less);
+
+.page-container {
+  height: 100vh;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.page-top {
+  flex: 0 0 9rem;
+  border-bottom: solid 1px #eee;
+}
+
+.page-body {
+  flex: auto;
+  display: flex;
+  overflow: hidden;
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.page-bottom {
+  flex: 0 0 10rem;
+  border-top: solid 1px #eee;
+}
