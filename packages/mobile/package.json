@@ -52,16 +52,16 @@
     "url": "https://github.com/jason-gkq/szero/issues"
   },
   "peerDependencies": {
-    "antd-mobile": ">=5.20.0",
-    "antd-mobile-icons": ">=4.0.0",
-    "axios": ">=1.1.0",
+    "antd-mobile": ">=5.0.0",
+    "antd-mobile-icons": ">=0.1.0",
+    "axios": ">=1.0.0",
     "core-js": ">=3",
-    "mobx": ">=6.8.0",
-    "mobx-react-lite": ">=3.4.0",
+    "mobx": ">=6.0.0",
+    "mobx-react-lite": ">=3.0.0",
     "react": ">=17.0.0",
     "react-dom": ">=17.0.0",
     "react-router-dom": ">=6.0.0",
-    "require": "2.4.0"
+    "require": ">=2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",
