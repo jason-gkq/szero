@@ -34,11 +34,6 @@
   "bugs": {
     "url": "https://github.com/jason-gkq/szero/issues"
   },
-  "peerDependencies": {
-    "core-js": ">=3",
-    "react": ">=17.0.0",
-    "require": "2.4.0"
-  },
   "devDependencies": {
     "@babel/core": "^7.21.4",
     "@babel/plugin-external-helpers": "^7.18.6",
