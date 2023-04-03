@@ -106,17 +106,17 @@ const createPage = (pageConfig: IPageConfig, WrappedComponent: any) => {
     return (
       <>
         {pageStore.pageStatus != 'success' && renderNoSucess()}
-        {isOnload && (
-          <div
-            className='page-body'
-            style={{
-              visibility:
-                pageStore.pageStatus == 'success' ? 'inherit' : 'hidden',
-            }}
-          >
+        <div
+          className='page-body'
+          style={{
+            visibility:
+              pageStore.pageStatus == 'success' ? 'inherit' : 'hidden',
+          }}
+        >
+          {isOnload && (
             <WrappedComponent<ICProps> $route={$route} $payload={$payload} />
-          </div>
-        )}
+          )}
+        </div>
         {pageStore.isShowFooter && (
           <Footer
             style={{ backgroundColor: '#eee' }}
