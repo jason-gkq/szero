@@ -1,4 +1,9 @@
-import React, { useCallback, useEffect, useLayoutEffect } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react';
 import { SpinLoading, Mask, Footer, ErrorBlock, Skeleton } from 'antd-mobile';
 import { useLocation } from 'react-router-dom';
 import { paramToObject } from '@szero/utils';
@@ -32,43 +37,7 @@ const createPage = (pageConfig: IPageConfig, WrappedComponent: any) => {
   return observer(() => {
     const { pathname: $route, state: payload, search } = useLocation();
     const $payload = paramToObject(search, payload);
-
-    // let { isNeedLogin } = useContext<IConfig>(AppConfigContext);
-    // if (Reflect.has(pageConfig, 'isNeedLogin')) {
-    //   isNeedLogin = pageConfig.isNeedLogin;
-    // }
-
-    // let checkPermissions: string[] = [];
-    // if (Reflect.has(pageConfig, 'permissions')) {
-    //   checkPermissions = pageConfig.permissions || [];
-    // }
-
-    // useEffect(() => {
-    //   if (isNeedLogin) {
-    //     const { checkLogin, logout } = rootStore.appStore;
-    //     const isLogin = (checkLogin && checkLogin()) || false;
-    //     if (!isLogin) {
-    //       logout();
-    //     }
-    //   }
-    // }, [isNeedLogin, $route, JSON.stringify($payload)]);
-
-    // useEffect(() => {
-    //   if (checkPermissions && checkPermissions.length > 0) {
-    //     const { checkPermission, permissions } = rootStore.appStore;
-    //     const isPermissions =
-    //       (checkPermission && checkPermission(permissions, checkPermissions)) ||
-    //       true;
-    //     if (!isPermissions) {
-    //       pageStore.pageStatus = 'error';
-    //       pageStore.errorInfo = {
-    //         status: 'empty',
-    //         title: '无权访问该页面',
-    //         description: '无权访问该页面',
-    //       };
-    //     }
-    //   }
-    // }, [JSON.stringify(checkPermissions), $route]);
+    const [isOnload, setIsOnload] = useState(false);
 
     useLayoutEffect(() => {
       pageStore.$route = appName
@@ -79,6 +48,10 @@ const createPage = (pageConfig: IPageConfig, WrappedComponent: any) => {
       pageStore.isShowFooter = !!pageConfig.isShowFooter;
       pageStore.pageStatus = 'loading';
       clickTimes = 0;
+      const isOnload =
+        rootStore.appStore.pageBeforeOnLoad &&
+        rootStore.appStore.pageBeforeOnLoad({ pageStore, $payload, $route });
+      setIsOnload(isOnload);
       /**
        * 前置执行 onLoad 方法；
        */
@@ -133,15 +106,17 @@ const createPage = (pageConfig: IPageConfig, WrappedComponent: any) => {
     return (
       <>
         {pageStore.pageStatus != 'success' && renderNoSucess()}
-        <div
-          className='page-body'
-          style={{
-            visibility:
-              pageStore.pageStatus == 'success' ? 'inherit' : 'hidden',
-          }}
-        >
-          <WrappedComponent<ICProps> $route={$route} $payload={$payload} />
-        </div>
+        {isOnload && (
+          <div
+            className='page-body'
+            style={{
+              visibility:
+                pageStore.pageStatus == 'success' ? 'inherit' : 'hidden',
+            }}
+          >
+            <WrappedComponent<ICProps> $route={$route} $payload={$payload} />
+          </div>
+        )}
         {pageStore.isShowFooter && (
           <Footer
             style={{ backgroundColor: '#eee' }}
