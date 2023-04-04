@@ -46,6 +46,7 @@ const createApp = (appStore: any) => {
   });
   return observer(() => {
     const tabs = toJS(appStore.tabs);
+    const navBar = toJS(pageStore.navBar);
     useLayoutEffect(() => {
       useGlobalError();
       dayjs.locale('zh-cn');
@@ -98,9 +99,9 @@ const createApp = (appStore: any) => {
         <div className='page-container'>
           {useMemo(
             () => (
-              <NiceNavBar pageStore={pageStore} />
+              <NiceNavBar navBar={navBar} pageStore={pageStore} />
             ),
-            [JSON.stringify(pageStore.navBar)]
+            [JSON.stringify(navBar)]
           )}
           {renderContent()}
           {useMemo(
