@@ -100,7 +100,7 @@ const createApp = (appStore: any) => {
             () => (
               <NiceNavBar pageStore={pageStore} />
             ),
-            []
+            [JSON.stringify(pageStore.navBar)]
           )}
           {renderContent()}
           {useMemo(

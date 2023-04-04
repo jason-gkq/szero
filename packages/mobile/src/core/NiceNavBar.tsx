@@ -27,6 +27,7 @@ export default observer(({ pageStore }: IProps) => {
         pageStore.navBar
       );
     }
+    console.log('use-navbar', pageStore.navBar, state.navBar);
   }, [JSON.stringify(pageStore.navBar)]);
 
   const { title, style, backArrow, ...restNavBar } =
@@ -37,6 +38,7 @@ export default observer(({ pageStore }: IProps) => {
     : !pageStore.isTabBar;
   const isShowBar = isInBrowser() ? !!pageStore.navBar : false;
 
+  console.log('navbar>>>>', isShowBar, pageStore.navBar, state.navBar);
   return (
     <>
       {isShowBar && (
