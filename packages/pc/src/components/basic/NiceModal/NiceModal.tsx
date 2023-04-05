@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal } from 'antd';
 import { useNiceModal } from './useNiceModal';
+import NiceConfirm from '../NiceConfirm';
 
 type IParams = any;
 
@@ -29,5 +30,6 @@ export const createNiceModal = (modalId: string, Comp: any) => {
 
 NiceModal.create = createNiceModal;
 NiceModal.useNiceModal = useNiceModal;
+NiceModal.niceConfirm = NiceConfirm;
 
 export default NiceModal;
