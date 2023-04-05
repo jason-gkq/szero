@@ -24,6 +24,12 @@ export interface IPageConfig extends IConfig {
   isShowFooter?: boolean;
 }
 
+export interface ICProps {
+  route: string;
+  params?: any;
+  [key: string]: any;
+}
+
 const { appName, layout } = useEnv();
 
 let clickTimes = 0;

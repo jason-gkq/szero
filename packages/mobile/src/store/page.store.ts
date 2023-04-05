@@ -43,7 +43,7 @@ const INIT_LIFE_CYCLES = ['onLoad', 'onReady', 'onShow'];
 // loading error tabs header
 export class PageStore implements PageLifeCycle {
   route: string = '';
-  params: Record<string, any> | undefined | null;
+  params: any;
   pageStatus: 'loading' | 'skeleton' | 'error' | 'success' = 'loading';
   navBar: INavBar;
   isTabBar: boolean = false;
@@ -65,12 +65,6 @@ export class PageStore implements PageLifeCycle {
     });
   }
 
-  // public setRoute(route: string) {
-  //   this.route = route;
-  // }
-  // public setPayload(params: any) {
-  //   this.params = params;
-  // }
   public setPageStatus(status: 'loading' | 'skeleton' | 'error' | 'success') {
     this.pageStatus = status;
   }
@@ -80,9 +74,9 @@ export class PageStore implements PageLifeCycle {
   public setPageTitle(title: string) {
     this.navBar = Object.assign({}, this.navBar, { title });
   }
-  // public setIsShowFooter(flag: boolean) {
-  //   this.isShowFooter = flag;
-  // }
+  public setIsShowFooter(flag: boolean) {
+    this.isShowFooter = flag;
+  }
   public setErrorInfo(newErrorInfo: IErrorInfo | undefined | null) {
     this.errorInfo = newErrorInfo;
   }
