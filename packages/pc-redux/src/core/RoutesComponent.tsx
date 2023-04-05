@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import type { RouteProps } from "react-router-dom";
-import { Routes, Route } from "react-router-dom";
-import { PageLoading, Exception } from "../components";
-import { globalSelectors } from "../redux";
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import type { RouteProps } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
+import { useEnv } from '@szero/hooks';
+import { PageLoading, Exception } from '../components';
+import { globalSelectors } from '../redux';
 
 export interface IRouteProps {
   children?: IRouteProps[];
@@ -13,15 +14,15 @@ export interface IRouteProps {
   layout?: string | null;
   [key: string]: any;
 }
-
+const { appName, routes: configRoutes = [] } = useEnv();
 const Layout = React.lazy(
-  () => import(/* webpackChunkName: 'app' */ "../components/layouts/proLayout")
+  () => import(/* webpackChunkName: 'app' */ '../components/layouts/proLayout')
 );
 
 const getPageLazyComponent = (
   component: string
 ): React.ReactElement | undefined => {
-  if (!component || component === "Layout") {
+  if (!component || component === 'Layout') {
     return;
   }
 
@@ -49,7 +50,7 @@ const getPageLazyComponent = (
 const getRouters = (
   data: IRouteProps[],
   isLayout = false,
-  prefix = "",
+  prefix = '',
   pIsNoneLayout?: boolean | undefined
 ) => {
   const res: any[] = [];
@@ -59,7 +60,7 @@ const getRouters = (
     const newprefix = prefix ? `${prefix}/${path}` : path;
     if (children && Array.isArray(children) && children.length > 0) {
       // 父级layout向下透传
-      const newPIsLayout = Reflect.has(data[i], "isNoneLayout")
+      const newPIsLayout = Reflect.has(data[i], 'isNoneLayout')
         ? isNoneLayout
         : pIsNoneLayout;
 
@@ -148,18 +149,11 @@ const treeIterator = (tree: any[]) => {
 };
 
 type IProps = {
-  appName: string;
   routes: RouteProps[];
-  configRoutes: RouteProps[];
   errorInfo?: any;
 };
 
-const RoutesComponent = ({
-  appName,
-  configRoutes,
-  routes,
-  errorInfo,
-}: IProps) => {
+const RoutesComponent = ({ routes, errorInfo }: IProps) => {
   const [treeRoutes, setTreeRoutes] = useState<any>();
   const [treeNoRoutes, setTreeNoRoutes] = useState<any>();
   useEffect(() => {
@@ -167,7 +161,7 @@ const RoutesComponent = ({
     setTreeRoutes(getRouters(treeData, false));
     setTreeNoRoutes(getRouters(treeData, true));
   }, [JSON.stringify(routes), JSON.stringify(configRoutes)]);
-  const rootPath = appName ? `/${appName}` : "/";
+  const rootPath = appName ? `/${appName}` : '/';
 
   return (
     <Routes>
@@ -189,7 +183,7 @@ const RoutesComponent = ({
               fallback={
                 <div
                   style={{
-                    height: "100vh",
+                    height: '100vh',
                   }}
                 >
                   <PageLoading />
@@ -217,7 +211,6 @@ const RoutesComponent = ({
 };
 
 export default connect((state) => {
-  const { appName, routes: configRoutes = [] } = globalSelectors.getEnv(state);
   const routes = globalSelectors.app.getRoutes(state);
-  return { appName, configRoutes, routes };
+  return { routes };
 })(RoutesComponent);

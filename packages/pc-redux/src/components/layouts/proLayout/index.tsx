@@ -20,11 +20,9 @@ export interface IMenuProps {
 }
 
 type IProps = {
-  configRoutes: IMenuProps[];
   routes: IMenuProps[];
   logout: Function;
   layout: Record<string, any>;
-  appName: string | undefined | null;
 };
 
 const menusFormat = (
@@ -126,12 +124,14 @@ const treeIterator = (tree: any[]) => {
 const {
   layout: { settings: configSettings, token: configToken },
   route = {},
+  appName,
+  routes: configRoutes = [],
 } = useEnv();
 
 const { showRoutesTab } = route || {};
 
 const Layout = (props: IProps) => {
-  const { routes, configRoutes, logout, layout, appName } = props;
+  const { routes, logout, layout } = props;
   const location = useLocation();
   const [menus, setMenus] = useState<MenuDataItem[]>([]);
   const [menusTitle, setMenusTitle] = useState<Record<string, string>>({});
@@ -166,7 +166,7 @@ const Layout = (props: IProps) => {
         logout();
       },
     });
-  }, [logout]);
+  }, []);
 
   return (
     <div
@@ -297,11 +297,9 @@ const Layout = (props: IProps) => {
 
 export default connect(
   (state) => {
-    const { appName, routes: configRoutes = [] } =
-      globalSelectors.getEnv(state);
     const layout = globalSelectors.app.getLayout(state) || {};
     const routes = globalSelectors.app.getRoutes(state);
-    return { configRoutes, routes, layout, appName };
+    return { routes, layout };
   },
   (dispatch) => {
     return {
