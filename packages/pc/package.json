@@ -1,6 +1,6 @@
 {
   "name": "@szero/pc",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "szero-pc",
   "keywords": [
     "szero-pc"
@@ -58,7 +58,7 @@
   "peerDependencies": {
     "@ant-design/icons": ">=4.0.0",
     "@ant-design/pro-components": ">=2.3.0",
-    "antd": ">=4.20.0",
+    "antd": ">=5.0.0",
     "axios": ">=1.1.0",
     "core-js": ">=3",
     "mobx": ">=6.0.0",

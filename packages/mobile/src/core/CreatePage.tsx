@@ -37,14 +37,15 @@ let clickTimes = 0;
 const createPage = (pageConfig: IPageConfig, WrappedComponent: any) => {
   return observer(() => {
     const { pathname, state, search } = useLocation();
+    const route = appName
+      ? String(pathname).replace(`/${appName}`, '')
+      : pathname;
     const params = paramToObject(search, state);
     const [isOnload, setIsOnload] = useState(false);
 
     useLayoutEffect(() => {
       runInAction(() => {
-        pageStore.route = appName
-          ? String(pathname).replace(`/${appName}`, '')
-          : pathname;
+        pageStore.route = route;
         pageStore.params = params;
         pageStore.navBar = pageConfig.navBar;
         pageStore.isShowFooter = !!pageConfig.isShowFooter;
@@ -57,18 +58,18 @@ const createPage = (pageConfig: IPageConfig, WrappedComponent: any) => {
         rootStore.appStore.pageBeforeOnLoad({
           pageStore,
           params,
-          route: pathname,
+          route,
           pageConfig,
         });
       setIsOnload(!!isOnload);
       /**
        * 前置执行 onLoad 方法；
        */
-      pageStore.onLoad && pageStore.onLoad(params);
-    }, [pathname, JSON.stringify(params)]);
+      pageStore.onLoad && pageStore.onLoad({ route, params });
+    }, [route, JSON.stringify(params)]);
 
     useEffect(() => {
-      pageStore.onReady && pageStore.onReady(params);
+      pageStore.onReady && pageStore.onReady({ route, params });
       return () => {
         pageStore.onUnload && pageStore.onUnload();
       };
@@ -100,15 +101,13 @@ const createPage = (pageConfig: IPageConfig, WrappedComponent: any) => {
               <Skeleton.Paragraph lineCount={5} animated />
             </>
           );
-        case 'error':
+        default:
           const { children, ...restErrorInfo } = pageStore.errorInfo || {};
           return (
             <ErrorBlock fullPage {...restErrorInfo}>
               {children}
             </ErrorBlock>
           );
-        default:
-          return <></>;
       }
     }, [pageStore.pageStatus]);
 
@@ -122,7 +121,9 @@ const createPage = (pageConfig: IPageConfig, WrappedComponent: any) => {
               pageStore.pageStatus == 'success' ? 'inherit' : 'hidden',
           }}
         >
-          {isOnload && <WrappedComponent />}
+          {isOnload && (
+            <WrappedComponent<ICProps> route={route} params={params} />
+          )}
         </div>
         {pageStore.isShowFooter && (
           <Footer
