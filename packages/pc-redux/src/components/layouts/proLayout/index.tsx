@@ -180,13 +180,6 @@ const Layout = (props: IProps) => {
         token={
           configToken || {
             header: {
-              colorBgHeader: '#292f33', //header 的背景颜色	 #001529
-              colorHeaderTitle: '#fff', // sider 的标题字体颜色
-              colorTextMenu: 'rgba(255, 255, 255, 0.65)', // menuItem 的字体颜色	 #dfdfdf 旧版：rgba(255, 255, 255, 0.65)
-              colorTextMenuSelected: '#fff', // menuItem 的选中字体颜色
-              colorBgMenuItemHover: '#1890ff', // menuItem 的 hover 背景颜色
-              colorBgMenuItemSelected: '#1890ff', //menuItem 的选中背景颜色	 #22272b
-              // colorTextRightActionsItem: "#dfdfdf",
               heightLayoutHeader: 48, // header 高度
             },
             sider: {
@@ -203,24 +196,11 @@ const Layout = (props: IProps) => {
             },
           }
         }
-        // pure={true}
         title={layout.title}
         locale='zh-CN'
         logo={layout.Logo}
         location={{ pathname: pathname }}
         menuDataRender={() => menus}
-        // contentStyle={{
-        //   margin: "10px",
-        // }}
-        // headerContentRender={() => <ProBreadcrumb />}
-        // breadcrumbRender={(routers = []) => [
-        //   {
-        //     path: "/",
-        //     breadcrumbName: "首页",
-        //   },
-        //   ...routers,
-        // ]}
-        // ErrorBoundary={pathname === '/custom' ? CustomBoundary : undefined}
         menuItemRender={(item: any, dom) => (
           <a
             onClick={() => {
@@ -274,9 +254,6 @@ const Layout = (props: IProps) => {
           }
           return;
         }, [showRoutesTab, menusTitle])}
-        {/* {showRoutesTab && Object.keys(menusTitle).length > 0 && (
-          <RoutesTab menusTitle={menusTitle} />
-        )} */}
         <Outlet />
       </ProLayout>
       {process.env.NODE_ENV === 'development' && (
