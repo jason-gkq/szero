@@ -11,6 +11,7 @@ import { observer } from 'mobx-react-lite';
 import { useEnv } from '@szero/hooks';
 import { navigate } from '@szero/navigate';
 import { pageStore, rootStore, INavBar } from '../store';
+import { runInAction } from 'mobx';
 
 interface IConfig {
   isNeedLogin?: boolean;
@@ -23,43 +24,45 @@ export interface IPageConfig extends IConfig {
   isShowFooter?: boolean;
 }
 
-export interface ICProps {
-  $payload?: any;
-  $route: string;
-  [key: string]: any;
-}
-
 const { appName, layout } = useEnv();
 
 let clickTimes = 0;
 
 const createPage = (pageConfig: IPageConfig, WrappedComponent: any) => {
   return observer(() => {
-    const { pathname: $route, state: payload, search } = useLocation();
-    const $payload = paramToObject(search, payload);
+    const { pathname, state, search } = useLocation();
+    const params = paramToObject(search, state);
     const [isOnload, setIsOnload] = useState(false);
 
     useLayoutEffect(() => {
-      pageStore.$route = appName
-        ? String($route).replace(`/${appName}`, '')
-        : $route;
-      pageStore.$payload = $payload;
-      pageStore.navBar = pageConfig.navBar;
-      pageStore.isShowFooter = !!pageConfig.isShowFooter;
-      pageStore.pageStatus = 'loading';
+      runInAction(() => {
+        pageStore.route = appName
+          ? String(pathname).replace(`/${appName}`, '')
+          : pathname;
+        pageStore.params = params;
+        pageStore.navBar = pageConfig.navBar;
+        pageStore.isShowFooter = !!pageConfig.isShowFooter;
+        pageStore.pageStatus = 'loading';
+      });
+
       clickTimes = 0;
       const isOnload =
         rootStore.appStore.pageBeforeOnLoad &&
-        rootStore.appStore.pageBeforeOnLoad({ pageStore, $payload, $route });
-      setIsOnload(isOnload);
+        rootStore.appStore.pageBeforeOnLoad({
+          pageStore,
+          params,
+          route: pathname,
+          pageConfig,
+        });
+      setIsOnload(!!isOnload);
       /**
        * 前置执行 onLoad 方法；
        */
-      pageStore.onLoad && pageStore.onLoad($payload);
-    }, [$route, JSON.stringify($payload)]);
+      pageStore.onLoad && pageStore.onLoad(params);
+    }, [pathname, JSON.stringify(params)]);
 
     useEffect(() => {
-      pageStore.onReady && pageStore.onReady($payload);
+      pageStore.onReady && pageStore.onReady(params);
       return () => {
         pageStore.onUnload && pageStore.onUnload();
       };
@@ -113,9 +116,7 @@ const createPage = (pageConfig: IPageConfig, WrappedComponent: any) => {
               pageStore.pageStatus == 'success' ? 'inherit' : 'hidden',
           }}
         >
-          {isOnload && (
-            <WrappedComponent<ICProps> $route={$route} $payload={$payload} />
-          )}
+          {isOnload && <WrappedComponent />}
         </div>
         {pageStore.isShowFooter && (
           <Footer

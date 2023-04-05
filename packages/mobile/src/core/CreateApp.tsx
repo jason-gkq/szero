@@ -22,9 +22,6 @@ dayjs.locale('zh-cn');
 import { pageStore, rootStore } from '../store';
 import NiceNavBar from './NiceNavBar';
 import NiceTabBar from './NiceTabBar';
-export interface IAppConfig {
-  isNeedLogin?: boolean;
-}
 
 export interface IAppStore {
   appStatus: 'loading' | 'success' | 'finish';
@@ -35,9 +32,9 @@ export interface IAppStore {
 
 const { appName } = useEnv();
 
-const { pathname, state: payload, search } = history.location;
-const $route = appName ? String(pathname).replace(`/${appName}`, '') : pathname;
-const $payload = paramToObject(search, payload);
+const { pathname, state, search } = history.location;
+const route = appName ? String(pathname).replace(`/${appName}`, '') : pathname;
+const params = paramToObject(search, state);
 
 const createApp = (appStore: any) => {
   runInAction(() => {
@@ -50,7 +47,7 @@ const createApp = (appStore: any) => {
     useLayoutEffect(() => {
       useGlobalError();
       dayjs.locale('zh-cn');
-      appStore.onLaunch({ $route, $payload });
+      appStore.onLaunch({ route, params });
       return () => {
         appStore.onHide && appStore.onHide();
       };
@@ -99,7 +96,7 @@ const createApp = (appStore: any) => {
         <div className='page-container'>
           {useMemo(
             () => (
-              <NiceNavBar navBar={navBar} pageStore={pageStore} />
+              <NiceNavBar pageStore={pageStore} />
             ),
             [JSON.stringify(navBar)]
           )}

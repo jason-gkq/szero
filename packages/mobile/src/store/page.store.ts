@@ -5,15 +5,13 @@ import rootStore from './root.store';
 export interface INavBarInfo {
   back?: React.ReactNode | null;
   backArrow?: boolean | React.ReactNode;
-  title?: string | React.ReactNode;
+  title?: string;
   left?: React.ReactNode;
   onBack?: () => void;
   right?: React.ReactNode;
   style?: CSSConditionRule;
 }
 
-// export interface INavBar
-//  INavBarInfo | undefined | boolean | null
 export type INavBar = INavBarInfo | undefined | boolean | null;
 
 type IErrorInfo = {
@@ -44,77 +42,57 @@ const INIT_LIFE_CYCLES = ['onLoad', 'onReady', 'onShow'];
 
 // loading error tabs header
 export class PageStore implements PageLifeCycle {
-  private _route: string = '';
-  private _payload: Record<string, any> | undefined | null;
-  private _pageStatus: 'loading' | 'skeleton' | 'error' | 'success' = 'loading';
-  private _navBar: INavBar;
-  private lifeCycleListeners: { [page: string]: PageLiveCycleListener } = {};
+  route: string = '';
+  params: Record<string, any> | undefined | null;
+  pageStatus: 'loading' | 'skeleton' | 'error' | 'success' = 'loading';
+  navBar: INavBar;
   isTabBar: boolean = false;
-  private _isShowFooter = false;
-  private _errorInfo: IErrorInfo | undefined | null;
+  isShowFooter: boolean = false;
+  errorInfo: IErrorInfo | undefined | null;
+
+  private lifeCycleListeners: { [page: string]: PageLiveCycleListener } = {};
 
   constructor() {
     makeAutoObservable(this);
     autorun(() => {
-      if (this._route) {
+      if (this.route) {
         runInAction(() => {
           this.isTabBar = !!rootStore.appStore.tabs.find(
-            (item: any) => item.key === this._route
+            (item: any) => item.key === this.route
           );
         });
       }
     });
   }
-  public setNavBar(info: INavBar) {
-    this._navBar = Object.assign({}, this._navBar, info);
+
+  // public setRoute(route: string) {
+  //   this.route = route;
+  // }
+  // public setPayload(params: any) {
+  //   this.params = params;
+  // }
+  public setPageStatus(status: 'loading' | 'skeleton' | 'error' | 'success') {
+    this.pageStatus = status;
   }
-  public setPageTitle(title: string | React.ReactNode) {
-    this._navBar = Object.assign({}, this._navBar, { title });
+  public setNavBar(newNavBar: INavBarInfo | undefined | boolean | null) {
+    this.navBar = newNavBar;
+  }
+  public setPageTitle(title: string) {
+    this.navBar = Object.assign({}, this.navBar, { title });
+  }
+  // public setIsShowFooter(flag: boolean) {
+  //   this.isShowFooter = flag;
+  // }
+  public setErrorInfo(newErrorInfo: IErrorInfo | undefined | null) {
+    this.errorInfo = newErrorInfo;
   }
 
-  public set navBar(newNavBar: INavBar) {
-    this._navBar = newNavBar;
-  }
-  public get navBar() {
-    return this._navBar;
-  }
-  public set errorInfo(newErrorInfo: IErrorInfo | undefined | null) {
-    this._errorInfo = newErrorInfo;
-  }
-  public get errorInfo() {
-    return this._errorInfo;
-  }
-  public set pageStatus(status: 'loading' | 'skeleton' | 'error' | 'success') {
-    this._pageStatus = status;
-  }
-  public get pageStatus() {
-    return this._pageStatus;
-  }
-  public set $route(route: string) {
-    this._route = route;
-  }
-  public get $route() {
-    return this._route;
-  }
-  public set $payload(params: any) {
-    this._payload = params;
-  }
-  public get $payload() {
-    return this._payload;
-  }
-  public set isShowFooter(flag: boolean) {
-    this._isShowFooter = flag;
-  }
-  public get isShowFooter() {
-    return this._isShowFooter;
-  }
   /**
    * 页面渲染之前
    * @param options
    */
   public onLoad(options: Record<string, any>): void {
     console.log('pages onLoad', options);
-
     this.callCurrPageLifeCycle('onLoad', [options]);
   }
   public onReady(options?: Record<string, any>) {
@@ -127,39 +105,39 @@ export class PageStore implements PageLifeCycle {
   }
   public onUnload(): void {
     console.log('pages onUnload');
-    this.callCurrPageLifeCycle('onUnload', [this._route]);
-    delete this.lifeCycleListeners[this._route];
+    this.callCurrPageLifeCycle('onUnload', [this.route]);
+    delete this.lifeCycleListeners[this.route];
   }
 
   public injectListener(component: string, lifeCycle: Partial<PageLifeCycle>) {
-    if (!this._route) {
+    if (!this.route) {
       throw new Error('clfe cycle current page not found');
     }
-    if (!this.lifeCycleListeners[this._route]) {
-      this.lifeCycleListeners[this._route] = {
+    if (!this.lifeCycleListeners[this.route]) {
+      this.lifeCycleListeners[this.route] = {
         states: [],
         listeners: {},
       };
     }
 
-    if (!this.lifeCycleListeners[this._route].listeners[component]) {
-      this.lifeCycleListeners[this._route].listeners[component] = {
+    if (!this.lifeCycleListeners[this.route].listeners[component]) {
+      this.lifeCycleListeners[this.route].listeners[component] = {
         lifeCycle: lifeCycle,
       };
     } else {
-      this.lifeCycleListeners[this._route].listeners[component].lifeCycle =
+      this.lifeCycleListeners[this.route].listeners[component].lifeCycle =
         lifeCycle;
     }
     // 如果页面已经到了对应的启动状态，在设置的时候自动运行一次
-    if (this.lifeCycleListeners[this._route].listeners[component].lifeCycle) {
-      const currentListener = this.lifeCycleListeners[this._route];
+    if (this.lifeCycleListeners[this.route].listeners[component].lifeCycle) {
+      const currentListener = this.lifeCycleListeners[this.route];
       currentListener.states.forEach((state) => {
         if (INIT_LIFE_CYCLES.includes(state.lifeCycle)) {
           Object.keys(currentListener.listeners[component].lifeCycle).forEach(
             (key) => {
               if (state.lifeCycle === key) {
                 this.callPageLifeCycleComponent(
-                  this._route,
+                  this.route,
                   component,
                   state.lifeCycle as any,
                   state.args
@@ -172,26 +150,26 @@ export class PageStore implements PageLifeCycle {
     }
     const dispose = () => {
       if (
-        this.lifeCycleListeners[this._route] &&
-        this.lifeCycleListeners[this._route].listeners[component]
+        this.lifeCycleListeners[this.route] &&
+        this.lifeCycleListeners[this.route].listeners[component]
       ) {
-        delete this.lifeCycleListeners[this._route].listeners[component];
+        delete this.lifeCycleListeners[this.route].listeners[component];
       }
     };
     return dispose;
   }
 
   private callCurrPageLifeCycle(lifeCycle: keyof PageLifeCycle, args: any[]) {
-    if (!this._route) {
+    if (!this.route) {
       return;
     }
-    if (!this.lifeCycleListeners[this._route]) {
-      this.lifeCycleListeners[this._route] = {
+    if (!this.lifeCycleListeners[this.route]) {
+      this.lifeCycleListeners[this.route] = {
         states: [],
         listeners: {},
       };
     }
-    this.callPageLifeCycle(this._route, lifeCycle, args);
+    this.callPageLifeCycle(this.route, lifeCycle, args);
   }
 
   private pushCallState(

@@ -6,17 +6,15 @@ import { useEnv } from '@szero/hooks';
 import { navigate } from '@szero/navigate';
 import type { INavBarInfo } from '../store';
 import { isInBrowser } from '@szero/utils';
-import { pageStore } from '../store';
+
 const { layout } = useEnv();
 
 type IProps = {
   pageStore: any;
 };
 
-export default observer((props: any) => {
+export default observer(({ pageStore }: IProps) => {
   const storeNavBar = toJS(pageStore.navBar);
-  console.log('navBar------> ', props, storeNavBar);
-
   const navBar = !!storeNavBar
     ? Object.assign(
         {
