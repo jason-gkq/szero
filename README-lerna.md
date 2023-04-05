@@ -4,7 +4,8 @@ npm publish --access public
 
 lerna publish from-package
 
-基础命令
+## 基础命令
+
 lerna 主要学习的是 lerna 常用管理命令, 例如 依赖安装，版本管理，发包等。
 init 初始化
 用来初始化 lerna 项目
@@ -15,33 +16,43 @@ lerna init
 -i or --independent 使用独立模式, 默认固定模式
 --exact 使用固定模式
 
-create 创建包
+### create 创建包
+
 将在包集合目录下，新建包基础目录结构 lerna create [名称] [集合目录]
+
+```sh
 lerna create utils
-复制代码
+```
+
 参数：
 
-name 名称
-loc 包集合目录, 单一包集合时为可选。
+- name 名称\
+  loc 包集合目录, 单一包集合时为可选。
 
+```json
 // leran.json
 {
-"packages": [
-// 存在多个包集合
-"source/*",
-"utils/*",
-]
+  "packages": [
+    // 存在多个包集合
+    "source/*",
+    "utils/*"
+  ]
 }
-复制代码
-// shell
+```
+
+// shell\
 // 在指定包集合中新增 day 包
+
+```sh
 lerna create day utils
+```
 
 -- yes 跳过交互配置
 
 learna create day --yes
 复制代码
 
+```
 --bin 是否为可执行包
 --description 包描述
 --dependencies 依赖列表
@@ -52,18 +63,27 @@ learna create day --yes
 --private 私有包
 --registry npm 源
 --tag 标签
+```
 
+```sh
 lerna create day --description=一段描述
-复制代码
-boostrap 安装依赖
+```
+
+### boostrap 安装依赖
+
 为所有包安装依赖, 并链接相关的本地依赖包。
+
+```sh
 lerna boostrap
-复制代码
+```
+
 参数:
 
 --ignore 忽略
 
-安装时，跳过某些包的依赖安装。lerna bootstrap --ignore [包命|包命匹配规则]
+安装时，跳过某些包的依赖安装。
+
+lerna bootstrap --ignore [包命|包命匹配规则]
 这里的包命指的是 package.json 中 name 属性定义的包名
 // 不为 pkg-ts 安装依赖
 lerna bootstrap --ignore pkg-ts
@@ -127,18 +147,27 @@ lerna bootstrap --no-ci
 or
 lerna bootstrap --ci
 复制代码
-clean
+
+### clean
+
 清理所有依赖, 删除所有包内 node_modules
+
+```sh
 lerna clean
-复制代码
+```
+
 参数:
 
 --yes
 
 不做确认提示
+
+```sh
 lerna clean --yes
-复制代码
-list
+```
+
+### list
+
 显示包列表
 lerna list
 // or
@@ -170,7 +199,9 @@ lerna ls
 
 按照依赖关系以 json 形式显示
 进阶命令
-publish
+
+### publish
+
 发包
 learn publish
 复制代码
@@ -217,15 +248,15 @@ lerna publish --no-verify-access
 为--canary 提供指定的发布标识符
 lerna publish --canary
 
-# uses the next semantic prerelease version, e.g.
+> uses the next semantic prerelease version, e.g.
 
-# 1.0.0 => 1.0.1-alpha.0
+> 1.0.0 => 1.0.1-alpha.0
 
 lerna publish --canary --preid next
 
-# uses the next semantic prerelease version with a specific prerelease identifier, e.g.
+> uses the next semantic prerelease version with a specific prerelease identifier, e.g.
 
-# 1.0.0 => 1.0.1-next.0
+> 1.0.0 => 1.0.1-next.0
 
 复制代码
 
@@ -265,7 +296,9 @@ lerna publish --ignory-scripts
 跳过确认
 lerna publish --canary --yes
 复制代码
-add
+
+### add
+
 安装包, 类似 npm i package,
 // 为所有包安装 dayjs 依赖
 lerna add dayjs
@@ -311,7 +344,9 @@ lerna add vue --registry http://r.npm.taobao.org/
 跳过 bootstrap
 lerna add rollup
 复制代码
-version
+
+### version
+
 创建新的包版本
 执行流程:
 
@@ -343,7 +378,9 @@ prerelease 预发布版
 
 参数：
 @lerna/version（翻译
-run
+
+### run
+
 指定 package.json 脚本命令
 lerna run build
 复制代码
@@ -384,7 +421,9 @@ lerna run build --profile
 生成并保存性能分析文件
 lerna run build --profile-localtion
 复制代码
-exec
+
+### exec
+
 在每个包中，执行命令行, run 命令的底层命令
 lerna exec -- echo xx > logs.text
 复制代码
@@ -430,7 +469,9 @@ lerna exec --profile
 生成并保存性能分析文件
 lerna exec --profile --profile-location=logs/profile/ -- <command>
 复制代码
-import
+
+### import
+
 导入外部独立包, 例如我们之前为使用 lerna 管理的独立 npm 包， 导入到 lerna 项目包集合后， 可以使用改目录导入相关 git 记录等
 lerna import <包地址>
 复制代码
@@ -459,14 +500,22 @@ lerna import ../out-pkg --dest=utils
 --preserve-commit
 
 保留原 git 提交者信息以及时间
+
+```sh
 lerna import ../out-pkg --preserve-commit
-复制代码
-changed
+```
+
+### changed
+
 显示下次将发布的包列表， 一般是包版本发生变化
+
+```sh
 lerna changed
-复制代码
+```
+
 命令参数于 list 命令相同。
 
+```
 --json
 --ndjson
 -a --all
@@ -474,11 +523,24 @@ lerna changed
 -p --parseable
 --toposort
 --graph
+```
 
-diff
-显示包修改内容, 类似 git diff
+### diff
+
+显示包修改内容, 类似 `git diff`
+
+```sh
 lerna diff
-复制代码
-info
+```
+
+### info
+
 显示环境信息
+
+```sh
 lerna info
+```
+
+```
+
+```

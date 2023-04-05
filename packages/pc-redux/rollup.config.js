@@ -51,7 +51,7 @@ export default {
     {
       file: `dist/index.js`,
       format: 'umd',
-      name: '@szero/mobile',
+      name: '@szero/pc-redux',
       sourcemap: true,
       inlineDynamicImports: true,
     },
@@ -75,18 +75,19 @@ export default {
   },
   // 将模块视为外部模块，不会打包在库中
   external: [
-    'antd-mobile-icons',
-    'antd-mobile',
-    'antd-mobile/es/locale/zh_CN',
+    '@ant-design/icons',
+    '@ant-design/pro-components',
+    'antd',
+    'antd/locale/zh_CN',
     'dayjs/locale/zh-cn',
     'dayjs',
     'axios',
     'core-js',
     'react',
     'react-dom',
+    'react-redux',
     'react-router-dom',
-    'mobx',
-    'mobx-react-lite',
+    'redux-saga',
     'require',
   ],
   // 插件
@@ -124,7 +125,13 @@ export default {
       plugins: ['@babel/plugin-external-helpers'],
     }),
     // 这里有些引入使用某个库的api但报未导出改api通过namedExports来手动导出
-    commonjs({}),
+    commonjs({
+      namedExports: {
+        '../../node_modules/redux-logger/dist/redux-logger.js': [
+          'createLogger',
+        ],
+      },
+    }),
     // 全局替换NODE_ENV，exclude表示不包含某些文件夹下的文件
     replace({
       // exclude: 'node_modules/**',
