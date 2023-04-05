@@ -1,6 +1,6 @@
 {
   "name": "@szero/pc",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "szero-pc",
   "keywords": [
     "szero-pc"
@@ -113,10 +113,10 @@
     "typescript": "^5.0.3"
   },
   "dependencies": {
-    "@szero/cache": "^1.3.0",
-    "@szero/hooks": "^1.3.1",
-    "@szero/navigate": "^1.3.2",
-    "@szero/net": "^1.3.0",
-    "@szero/utils": "^1.3.0"
+    "@szero/cache": "^1.3.1",
+    "@szero/hooks": "^1.3.2",
+    "@szero/navigate": "^1.3.3",
+    "@szero/net": "^1.3.1",
+    "@szero/utils": "^1.3.1"
   }
 }
