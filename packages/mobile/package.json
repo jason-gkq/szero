@@ -51,6 +51,10 @@
   "bugs": {
     "url": "https://github.com/jason-gkq/szero/issues"
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
   "peerDependencies": {
     "antd-mobile": ">=5.0.0",
     "antd-mobile-icons": ">=0.1.0",
