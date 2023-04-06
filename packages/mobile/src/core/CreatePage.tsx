@@ -12,7 +12,6 @@ import { useEnv } from '@szero/hooks';
 import { navigate } from '@szero/navigate';
 import { pageStore, rootStore, INavBar } from '../store';
 import { runInAction } from 'mobx';
-
 interface IConfig {
   isNeedLogin?: boolean;
 }
@@ -42,13 +41,16 @@ const createPage = (pageConfig: IPageConfig, WrappedComponent: any) => {
       : pathname;
     const params = paramToObject(search, state);
     const [isOnload, setIsOnload] = useState(false);
-
     useLayoutEffect(() => {
       runInAction(() => {
         pageStore.route = route;
         pageStore.params = params;
-        pageStore.navBar = pageConfig.navBar;
-        pageStore.isShowFooter = !!pageConfig.isShowFooter;
+        if (Reflect.has(pageConfig, 'navBar')) {
+          pageStore.navBar = pageConfig.navBar;
+        }
+        if (Reflect.has(pageConfig, 'isShowFooter') || pageStore.isShowFooter) {
+          pageStore.isShowFooter = !!pageConfig.isShowFooter;
+        }
         pageStore.pageStatus = 'loading';
       });
 

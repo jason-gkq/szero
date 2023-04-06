@@ -1,11 +1,11 @@
 import React from 'react';
 import { NavBar } from 'antd-mobile';
-import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useEnv } from '@szero/hooks';
 import { navigate } from '@szero/navigate';
 import type { INavBarInfo } from '../store';
 import { isInBrowser } from '@szero/utils';
+import { toJS } from 'mobx';
 
 const { layout } = useEnv();
 
@@ -14,23 +14,23 @@ type IProps = {
 };
 
 export default observer(({ pageStore }: IProps) => {
-  const storeNavBar = toJS(pageStore.navBar);
-  const navBar = !!storeNavBar
+  const { navBar } = toJS(pageStore) || {};
+  const newNavBar = !!navBar
     ? Object.assign(
         {
           title: layout.title,
           onBack: () => navigate.goBack(),
         },
-        storeNavBar
+        navBar
       )
     : { title: layout.title, onBack: () => navigate.goBack() };
 
-  const { title, style, backArrow, ...restNavBar } = navBar as INavBarInfo;
+  const { title, style, backArrow, ...restNavBar } = newNavBar as INavBarInfo;
   document.title = String(title);
-  const niceBackArrow = Reflect.has(navBar, 'backArrow')
+  const niceBackArrow = Reflect.has(newNavBar, 'backArrow')
     ? backArrow
     : !pageStore.isTabBar;
-  const isShowBar = isInBrowser() ? !!storeNavBar : false;
+  const isShowBar = isInBrowser() ? !!navBar : false;
 
   return (
     <>

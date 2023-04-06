@@ -11,7 +11,7 @@ export default observer(({ pageStore, tabs }: any) => {
       {isShowBar && (
         <div className='page-bottom'>
           <TabBar
-            activeKey={pageStore.$route}
+            activeKey={pageStore.route}
             onChange={(key) => navigate.goTo(key)}
           >
             {tabs.map((item: any) => (

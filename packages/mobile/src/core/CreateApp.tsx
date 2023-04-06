@@ -43,7 +43,6 @@ const createApp = (appStore: any) => {
   });
   return observer(() => {
     const tabs = toJS(appStore.tabs);
-    const navBar = toJS(pageStore.navBar);
     useLayoutEffect(() => {
       useGlobalError();
       dayjs.locale('zh-cn');
@@ -73,8 +72,8 @@ const createApp = (appStore: any) => {
               </>
             );
           case 'error':
-            const { renderChildren, ...restErrorInfo } =
-              appStore.errorInfo || {};
+            const { errorInfo = {} } = appStore;
+            const { renderChildren, ...restErrorInfo } = errorInfo || {};
             return (
               <ErrorBlock fullPage {...restErrorInfo}>
                 {renderChildren && renderChildren()}
@@ -98,7 +97,7 @@ const createApp = (appStore: any) => {
             () => (
               <NiceNavBar pageStore={pageStore} />
             ),
-            [JSON.stringify(navBar)]
+            []
           )}
           {renderContent()}
           {useMemo(

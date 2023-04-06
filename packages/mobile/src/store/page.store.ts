@@ -12,7 +12,7 @@ export interface INavBarInfo {
   style?: CSSConditionRule;
 }
 
-export type INavBar = INavBarInfo | undefined | boolean | null;
+export type INavBar = INavBarInfo | boolean | undefined | null;
 
 type IErrorInfo = {
   description?: ReactNode;
@@ -45,7 +45,7 @@ export class PageStore implements PageLifeCycle {
   route: string = '';
   params: any;
   pageStatus: 'loading' | 'skeleton' | 'error' | 'success' = 'loading';
-  navBar: INavBar;
+  navBar: INavBarInfo | undefined | boolean | null;
   isTabBar: boolean = false;
   isShowFooter: boolean = false;
   errorInfo: IErrorInfo | undefined | null;
@@ -68,14 +68,11 @@ export class PageStore implements PageLifeCycle {
   public setPageStatus(status: 'loading' | 'skeleton' | 'error' | 'success') {
     this.pageStatus = status;
   }
-  public setNavBar(newNavBar: INavBarInfo | undefined | boolean | null) {
-    this.navBar = newNavBar;
+  public setNavBar(navBar: INavBarInfo | undefined | boolean | null) {
+    this.navBar = navBar;
   }
   public setPageTitle(title: string) {
     this.navBar = Object.assign({}, this.navBar, { title });
-  }
-  public setIsShowFooter(flag: boolean) {
-    this.isShowFooter = flag;
   }
   public setErrorInfo(newErrorInfo: IErrorInfo | undefined | null) {
     this.errorInfo = newErrorInfo;
