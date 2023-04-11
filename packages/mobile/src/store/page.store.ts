@@ -46,6 +46,8 @@ export class PageStore implements PageLifeCycle {
   params: any;
   pageStatus: 'loading' | 'skeleton' | 'error' | 'success' = 'loading';
   navBar: INavBarInfo | undefined | boolean | null;
+  isShowNavBar: boolean = false;
+  isShowTabBar: boolean = false;
   isTabBar: boolean = false;
   isShowFooter: boolean = false;
   errorInfo: IErrorInfo | undefined | null;

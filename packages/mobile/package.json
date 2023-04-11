@@ -1,6 +1,6 @@
 {
   "name": "@szero/mobile",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "szero-mobile",
   "keywords": [
     "szero-mobile"
@@ -37,12 +37,16 @@
     "*.less"
   ],
   "browserslist": [
-    "> 0.5%",
-    "last 2 versions",
-    "Firefox ESR",
+    "iOS >= 10",
+    "Android >= 10",
+    "Firefox > 65",
+    "chrome > 72",
+    "safari >= 10",
+    ">0.2%",
     "not dead",
-    "IE 11",
-    "not IE 10"
+    "not IE 10",
+    "last 2 versions",
+    "not op_mini all"
   ],
   "repository": {
     "type": "git",

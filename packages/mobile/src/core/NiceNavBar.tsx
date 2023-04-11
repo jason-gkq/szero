@@ -5,7 +5,7 @@ import { useEnv } from '@szero/hooks';
 import { navigate } from '@szero/navigate';
 import type { INavBarInfo } from '../store';
 import { isInBrowser } from '@szero/utils';
-import { toJS } from 'mobx';
+import { runInAction, toJS } from 'mobx';
 
 const { layout } = useEnv();
 
@@ -31,6 +31,16 @@ export default observer(({ pageStore }: IProps) => {
     ? backArrow
     : !pageStore.isTabBar;
   const isShowBar = isInBrowser() ? !!navBar : false;
+
+  const pageBody = document.querySelector('.page-body');
+  if (isShowBar) {
+    pageBody && pageBody.classList.add('page-top-margin');
+  } else {
+    pageBody && pageBody.classList.remove('page-top-margin');
+  }
+  runInAction(() => {
+    pageStore.isShowNavBar = isShowBar;
+  });
 
   return (
     <>

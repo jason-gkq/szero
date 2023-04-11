@@ -106,9 +106,9 @@ const createApp = (appStore: any) => {
             ),
             []
           )}
-          <div style={{ background: '#ffcfac' }}>
-            <SafeArea position='bottom' />
-          </div>
+        </div>
+        <div style={{ background: '#f5f5f5' }}>
+          <SafeArea position='bottom' />
         </div>
       </ConfigProvider>
     );

@@ -2,27 +2,53 @@
 @import url(./base.less);
 
 .page-container {
-  height: 100vh;
-  min-height: 100vh;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  width: 100%;
+}
+.page-top {
+  box-sizing: border-box;
+  display: block;
+  position: fixed;
+  height: 46px;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 30;
+  border-bottom: solid 1px #eee;
+  background-color: #eee;
+  width: 100%;
+  max-width: 540px;
+  min-width: 320px;
+  margin: 0 auto;
+}
+.page-body {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  width: 100%;
 }
-
-.page-top {
-  flex: 0 0 9rem;
-  border-bottom: solid 1px #eee;
-}
-
-.page-body {
-  flex: auto;
-  display: flex;
-  overflow: hidden;
-  padding-bottom: constant(safe-area-inset-bottom);
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
 .page-bottom {
-  flex: 0 0 10rem;
+  box-sizing: border-box;
+  display: block;
+  position: fixed;
+  height: 50px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: constant(safe-area-inset-bottom);
   border-top: solid 1px #eee;
+  background-color: #eee;
+  width: 100%;
+  max-width: 540px;
+  min-width: 320px;
+  margin: 0 auto;
+}
+
+.page-top-margin {
+  margin-top: 46px;
+}
+.page-bottom-margin {
+  margin-bottom: 50px;
 }

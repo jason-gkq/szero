@@ -8,7 +8,7 @@ import { SpinLoading, Mask, Footer, ErrorBlock, Skeleton } from 'antd-mobile';
 import { useLocation } from 'react-router-dom';
 import { paramToObject } from '@szero/utils';
 import { observer } from 'mobx-react-lite';
-import { useEnv } from '@szero/hooks';
+import { useEnv, useMergeState } from '@szero/hooks';
 import { navigate } from '@szero/navigate';
 import { pageStore, rootStore, INavBar } from '../store';
 import { runInAction } from 'mobx';
@@ -41,6 +41,7 @@ const createPage = (pageConfig: IPageConfig, WrappedComponent: any) => {
       : pathname;
     const params = paramToObject(search, state);
     const [isOnload, setIsOnload] = useState(false);
+    const [minHeight, setMinHeight] = useState(0);
     useLayoutEffect(() => {
       runInAction(() => {
         pageStore.route = route;
@@ -69,7 +70,16 @@ const createPage = (pageConfig: IPageConfig, WrappedComponent: any) => {
        */
       pageStore.onLoad && pageStore.onLoad({ route, params });
     }, [route, JSON.stringify(params)]);
-
+    useEffect(() => {
+      let otherHeight = 0;
+      if (pageStore.isShowNavBar) {
+        otherHeight += 46;
+      }
+      if (pageStore.isShowTabBar) {
+        otherHeight += 50;
+      }
+      setMinHeight(otherHeight);
+    }, [pageStore.isShowNavBar, pageStore.isShowTabBar]);
     useEffect(() => {
       pageStore.onReady && pageStore.onReady({ route, params });
       return () => {
@@ -119,32 +129,37 @@ const createPage = (pageConfig: IPageConfig, WrappedComponent: any) => {
         <div
           className='page-body'
           style={{
+            minHeight: `calc(100vh - env(safe-area-inset-bottom) - ${minHeight}px)`,
             visibility:
               pageStore.pageStatus == 'success' ? 'inherit' : 'hidden',
           }}
         >
           {isOnload && (
-            <WrappedComponent<ICProps> route={route} params={params} />
+            <div style={{ flex: 'auto', display: 'flex' }}>
+              <WrappedComponent<ICProps> route={route} params={params} />
+            </div>
+          )}
+          {pageStore.isShowFooter && (
+            <div style={{ flex: '0 0 30px' }}>
+              <Footer
+                style={{ backgroundColor: '#eee' }}
+                content={
+                  <div
+                    onClick={() => {
+                      if (clickTimes >= 6) {
+                        navigate.goTo('/tools');
+                      } else {
+                        clickTimes++;
+                      }
+                    }}
+                  >
+                    {layout.footerText}
+                  </div>
+                }
+              />
+            </div>
           )}
         </div>
-        {pageStore.isShowFooter && (
-          <Footer
-            style={{ backgroundColor: '#eee' }}
-            content={
-              <div
-                onClick={() => {
-                  if (clickTimes >= 6) {
-                    navigate.goTo('/tools');
-                  } else {
-                    clickTimes++;
-                  }
-                }}
-              >
-                {layout.footerText}
-              </div>
-            }
-          />
-        )}
       </>
     );
   });
