@@ -1,10 +1,5 @@
-import { history } from "./history";
-import { useEnv } from "@szero/hooks";
-
-type IGoBack = {
-  delta?: string | number;
-  url?: string;
-};
+import { history } from './history';
+import { useEnv } from '@szero/hooks';
 
 const {
   layout: { index },
@@ -71,7 +66,10 @@ class configureNavigate {
     return;
   };
 
-  goBack = () => {
+  goBack = (delta?: string | number) => {
+    if (delta) {
+      history.go(delta);
+    }
     history.back();
     return;
   };
