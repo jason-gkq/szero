@@ -33,7 +33,7 @@ export default {
       return;
     }
   },
-  external: ['react', 'react-dom', '@szero/hooks'],
+  external: ['@szero/hooks'],
   plugins: [
     clear({
       targets: ['dist', 'es'],
