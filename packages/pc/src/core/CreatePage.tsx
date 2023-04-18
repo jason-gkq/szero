@@ -7,12 +7,9 @@ import React, {
 import { useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { runInAction, toJS } from 'mobx';
-import { Spin, Skeleton } from 'antd';
+import { Spin, Skeleton, Result } from 'antd';
 import { paramToObject } from '@szero/utils';
-import { useEnv } from '@szero/hooks';
 import { pageStore, rootStore } from '../store';
-
-import { Exception } from '../components';
 
 export interface IPageConfig {
   pageId: string;
@@ -28,14 +25,10 @@ export interface ICProps {
   [key: string]: any;
 }
 
-const { appName } = useEnv();
-
 export default (pageConfig: IPageConfig, WrappedComponent: any) => {
   return observer(() => {
     const { pathname, state, search } = useLocation();
-    const route = appName
-      ? String(pathname).replace(`/${appName}`, '')
-      : pathname;
+    const route = pathname;
     const params = paramToObject(search, state);
     const errorInfo = toJS(pageStore.errorInfo) || {};
     const [isOnload, setIsOnload] = useState(false);
@@ -77,9 +70,9 @@ export default (pageConfig: IPageConfig, WrappedComponent: any) => {
         case 'skeleton':
           return <Skeleton active />;
         default:
-          return <Exception {...errorInfo} />;
+          return <Result {...(errorInfo || {})} />;
       }
-    }, [pageStore.pageStatus, JSON.stringify(errorInfo)]);
+    }, [pageStore.pageStatus]);
 
     return (
       <>

@@ -1,11 +1,5 @@
 import { makeAutoObservable } from 'mobx';
-
-type IErrorInfo = {
-  code?: number;
-  msg?: string;
-  url?: string;
-  onClick?: Function;
-};
+import type { ResultProps } from 'antd';
 
 export interface PageLifeCycle {
   onLoad(options: Record<string, any>): void;
@@ -20,7 +14,7 @@ export class PageStore implements PageLifeCycle {
   params: any;
   pageStatus: 'loading' | 'skeleton' | 'error' | 'success' = 'loading';
   isShowFooter: boolean = false;
-  errorInfo: IErrorInfo | undefined | null;
+  errorInfo: ResultProps | undefined | null;
 
   constructor() {
     makeAutoObservable(this);
@@ -32,7 +26,7 @@ export class PageStore implements PageLifeCycle {
   public setIsShowFooter(flag: boolean) {
     this.isShowFooter = flag;
   }
-  public setErrorInfo(newErrorInfo: IErrorInfo | undefined | null) {
+  public setErrorInfo(newErrorInfo: ResultProps | undefined | null) {
     this.errorInfo = newErrorInfo;
   }
 

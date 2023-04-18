@@ -1,11 +1,11 @@
 import React from 'react';
-import { ConfigProvider, Spin } from 'antd';
+import { ConfigProvider, Spin, Result } from 'antd';
+import type { ResultProps } from 'antd';
 import { runInAction, toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { history } from '@szero/navigate';
 import { paramToObject } from '@szero/utils';
-import { useEnv } from '@szero/hooks';
 import zhCN from 'antd/locale/zh_CN';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
@@ -13,16 +13,14 @@ import 'dayjs/locale/zh-cn';
 import { pageStore, rootStore } from '../store';
 import RoutesComponent from './RoutesComponent';
 import useGlobalError from './useGlobalError';
-import { Exception } from '../components';
 
 import { ModalContextComponent } from '../components/basic/NiceModal';
 
 import '../style/index.less';
 
 dayjs.locale('zh-cn');
-const { appName } = useEnv();
 const { pathname, state, search } = history.location;
-const route = appName ? String(pathname).replace(`/${appName}`, '') : pathname;
+const route = pathname;
 const params = paramToObject(search, state);
 /**
  * 1. 初始化store
@@ -59,7 +57,7 @@ export default (appStore: any) => (WrappedComponent: any) => {
 
     renderContent() {
       const appStatus = appStore.appStatus;
-      const errorInfo = toJS(appStore.errorInfo);
+      const errorInfo: ResultProps = toJS(appStore.errorInfo);
       const routes = toJS(appStore.routes);
 
       switch (appStatus) {
@@ -74,7 +72,7 @@ export default (appStore: any) => (WrappedComponent: any) => {
             </div>
           );
         case 'error':
-          return <Exception {...errorInfo} />;
+          return <Result {...(errorInfo || {})} />;
         default:
           return (
             <HistoryRouter history={history as any}>

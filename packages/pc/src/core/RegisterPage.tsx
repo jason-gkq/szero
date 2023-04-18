@@ -1,11 +1,9 @@
 import React from 'react';
-import { Spin, Skeleton } from 'antd';
+import { Spin, Skeleton, Result } from 'antd';
 import { observer } from 'mobx-react-lite';
 import { runInAction, toJS } from 'mobx';
 import { paramToObject } from '@szero/utils';
-import { useEnv } from '@szero/hooks';
 import { pageStore, rootStore } from '../store';
-import { Exception } from '../components';
 
 export interface IPageConfig {
   isNeedLogin?: boolean;
@@ -20,7 +18,6 @@ export interface ICProps {
   params?: any;
   [key: string]: any;
 }
-const { appName } = useEnv();
 
 export default (pageConfig: IPageConfig) =>
   (WrappedComponent: typeof React.PureComponent) => {
@@ -33,9 +30,7 @@ export default (pageConfig: IPageConfig) =>
         super(props);
         const { pathname, search } = window.location;
         const { usr: payload } = window.history.state;
-        const route = appName
-          ? String(pathname).replace(`/${appName}`, '')
-          : pathname;
+        const route = pathname;
         const params = paramToObject(search, payload);
         runInAction(() => {
           pageStore.route = route;
@@ -77,7 +72,7 @@ export default (pageConfig: IPageConfig) =>
           case 'skeleton':
             return <Skeleton active />;
           default:
-            return <Exception {...errorInfo} />;
+            return <Result {...(errorInfo || {})} />;
         }
       }
 

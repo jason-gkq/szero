@@ -8,6 +8,7 @@ import { navigate } from '@szero/navigate';
 import { useEnv } from '@szero/hooks';
 import RoutesTab from '../RoutesTab';
 import { rootStore } from '../../../store';
+import CustomBoundary from './CustomBoundary';
 
 export interface IMenuProps {
   icon?: string;
@@ -171,6 +172,7 @@ export default observer(() => {
             paddingInlinePageContainerContent: 10,
           },
         }}
+        ErrorBoundary={CustomBoundary}
         locale='zh-CN'
         location={{ pathname: pathname }}
         menuDataRender={() => menus}

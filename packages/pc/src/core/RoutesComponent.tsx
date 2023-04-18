@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import type { RouteProps } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
-import { Spin } from 'antd';
+import { Spin, Result, Button } from 'antd';
 import { useEnv } from '@szero/hooks';
-import { Exception } from '../components';
 
 export interface IRouteProps {
   children?: IRouteProps[];
@@ -161,11 +160,11 @@ export default ({ routes }: IProps) => {
     setTreeRoutes(getRouters(treeData, false));
     setTreeNoRoutes(getRouters(treeData, true));
   }, [JSON.stringify(routes), JSON.stringify(configRoutes)]);
-  const rootPath = appName ? `/${appName}` : '/';
+  // const rootPath = appName ? `/${appName}` : '/';
 
   return (
     <Routes>
-      <Route path={rootPath}>
+      <Route path={`/`}>
         {treeNoRoutes}
         <Route
           path='*'
@@ -191,7 +190,26 @@ export default ({ routes }: IProps) => {
             key='*'
             element={
               <React.Suspense fallback={<Spin />}>
-                <Exception code={404} />
+                <Result
+                  status={404}
+                  title='页面不存在'
+                  subTitle='您好，您访问的页面不存在，请刷新重试.'
+                  extra={
+                    <Button
+                      type='primary'
+                      danger
+                      onClick={() => {
+                        window.location.reload();
+                      }}
+                    >
+                      刷新页面
+                    </Button>
+                  }
+                  style={{
+                    height: '100%',
+                    background: '#fff',
+                  }}
+                />
               </React.Suspense>
             }
           />

@@ -123,7 +123,8 @@ export default {
     // babel处理不包含node_modules文件的所有js
     babel({
       exclude: '**/node_modules/**',
-      babelHelpers: 'external',
+      // babelHelpers: 'external',
+      babelHelpers: 'runtime',
       babelrc: false,
       presets: [
         [
@@ -139,7 +140,18 @@ export default {
         // 对jsx语法进行转换
         '@babel/preset-react',
       ],
-      plugins: ['@babel/plugin-external-helpers'],
+      plugins: [
+        // '@babel/plugin-external-helpers',
+        [
+          '@babel/plugin-transform-runtime',
+          {
+            corejs: 3,
+            helpers: true,
+            version: require('@babel/runtime-corejs3/package.json').version,
+            regenerator: true,
+          },
+        ],
+      ],
     }),
     // 全局替换NODE_ENV，exclude表示不包含某些文件夹下的文件
     replace({

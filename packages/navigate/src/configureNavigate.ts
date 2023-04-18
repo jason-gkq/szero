@@ -69,6 +69,7 @@ class configureNavigate {
   goBack = (delta?: string | number) => {
     if (delta) {
       history.go(delta);
+      return;
     }
     history.back();
     return;
@@ -96,6 +97,7 @@ class configureNavigate {
   reload = (url?: string) => {
     if (!url) {
       window.location.reload();
+      return;
     }
     if (String(url).startsWith('https:') || String(url).startsWith('http:')) {
       window.location.replace(url || window.location.href);

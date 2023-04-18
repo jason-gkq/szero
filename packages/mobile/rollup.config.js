@@ -131,8 +131,8 @@ export default {
        * 'inline' 官网不推荐使用，会导致很多重复性代码
        * 'external' 要结合@babel/plugin-external-helpers插件使用，它会把helpers 收集到一个共享模块，我的理解是相当于runtime和bundled一个集合，就是把helpers 抽到一个全局的共享模块但是又不会造成全局的污染
        */
-      // babelHelpers: 'runtime',
-      babelHelpers: 'external',
+      babelHelpers: 'runtime',
+      // babelHelpers: 'external',
       babelrc: false,
       presets: [
         [
@@ -157,8 +157,8 @@ export default {
           {
             modules: false,
             // loose: true,
-            // useBuiltIns: 'usage',
-            useBuiltIns: 'entry',
+            useBuiltIns: 'usage',
+            // useBuiltIns: 'entry',
             corejs: 3,
             debug: true,
           },
@@ -167,16 +167,16 @@ export default {
         '@babel/preset-react',
       ],
       plugins: [
-        '@babel/plugin-external-helpers',
-        // [
-        //   '@babel/plugin-transform-runtime',
-        //   {
-        //     corejs: 3,
-        //     helpers: true,
-        //     version: require('@babel/runtime-corejs3/package.json').version,
-        //     regenerator: true,
-        //   },
-        // ],
+        // '@babel/plugin-external-helpers',
+        [
+          '@babel/plugin-transform-runtime',
+          {
+            corejs: 3,
+            helpers: true,
+            version: require('@babel/runtime-corejs3/package.json').version,
+            regenerator: true,
+          },
+        ],
         // "@babel/plugin-proposal-class-properties": "^7.18.6",
         // "@babel/plugin-proposal-decorators": "^7.21.0",
         // "@babel/plugin-proposal-object-rest-spread": "^7.20.7",

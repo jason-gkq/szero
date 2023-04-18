@@ -3,11 +3,6 @@
  */
 export { default as MemoComponent } from './MemoComponent';
 /**
- * 组件封装
- */
-export { default as Loading } from './Loading';
-export { default as Exception } from './Exception/Exception';
-/**
  * 权限
  */
 export { default as GuardPermission } from './Permission/GuardPermission';

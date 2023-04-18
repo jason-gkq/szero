@@ -2,16 +2,15 @@ import React, { useLayoutEffect, useMemo } from 'react';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { runInAction, toJS } from 'mobx';
-import { ConfigProvider, Spin } from 'antd';
+import { ConfigProvider, Spin, Result } from 'antd';
+import type { ResultProps } from 'antd';
 import { history } from '@szero/navigate';
 import { paramToObject } from '@szero/utils';
 import zhCN from 'antd/locale/zh_CN';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
-import { useEnv } from '@szero/hooks';
 import { pageStore, rootStore } from '../store';
 
-import { Exception } from '../components';
 import RoutesComponent from './RoutesComponent';
 import useGlobalError from './useGlobalError';
 
@@ -21,9 +20,8 @@ import '../style/index.less';
 
 dayjs.locale('zh-cn');
 
-const { appName } = useEnv();
 const { pathname, state, search } = history.location;
-const route = appName ? String(pathname).replace(`/${appName}`, '') : pathname;
+const route = pathname;
 const params = paramToObject(search, state);
 
 const createApp = (appStore: any) => {
@@ -32,7 +30,7 @@ const createApp = (appStore: any) => {
     rootStore.pageStore = pageStore;
   });
   return observer(() => {
-    const errorInfo = toJS(appStore.errorInfo);
+    const errorInfo: ResultProps = toJS(appStore.errorInfo);
     const routes = toJS(appStore.routes);
     useLayoutEffect(() => {
       useGlobalError();
@@ -57,7 +55,7 @@ const createApp = (appStore: any) => {
               </div>
             );
           case 'error':
-            return <Exception {...errorInfo} />;
+            return <Result {...(errorInfo || {})} />;
           default:
             return (
               <HistoryRouter history={history as any}>
@@ -66,7 +64,7 @@ const createApp = (appStore: any) => {
             );
         }
       },
-      [appStore.appStatus, JSON.stringify(routes), JSON.stringify(errorInfo)]
+      [appStore.appStatus, JSON.stringify(routes)]
     );
 
     return (
