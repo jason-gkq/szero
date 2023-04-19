@@ -37,7 +37,7 @@ const menusFormat = (
       ICON = require(`@ant-design/icons`)[String(icon)];
     }
     let newPath = String(path);
-    if (lavel === 1) {
+    if (lavel === 1 && !newPath.startsWith('http')) {
       /**
        * 第一级路由必须以 / 开头
        * 如果设置了appName 则给一级菜单添加对应前缀
@@ -116,6 +116,7 @@ const treeIterator = (tree: any[]) => {
   return arr;
 };
 const { route = {}, appName, routes: configRoutes = [] } = useEnv();
+const localRoutes: IMenuProps[] = [{ path: appName, children: configRoutes }];
 
 const { showRoutesTab } = route || {};
 
@@ -124,6 +125,7 @@ export default observer(() => {
   const routes = toJS(rootStore.appStore.routes);
 
   const location = useLocation();
+
   const [menus, setMenus] = useState<MenuDataItem[]>([]);
   const [menusTitle, setMenusTitle] = useState<Record<string, string>>({});
   const [pathname, setPathname] = useState(location.pathname);
@@ -137,9 +139,16 @@ export default observer(() => {
     splitMenus: true,
   });
   useEffect(() => {
-    const newRoutes = treeIterator(routes.concat(configRoutes));
+    const newRoutes = treeIterator(routes.concat(localRoutes));
+    const routeToMenu: MenuDataItem[] = newRoutes.reduce(
+      (accumulator, currentValue) => {
+        const { path, children } = currentValue;
+        return accumulator.concat(menusFormat(children, path, 1));
+      },
+      []
+    );
+    setMenus(routeToMenu);
     setMenusTitle(getMenusTitle(newRoutes, ''));
-    setMenus(menusFormat(newRoutes, appName, 1));
   }, [JSON.stringify(routes), JSON.stringify(configRoutes)]);
 
   useEffect(() => {

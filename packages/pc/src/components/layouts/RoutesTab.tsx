@@ -9,7 +9,7 @@ import { DownOutlined } from '@ant-design/icons';
 
 const { appName, layout, route = {} } = useEnv();
 const { routesHistoryLength } = route || {};
-const { index: indexPage } = layout;
+let { index: indexPage } = layout;
 
 export default ({ menusTitle }: { menusTitle: Record<string, string> }) => {
   const [activeKey, setActiveKey] = useState(''); // defaultPanes[0].key
@@ -22,27 +22,26 @@ export default ({ menusTitle }: { menusTitle: Record<string, string> }) => {
   const add = useCallback(
     (location: any) => {
       const { pathname, ...restLocation } = location;
-      const newPathname = pathname.replace(`/${appName}`, '');
-      const targetIndex = items.findIndex((pane) => pane.key === newPathname);
+      const targetIndex = items.findIndex((pane) => pane.key === pathname);
       if (targetIndex >= 0) {
         items[targetIndex]['location'] = {
-          pathname: newPathname,
+          pathname: pathname,
           ...restLocation,
         };
         setItems([...items]);
         routesHistoryLength && localStorage.set('routes-history', [...items]);
       } else {
-        const label = menusTitle[newPathname] || '';
+        const label = menusTitle[pathname] || '';
 
         let newItems = [
           ...items,
           {
             label,
             location: {
-              pathname: newPathname,
+              pathname: pathname,
               ...restLocation,
             },
-            key: newPathname,
+            key: pathname,
           },
         ];
         if (newItems.length == 1) {
@@ -56,7 +55,7 @@ export default ({ menusTitle }: { menusTitle: Record<string, string> }) => {
         setItems(newItems);
         routesHistoryLength && localStorage.set('routes-history', newItems);
       }
-      setActiveKey(newPathname);
+      setActiveKey(pathname);
     },
     [items]
   );
@@ -88,8 +87,10 @@ export default ({ menusTitle }: { menusTitle: Record<string, string> }) => {
 
   const closeAll = useCallback(() => {
     const { pathname } = location;
-    const newPathname = pathname.replace(`/${appName}`, '');
-    if (newPathname == indexPage) {
+    if (!indexPage.startsWith(`/${appName}`)) {
+      indexPage = `/${appName}${indexPage}`;
+    }
+    if (pathname == indexPage) {
       closeOther();
     } else {
       setItems([]);

@@ -54,6 +54,9 @@ const getRouters = (
   const res: any[] = [];
   for (let i = 0; i < data.length; i++) {
     const { children, path, isNoneLayout, component, layout } = data[i];
+    if (path.startsWith('http')) {
+      continue;
+    }
     // 获取树形结构的path路径，用于获取component
     const newprefix = prefix ? `${prefix}/${path}` : path;
     if (children && Array.isArray(children) && children.length > 0) {
@@ -151,20 +154,22 @@ type IProps = {
 };
 
 const { appName, routes: configRoutes = [] } = useEnv();
+const rootPath = appName ? `/${appName}` : '/';
+const localRoutes: RouteProps[] = [{ path: rootPath, children: configRoutes }];
 
 export default ({ routes }: IProps) => {
   const [treeRoutes, setTreeRoutes] = useState<any>();
   const [treeNoRoutes, setTreeNoRoutes] = useState<any>();
   useEffect(() => {
-    const treeData = treeIterator(configRoutes.concat(routes));
-    setTreeRoutes(getRouters(treeData, false));
-    setTreeNoRoutes(getRouters(treeData, true));
+    const treeData = treeIterator(localRoutes.concat(routes));
+    const { children } = treeData.find((i) => i.path == rootPath);
+    setTreeRoutes(getRouters(children, false));
+    setTreeNoRoutes(getRouters(children, true));
   }, [JSON.stringify(routes), JSON.stringify(configRoutes)]);
-  // const rootPath = appName ? `/${appName}` : '/';
 
   return (
     <Routes>
-      <Route path={`/`}>
+      <Route path={rootPath}>
         {treeNoRoutes}
         <Route
           path='*'
