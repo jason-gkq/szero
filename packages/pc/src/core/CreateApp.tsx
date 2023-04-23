@@ -49,13 +49,27 @@ const createApp = (appStore: any) => {
               <div
                 style={{
                   height: '100vh',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
                 <Spin size='large' />
               </div>
             );
           case 'error':
-            return <Result {...(errorInfo || {})} />;
+            return (
+              <div
+                style={{
+                  height: '100vh',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Result {...(errorInfo || {})} />
+              </div>
+            );
           default:
             return (
               <HistoryRouter history={history as any}>

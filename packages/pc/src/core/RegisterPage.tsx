@@ -1,4 +1,11 @@
-import React from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  useLayoutEffect,
+} from 'react';
+import { PageContainer } from '@ant-design/pro-components';
+import { useLocation } from 'react-router-dom';
 import { Spin, Skeleton, Result } from 'antd';
 import { observer } from 'mobx-react-lite';
 import { runInAction, toJS } from 'mobx';
@@ -19,79 +26,89 @@ export interface ICProps {
   [key: string]: any;
 }
 
-export default (pageConfig: IPageConfig) =>
-  (WrappedComponent: typeof React.PureComponent) => {
-    class BasePageComponent extends WrappedComponent<ICProps, any> {
-      private isOnload = false;
-      route: string;
-      params: any;
+export default (pageConfig: IPageConfig) => (WrappedComponent: any) => {
+  return observer(() => {
+    const { pathname, state, search } = useLocation();
+    const route = pathname;
+    const params = paramToObject(search, state);
+    const errorInfo = toJS(pageStore.errorInfo) || {};
+    const [isOnload, setIsOnload] = useState(false);
 
-      constructor(props: ICProps) {
-        super(props);
-        const { pathname, search } = window.location;
-        const { usr: payload } = window.history.state;
-        const route = pathname;
-        const params = paramToObject(search, payload);
-        runInAction(() => {
-          pageStore.route = route;
-          pageStore.params = params;
-          pageStore.isShowFooter = !!pageConfig.isShowFooter;
-          pageStore.pageStatus = pageConfig.pageStatus || 'success';
-        });
-        const isOnload =
-          rootStore.appStore.pageBeforeOnLoad &&
-          rootStore.appStore.pageBeforeOnLoad({
-            pageStore,
-            params,
-            route,
-            pageConfig,
-          });
-        this.setState({
-          isOnload: !!isOnload,
-          route,
+    useLayoutEffect(() => {
+      runInAction(() => {
+        pageStore.route = route;
+        pageStore.params = params;
+        pageStore.isShowFooter = !!pageConfig.isShowFooter;
+        pageStore.pageStatus = pageConfig.pageStatus || 'success';
+      });
+
+      const isOnload =
+        rootStore.appStore.pageBeforeOnLoad &&
+        rootStore.appStore.pageBeforeOnLoad({
+          pageStore,
           params,
+          route,
+          pageConfig,
         });
-        /**
-         * 前置执行 onLoad 方法；
-         */
-        pageStore.onLoad && pageStore.onLoad({ route, params });
-      }
+      setIsOnload(!!isOnload);
+      /**
+       * 前置执行 onLoad 方法；
+       */
+      pageStore.onLoad && pageStore.onLoad({ route, params });
+    }, [route, JSON.stringify(params)]);
 
-      componentWillUnmount(): void {
+    useEffect(() => {
+      pageStore.onReady && pageStore.onReady({ route, params });
+      return () => {
         pageStore.onUnload && pageStore.onUnload();
-        if (super.componentWillUnmount) {
-          super.componentWillUnmount();
-        }
-      }
+      };
+    }, []);
 
-      renderNoSucess() {
-        const errorInfo = toJS(pageStore.errorInfo);
-        switch (pageStore.pageStatus) {
-          case 'loading':
-            return <Spin />;
-          case 'skeleton':
-            return <Skeleton active />;
-          default:
-            return <Result {...(errorInfo || {})} />;
-        }
+    const renderNoSucess = useCallback(() => {
+      switch (pageStore.pageStatus) {
+        case 'loading':
+          return (
+            <PageContainer pageHeaderRender={false}>
+              <div
+                style={{
+                  height: '60vh',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Spin size='large' />
+              </div>
+            </PageContainer>
+          );
+        case 'skeleton':
+          return (
+            <PageContainer pageHeaderRender={false}>
+              <Skeleton
+                active
+                style={{ marginTop: '25px', width: '80%', marginLeft: '25px' }}
+              />
+            </PageContainer>
+          );
+        default:
+          return <Result {...(errorInfo || {})} />;
       }
+    }, [pageStore.pageStatus]);
 
-      render() {
-        return (
-          <>
-            {pageStore.pageStatus != 'success' && this.renderNoSucess()}
-            <div
-              style={{
-                visibility:
-                  pageStore.pageStatus == 'success' ? 'inherit' : 'hidden',
-              }}
-            >
-              {this.isOnload && super.render()}
-            </div>
-          </>
-        );
-      }
-    }
-
-    return observer(BasePageComponent as any);
-  };
+    return (
+      <>
+        {pageStore.pageStatus != 'success' && renderNoSucess()}
+        <div
+          style={{
+            visibility:
+              pageStore.pageStatus == 'success' ? 'inherit' : 'hidden',
+          }}
+        >
+          {isOnload && (
+            <WrappedComponent<ICProps> route={route} params={params} />
+          )}
+        </div>
+      </>
+    );
+  }) as any;
+};

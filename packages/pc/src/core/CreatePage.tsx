@@ -4,6 +4,7 @@ import React, {
   useState,
   useLayoutEffect,
 } from 'react';
+import { PageContainer } from '@ant-design/pro-components';
 import { useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { runInAction, toJS } from 'mobx';
@@ -66,11 +67,35 @@ export default (pageConfig: IPageConfig, WrappedComponent: any) => {
     const renderNoSucess = useCallback(() => {
       switch (pageStore.pageStatus) {
         case 'loading':
-          return <Spin />;
+          return (
+            <PageContainer pageHeaderRender={false}>
+              <div
+                style={{
+                  height: '60vh',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Spin size='large' />
+              </div>
+            </PageContainer>
+          );
         case 'skeleton':
-          return <Skeleton active />;
+          return (
+            <PageContainer pageHeaderRender={false}>
+              <Skeleton
+                active
+                style={{ marginTop: '25px', width: '80%', marginLeft: '25px' }}
+              />
+            </PageContainer>
+          );
         default:
-          return <Result {...(errorInfo || {})} />;
+          return (
+            <PageContainer pageHeaderRender={false}>
+              <Result {...(errorInfo || {})} />
+            </PageContainer>
+          );
       }
     }, [pageStore.pageStatus]);
 

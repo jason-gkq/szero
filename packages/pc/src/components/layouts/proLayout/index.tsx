@@ -121,7 +121,7 @@ const localRoutes: IMenuProps[] = [{ path: appName, children: configRoutes }];
 const { showRoutesTab } = route || {};
 
 export default observer(() => {
-  const layout = rootStore.appStore.layout;
+  const layout = toJS(rootStore.appStore.layout);
   const routes = toJS(rootStore.appStore.routes);
 
   const location = useLocation();

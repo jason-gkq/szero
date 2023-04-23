@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useLayoutEffect, useMemo } from 'react';
 import { ConfigProvider, Spin, Result } from 'antd';
 import type { ResultProps } from 'antd';
 import { runInAction, toJS } from 'mobx';
@@ -34,61 +34,62 @@ export default (appStore: any) => (WrappedComponent: any) => {
     rootStore.appStore = appStore;
     rootStore.pageStore = pageStore;
   });
-  class RegisterComponent extends WrappedComponent {
-    constructor(props: any) {
-      super(props);
+  return observer(() => {
+    const errorInfo: ResultProps = toJS(appStore.errorInfo);
+    const routes = toJS(appStore.routes);
+    useLayoutEffect(() => {
       useGlobalError();
       dayjs.locale('zh-cn');
-      appStore.onLaunch && appStore.onLaunch({ route, params });
-    }
+      appStore.onLaunch({ route, params });
+      return () => {
+        appStore.onHide && appStore.onHide();
+      };
+    }, []);
 
-    componentDidMount() {
-      if (super.componentDidMount) {
-        super.componentDidMount();
-      }
-    }
+    const renderContent = useMemo(
+      () => () => {
+        switch (appStore.appStatus) {
+          case 'loading':
+            return (
+              <div
+                style={{
+                  height: '100vh',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Spin size='large' />
+              </div>
+            );
+          case 'error':
+            return (
+              <div
+                style={{
+                  height: '100vh',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Result {...(errorInfo || {})} />
+              </div>
+            );
+          default:
+            return (
+              <HistoryRouter history={history as any}>
+                <RoutesComponent routes={routes} />
+              </HistoryRouter>
+            );
+        }
+      },
+      [appStore.appStatus, JSON.stringify(routes)]
+    );
 
-    componentWillUnmount() {
-      appStore.onHide && appStore.onHide();
-      if (super.componentWillUnmount) {
-        super.componentWillUnmount();
-      }
-    }
-
-    renderContent() {
-      const appStatus = appStore.appStatus;
-      const errorInfo: ResultProps = toJS(appStore.errorInfo);
-      const routes = toJS(appStore.routes);
-
-      switch (appStatus) {
-        case 'loading':
-          return (
-            <div
-              style={{
-                height: '100vh',
-              }}
-            >
-              <Spin size='large' />
-            </div>
-          );
-        case 'error':
-          return <Result {...(errorInfo || {})} />;
-        default:
-          return (
-            <HistoryRouter history={history as any}>
-              <RoutesComponent routes={routes} />
-            </HistoryRouter>
-          );
-      }
-    }
-
-    render() {
-      return (
-        <ConfigProvider locale={zhCN}>
-          <ModalContextComponent>{this.renderContent()}</ModalContextComponent>
-        </ConfigProvider>
-      );
-    }
-  }
-  return observer(RegisterComponent as typeof WrappedComponent);
+    return (
+      <ConfigProvider locale={zhCN}>
+        <ModalContextComponent>{renderContent()}</ModalContextComponent>
+      </ConfigProvider>
+    );
+  });
 };
