@@ -93,7 +93,7 @@ export default {
   plugins: [
     clear({
       // required, point out which directories should be clear.
-      targets: ['dist', 'es'],
+      targets: ['dist', 'es', 'lib'],
       // optional, whether clear the directores when rollup recompile on --watch mode.
       watch: true, // default: false
     }),

@@ -13,8 +13,8 @@
   "unpkg": "dist/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
-    "build:dev": "cross-env NODE_ENV=development rollup -c rollup.config.js --bundleConfigAsCjs ",
-    "build:prod": "cross-env NODE_ENV=production rollup -c rollup.config.js --bundleConfigAsCjs ",
+    "build:dev": "cross-env NODE_ENV=development rollup -c rollup.config.js --bundleConfigAsCjs && tsc",
+    "build:prod": "cross-env NODE_ENV=production rollup -c rollup.config.js --bundleConfigAsCjs && tsc",
     "tsc": "tsc",
     "test": "node ./__tests__/hooks.test.js"
   },

@@ -35,7 +35,7 @@ export default {
   },
   plugins: [
     clear({
-      targets: ['dist', 'es'],
+      targets: ['dist', 'es', 'lib'],
       watch: true,
     }),
     resolve({ extensions: ['.ts'] }),

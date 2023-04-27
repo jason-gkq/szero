@@ -36,7 +36,7 @@ export default {
   external: ['axios', '@szero/utils'],
   plugins: [
     clear({
-      targets: ['dist', 'es'],
+      targets: ['dist', 'es', 'lib'],
       watch: true,
     }),
     resolve({ extensions: ['.ts'] }),

@@ -1,24 +1,44 @@
-export * from './util';
-
-// 判断是否在企业微信中
-export function isInWechatWork() {
-  var ua = navigator.userAgent.toLowerCase();
-  return /wxwork/i.test(ua);
-}
-
-// 判断是否在微信中
-export function isInWechat() {
-  var ua = navigator.userAgent.toLowerCase();
-  return /micromessenger/i.test(ua) && !isInWechatWork();
-}
-
-// 判断是否在浏览器中
-export function isInBrowser() {
-  return !isInWechat() && !isInWechatWork();
-}
-
-// 判断当前页面的URL是否属于企业微信域名
-export function isInWechatWorkDomain() {
-  var host = location.host;
-  return host.indexOf('.wxwork.com') !== -1;
-}
+/**
+ * @link [underscorejs](https://underscorejs.org)
+ */
+export { appendParam } from './appendParam';
+export { arrayToTree } from './arrayToTree';
+export { cloneDeep } from './cloneDeep';
+export { curry } from './curry';
+export { debounce } from './debounce';
+export { deleteUndefined } from './deleteUndefined';
+export { flatDeep } from './flatDeep';
+export { get } from './get';
+export { globalThis } from './globalThis';
+export { guid } from './guid';
+export { isAndroid } from './isAndroid';
+export { isArray } from './isArray';
+export { isBoolean } from './isBoolean';
+export { isDate } from './isDate';
+export { isDesktop } from './isDesktop';
+export { isEmptyObject } from './isEmptyObject';
+export { isFunction } from './isFunction';
+export { isInBrowser } from './isInBrowser';
+export { isInWechat } from './isInWechat';
+export { isInWechatWork } from './isInWechatWork';
+export { isInWechatWorkDomain } from './isInWechatWorkDomain';
+export { isIOS } from './isIOS';
+export { isMobile } from './isMobile';
+export { isNaN } from './isNaN';
+export { isNull } from './isNull';
+export { isNumber } from './isNumber';
+export { isObject } from './isObject';
+export { isObjectLike } from './isObjectLike';
+export { isPlainObject } from './isPlainObject';
+export { isPromise } from './isPromise';
+export { isString } from './isString';
+export { isUndefined } from './isUndefined';
+export { nextTick } from './nextTick';
+export { default as now } from './now';
+export { objectToParam } from './objectToParam';
+export { paramToObject } from './paramToObject';
+export { pick } from './pick';
+export { restArguments } from './restArguments';
+export { run } from './run';
+export { throttle } from './throttle';
+export { unique } from './unique';

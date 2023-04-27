@@ -36,7 +36,7 @@ export default {
   external: ['react', 'react-dom', '@szero/cache'],
   plugins: [
     clear({
-      targets: ['dist', 'es'],
+      targets: ['dist', 'es', 'lib'],
       watch: true,
     }),
     resolve({ extensions: ['.ts'] }),

@@ -89,6 +89,43 @@ const treeRoutes = getRouters(routes);
 const rootPath = appName ? `/${appName}` : '/';
 const { isAnimated } = route;
 
+{
+  /* <Route
+        render={({ location }) => {
+          return (
+            <TransitionGroup>
+              <CSSTransition
+                key={location.key}
+                classNames={{
+                  enter: 'animated',
+                  enterActive: 'fadeInDown',
+                  exit: 'animated',
+                  exitActive: 'fadeOutDown'
+                }}
+                timeout={1000}
+                mountOnEnter
+                unmountOnExit
+              >
+                <div>
+                  <Switch location={location}>
+                    <Route
+                      path="/one"
+                      render={(props) => (
+                        <KeepAlive>
+                          <Test {...props} />
+                        </KeepAlive>
+                      )}
+                    />
+                    <Route path="/two" render={() => 'This is two'} />
+                  </Switch>
+                </div>
+              </CSSTransition>
+            </TransitionGroup>
+          )
+        }}
+      /> */
+}
+
 export default () => {
   const renderContent = (
     <Route path={rootPath}>

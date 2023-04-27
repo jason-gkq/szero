@@ -55,7 +55,7 @@ export class PageStore implements PageLifeCycle {
   private lifeCycleListeners: { [page: string]: PageLiveCycleListener } = {};
 
   constructor() {
-    makeAutoObservable(this);
+    makeAutoObservable(this, {}, { autoBind: true });
     autorun(() => {
       if (this.route) {
         runInAction(() => {
