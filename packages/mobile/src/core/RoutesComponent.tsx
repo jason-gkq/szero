@@ -1,9 +1,9 @@
 import React from 'react';
 import { ErrorBlock, SpinLoading } from 'antd-mobile';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { useEnv } from '@szero/hooks';
-// import AnimatedRouter from 'react-animated-router';
-// import 'react-animated-router/animate.css';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+
 export interface IRouteProps {
   children?: IRouteProps[];
   path: string;
@@ -127,6 +127,8 @@ const { isAnimated } = route;
 }
 
 export default () => {
+  const location = useLocation();
+
   const renderContent = (
     <Route path={rootPath}>
       {treeRoutes}
@@ -158,11 +160,15 @@ export default () => {
 
   return (
     <>
-      {/* {isAnimated && (
-        <AnimatedRouter className='body'>{renderContent}</AnimatedRouter>
+      {isAnimated && (
+        <TransitionGroup component={null}>
+          <CSSTransition key={location.key} classNames='fade' timeout={300}>
+            <Routes location={location}>{renderContent}</Routes>
+          </CSSTransition>
+        </TransitionGroup>
       )}
-      {!isAnimated && <Routes>{renderContent}</Routes>} */}
-      <Routes>{renderContent}</Routes>
+      {!isAnimated && <Routes>{renderContent}</Routes>}
+      {/* <Routes>{renderContent}</Routes> */}
     </>
   );
 };
