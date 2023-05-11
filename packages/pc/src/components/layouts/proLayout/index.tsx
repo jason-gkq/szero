@@ -9,6 +9,7 @@ import { useEnv } from '@szero/hooks';
 import RoutesTab from '../RoutesTab';
 import { rootStore } from '../../../store';
 import CustomBoundary from './CustomBoundary';
+import { ZeroIcon } from '../../basic';
 
 export interface IMenuProps {
   icon?: string;
@@ -34,7 +35,7 @@ const menusFormat = (
 
     let ICON;
     if (icon && icon != '#' && [1, 2].includes(lavel)) {
-      ICON = require(`@ant-design/icons`)[String(icon)];
+      ICON = <ZeroIcon type={icon as string} />;
     }
     let newPath = String(path);
     if (lavel === 1 && !newPath.startsWith('http')) {
@@ -53,14 +54,14 @@ const menusFormat = (
       const childreRoutes = menusFormat(children, appName, lavel + 1);
       newRoutes.push({
         children: childreRoutes,
-        icon: ICON && <ICON />,
+        icon: ICON || <></>,
         path: newPath,
         redirect,
         ...restItme,
       });
     } else {
       newRoutes.push({
-        icon: ICON && <ICON />,
+        icon: ICON || <></>,
         path: newPath,
         redirect,
         ...restItme,

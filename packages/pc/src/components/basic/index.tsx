@@ -8,5 +8,6 @@ export { default as MemoComponent } from './MemoComponent';
 export { default as GuardPermission } from './Permission/GuardPermission';
 export { default as PermissionA } from './Permission/PermissionA';
 export { default as PermissionButton } from './Permission/PermissionButton';
+export { default as ZeroIcon } from './ZeroIcon';
 
 export { useNiceModal, NiceModal } from './NiceModal';

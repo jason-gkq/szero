@@ -5,6 +5,7 @@ export { appendParam } from './appendParam';
 export { arrayToTree } from './arrayToTree';
 export { cloneDeep } from './cloneDeep';
 export { curry } from './curry';
+export { dateFormat } from './dateFormat';
 export { debounce } from './debounce';
 export { deleteUndefined } from './deleteUndefined';
 export { flatDeep } from './flatDeep';

@@ -32,3 +32,4 @@ export function dateFormat(fmt: string, date: Date | string) {
   }
   return fmt;
 }
+export default dateFormat;
