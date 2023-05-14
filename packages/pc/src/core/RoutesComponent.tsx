@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import type { RouteProps } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
 import { Spin, Result, Button } from 'antd';
+import { PageContainer } from '@ant-design/pro-components';
 import { useEnv } from '@szero/hooks';
+import { cloneDeep } from '@szero/utils';
 
 export interface IRouteProps {
   children?: IRouteProps[];
@@ -153,19 +155,30 @@ type IProps = {
   routes: RouteProps[];
 };
 
-const { appName, routes: configRoutes = [] } = useEnv();
-const rootPath = appName ? `/${appName}` : '/';
-const localRoutes: RouteProps[] = [{ path: rootPath, children: configRoutes }];
+const env = useEnv();
+const rootPath = env.appName ? `/${env.appName}` : '/';
+const localRoutes: RouteProps[] = cloneDeep(env.routes);
 
 export default ({ routes }: IProps) => {
-  const [treeRoutes, setTreeRoutes] = useState<any>();
-  const [treeNoRoutes, setTreeNoRoutes] = useState<any>();
-  useEffect(() => {
-    const treeData = treeIterator(localRoutes.concat(routes));
-    const { children } = treeData.find((i) => i.path == rootPath);
-    setTreeRoutes(getRouters(children, false));
-    setTreeNoRoutes(getRouters(children, true));
-  }, [JSON.stringify(routes), JSON.stringify(configRoutes)]);
+  const allRoutes = [
+    {
+      path: rootPath,
+      children: cloneDeep(routes).concat(localRoutes),
+    },
+  ];
+  const routesData = treeIterator(allRoutes);
+  const { children } = routesData.find((i) => i.path == rootPath);
+  const treeRoutes = getRouters(children, false);
+  const treeNoRoutes = getRouters(children, true);
+
+  // const [treeRoutes, setTreeRoutes] = useState<any>();
+  // const [treeNoRoutes, setTreeNoRoutes] = useState<any>();
+  // useEffect(() => {
+  //   const treeData = treeIterator(cloneDeep(routes).concat(localRoutes));
+  //   const { children } = treeData.find((i) => i.path == rootPath);
+  //   setTreeRoutes(getRouters(children, false));
+  //   setTreeNoRoutes(getRouters(children, true));
+  // }, [JSON.stringify(routes)]);
 
   return (
     <Routes>
@@ -185,7 +198,7 @@ export default ({ routes }: IProps) => {
                 </div>
               }
             >
-              <Layout />
+              <Layout routesData={routesData} />
             </React.Suspense>
           }
         >
@@ -195,26 +208,28 @@ export default ({ routes }: IProps) => {
             key='*'
             element={
               <React.Suspense fallback={<Spin />}>
-                <Result
-                  status={404}
-                  title='页面不存在'
-                  subTitle='您好，您访问的页面不存在，请刷新重试.'
-                  extra={
-                    <Button
-                      type='primary'
-                      danger
-                      onClick={() => {
-                        window.location.reload();
-                      }}
-                    >
-                      刷新页面
-                    </Button>
-                  }
-                  style={{
-                    height: '100%',
-                    background: '#fff',
-                  }}
-                />
+                <PageContainer pageHeaderRender={false}>
+                  <Result
+                    status={404}
+                    title='页面不存在'
+                    subTitle='您好，您访问的页面不存在，请刷新重试.'
+                    extra={
+                      <Button
+                        type='primary'
+                        danger
+                        onClick={() => {
+                          window.location.reload();
+                        }}
+                      >
+                        刷新页面
+                      </Button>
+                    }
+                    style={{
+                      height: '100%',
+                      background: '#fff',
+                    }}
+                  />
+                </PageContainer>
               </React.Suspense>
             }
           />

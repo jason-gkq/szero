@@ -1,6 +1,10 @@
 import React, { useLayoutEffect, useMemo } from 'react';
-import { ConfigProvider, Spin, Result } from 'antd';
+import { ConfigProvider, Spin, Result, App } from 'antd';
 import type { ResultProps } from 'antd';
+import {
+  StyleProvider,
+  legacyLogicalPropertiesTransformer,
+} from '@ant-design/cssinjs';
 import { runInAction, toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
@@ -36,6 +40,7 @@ export default (appStore: any) => (WrappedComponent: any) => {
   });
   return observer(() => {
     const errorInfo: ResultProps = toJS(appStore.errorInfo);
+    const appStoreConfigProvider = toJS(appStore.ConfigProvider) || {};
     const routes = toJS(appStore.routes);
     useLayoutEffect(() => {
       useGlobalError();
@@ -87,8 +92,15 @@ export default (appStore: any) => (WrappedComponent: any) => {
     );
 
     return (
-      <ConfigProvider locale={zhCN}>
-        <ModalContextComponent>{renderContent()}</ModalContextComponent>
+      <ConfigProvider locale={zhCN} {...appStoreConfigProvider}>
+        <App>
+          <StyleProvider
+            hashPriority='high'
+            transformers={[legacyLogicalPropertiesTransformer]}
+          >
+            <ModalContextComponent>{renderContent()}</ModalContextComponent>
+          </StyleProvider>
+        </App>
       </ConfigProvider>
     );
   });

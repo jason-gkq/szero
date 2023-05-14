@@ -75,6 +75,7 @@ export default {
   // 将模块视为外部模块，不会打包在库中
   external: [
     '@ant-design/icons',
+    '@ant-design/cssinjs',
     '@ant-design/pro-components',
     'antd',
     'antd/locale/zh_CN',

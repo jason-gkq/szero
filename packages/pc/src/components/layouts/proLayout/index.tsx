@@ -8,8 +8,7 @@ import { navigate } from '@szero/navigate';
 import { useEnv } from '@szero/hooks';
 import RoutesTab from '../RoutesTab';
 import { rootStore } from '../../../store';
-import CustomBoundary from './CustomBoundary';
-import { ZeroIcon } from '../../basic';
+import { ZeroIcon, CustomBoundary } from '../../basic';
 
 export interface IMenuProps {
   icon?: string;
@@ -75,55 +74,55 @@ const getMenusTitle = (routes: MenuDataItem[], parentPath: string) => {
   const pathTitle: Record<string, string> = {};
   for (let i = 0; i < routes.length; i++) {
     const { children, path, name } = routes[i];
+    const newPath = path.startsWith('/')
+      ? `${parentPath}${path}`
+      : `${parentPath}/${path}`;
     if (children && children.length > 0) {
-      Object.assign(
-        pathTitle,
-        getMenusTitle(children, `${parentPath}/${path}`)
-      );
+      Object.assign(pathTitle, getMenusTitle(children, newPath));
     } else {
-      pathTitle[`${parentPath}/${path}`] = name || '';
+      pathTitle[newPath] = name || '';
     }
   }
   return pathTitle;
 };
 
-const treeIterator = (tree: any[]) => {
-  const arr: any[] = [];
-  if (!Array.isArray(tree) || !tree.length) return arr;
-  tree.forEach((e: any) => {
-    const index = arr.findIndex((i) => i.path == e.path);
-    if (e.children) {
-      if (index > -1) {
-        arr[index] = {
-          ...e,
-          ...arr[index],
-          children: treeIterator([
-            ...(arr[index].children || []),
-            ...(e.children || []),
-          ]),
-        };
-      } else {
-        arr.push({ ...e, children: treeIterator(e.children) });
-      }
-    } else {
-      if (index < 0) {
-        arr.push({ ...e });
-      } else {
-        arr[index] = { ...e, ...arr[index] };
-      }
-    }
-  });
+// const treeIterator = (tree: any[]) => {
+//   const arr: any[] = [];
+//   if (!Array.isArray(tree) || !tree.length) return arr;
+//   tree.forEach((e: any) => {
+//     const index = arr.findIndex((i) => i.path == e.path);
+//     if (e.children) {
+//       if (index > -1) {
+//         arr[index] = {
+//           ...e,
+//           ...arr[index],
+//           children: treeIterator([
+//             ...(arr[index].children || []),
+//             ...(e.children || []),
+//           ]),
+//         };
+//       } else {
+//         arr.push({ ...e, children: treeIterator(e.children) });
+//       }
+//     } else {
+//       if (index < 0) {
+//         arr.push({ ...e });
+//       } else {
+//         arr[index] = { ...e, ...arr[index] };
+//       }
+//     }
+//   });
 
-  return arr;
-};
-const { route = {}, appName, routes: configRoutes = [] } = useEnv();
-const localRoutes: IMenuProps[] = [{ path: appName, children: configRoutes }];
+//   return arr;
+// };
+const { route = {}, appName } = useEnv(); //, routes: configRoutes = []
+// const localRoutes: IMenuProps[] = [{ path: appName, children: configRoutes }];
 
 const { showRoutesTab } = route || {};
 
-export default observer(() => {
+export default observer(({ routesData }: { routesData: IMenuProps[] }) => {
   const layout = toJS(rootStore.appStore.layout);
-  const routes = toJS(rootStore.appStore.routes);
+  // const routes = toJS(rootStore.appStore.routes);
 
   const location = useLocation();
 
@@ -140,8 +139,8 @@ export default observer(() => {
     splitMenus: true,
   });
   useEffect(() => {
-    const newRoutes = treeIterator(routes.concat(localRoutes));
-    const routeToMenu: MenuDataItem[] = newRoutes.reduce(
+    // const newRoutes = treeIterator(routes.concat(localRoutes));
+    const routeToMenu: MenuDataItem[] = routesData.reduce(
       (accumulator, currentValue) => {
         const { path, children } = currentValue;
         return accumulator.concat(menusFormat(children, path, 1));
@@ -149,8 +148,8 @@ export default observer(() => {
       []
     );
     setMenus(routeToMenu);
-    setMenusTitle(getMenusTitle(newRoutes, ''));
-  }, [JSON.stringify(routes), JSON.stringify(configRoutes)]);
+    setMenusTitle(getMenusTitle(routesData, ''));
+  }, [JSON.stringify(routesData)]);
 
   useEffect(() => {
     setPathname(location.pathname);
