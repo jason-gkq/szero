@@ -17,6 +17,8 @@ export interface IPageConfig {
   pageId: string;
   permissions?: string[];
   pageStatus?: 'loading' | 'skeleton' | 'error' | 'success';
+  skeletonOptions?: Record<string, any>;
+  loadingOptions?: Record<string, any>;
   [key: string]: any;
 }
 
@@ -67,6 +69,7 @@ export default (pageConfig: IPageConfig) => (WrappedComponent: any) => {
     const renderNoSucess = useCallback(() => {
       switch (pageStore.pageStatus) {
         case 'loading':
+          const loadingOptions = pageConfig.loadingOptions || {};
           return (
             <PageContainer pageHeaderRender={false}>
               <div
@@ -77,16 +80,18 @@ export default (pageConfig: IPageConfig) => (WrappedComponent: any) => {
                   justifyContent: 'center',
                 }}
               >
-                <Spin size='large' />
+                <Spin size='large' {...loadingOptions} />
               </div>
             </PageContainer>
           );
         case 'skeleton':
+          const skeletonOptions = pageConfig.skeletonOptions || {};
           return (
             <PageContainer pageHeaderRender={false}>
               <Skeleton
                 active
                 style={{ marginTop: '25px', width: '80%', marginLeft: '25px' }}
+                {...skeletonOptions}
               />
             </PageContainer>
           );

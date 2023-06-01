@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import type { RouteProps } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
 import { Spin, Result, Button } from 'antd';
@@ -34,7 +34,20 @@ const getPageLazyComponent = (
     return;
   }
   return (
-    <React.Suspense fallback={<Spin />}>
+    <React.Suspense
+      fallback={
+        <div
+          style={{
+            height: '60vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Spin size='large' />
+        </div>
+      }
+    >
       <Element />
     </React.Suspense>
   );
@@ -191,10 +204,13 @@ export default ({ routes }: IProps) => {
               fallback={
                 <div
                   style={{
-                    height: '100vh',
+                    height: '60vh',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
                 >
-                  <Spin />
+                  <Spin size='large' />
                 </div>
               }
             >

@@ -86,43 +86,10 @@ const getMenusTitle = (routes: MenuDataItem[], parentPath: string) => {
   return pathTitle;
 };
 
-// const treeIterator = (tree: any[]) => {
-//   const arr: any[] = [];
-//   if (!Array.isArray(tree) || !tree.length) return arr;
-//   tree.forEach((e: any) => {
-//     const index = arr.findIndex((i) => i.path == e.path);
-//     if (e.children) {
-//       if (index > -1) {
-//         arr[index] = {
-//           ...e,
-//           ...arr[index],
-//           children: treeIterator([
-//             ...(arr[index].children || []),
-//             ...(e.children || []),
-//           ]),
-//         };
-//       } else {
-//         arr.push({ ...e, children: treeIterator(e.children) });
-//       }
-//     } else {
-//       if (index < 0) {
-//         arr.push({ ...e });
-//       } else {
-//         arr[index] = { ...e, ...arr[index] };
-//       }
-//     }
-//   });
-
-//   return arr;
-// };
-const { route = {}, appName } = useEnv(); //, routes: configRoutes = []
-// const localRoutes: IMenuProps[] = [{ path: appName, children: configRoutes }];
-
-const { showRoutesTab } = route || {};
+const { appName } = useEnv();
 
 export default observer(({ routesData }: { routesData: IMenuProps[] }) => {
   const layout = toJS(rootStore.appStore.layout);
-  // const routes = toJS(rootStore.appStore.routes);
 
   const location = useLocation();
 
@@ -130,7 +97,6 @@ export default observer(({ routesData }: { routesData: IMenuProps[] }) => {
   const [menusTitle, setMenusTitle] = useState<Record<string, string>>({});
   const [pathname, setPathname] = useState(location.pathname);
   const [settings, setSetting] = useState<Partial<ProSettings> | undefined>({
-    // fixSiderbar: true,
     fixSiderbar: true,
     fixedHeader: true,
     navTheme: 'light',
@@ -139,7 +105,6 @@ export default observer(({ routesData }: { routesData: IMenuProps[] }) => {
     splitMenus: true,
   });
   useEffect(() => {
-    // const newRoutes = treeIterator(routes.concat(localRoutes));
     const routeToMenu: MenuDataItem[] = routesData.reduce(
       (accumulator, currentValue) => {
         const { path, children } = currentValue;
@@ -160,7 +125,8 @@ export default observer(({ routesData }: { routesData: IMenuProps[] }) => {
       id={`${appName}-pro-layout`}
       style={{
         height: '100vh',
-        overflowX: 'hidden',
+        minWidth: '1210px',
+        overflowX: 'auto',
       }}
     >
       <ProLayout
@@ -202,11 +168,11 @@ export default observer(({ routesData }: { routesData: IMenuProps[] }) => {
         {...layout}
       >
         {useMemo(() => {
-          if (showRoutesTab && Object.keys(menusTitle).length > 0) {
+          if (!layout.pure && Object.keys(menusTitle).length > 0) {
             return <RoutesTab menusTitle={menusTitle} />;
           }
           return;
-        }, [showRoutesTab, menusTitle])}
+        }, [layout.pure, menusTitle])}
         <Outlet />
       </ProLayout>
       {process.env.NODE_ENV === 'development' && (

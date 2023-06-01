@@ -76,21 +76,11 @@ aside {
 
 body {
   background: #f4f4f8;
-  font-family: "PingFang SC", Helvetica, Arial, "Lucida Grande", Verdana,
-    "Microsoft Yahei", STXihei, Sans-serif;
+  font-family: 'PingFang SC', Helvetica, Arial, 'Lucida Grande', Verdana,
+    'Microsoft Yahei', STXihei, Sans-serif;
   -webkit-user-select: none;
   user-select: text;
   margin: 0 auto;
-}
-
-/* 清除浮动 */
-.clearfix::before,
-.clearfix::after {
-  content: "";
-  display: table;
-}
-.clearfix::after {
-  clear: both;
 }
 
 textarea,
@@ -109,13 +99,17 @@ img {
   border: 0;
 }
 
+a:-webkit-any-link {
+  text-decoration: none;
+}
+
 li {
   list-style: none;
 }
 
 q:before,
 q:after {
-  content: "";
+  content: '';
 }
 
 h1,
@@ -151,4 +145,14 @@ input {
 
 input:password {
   ime-mode: disabled;
+}
+
+/* 清除浮动 */
+.clearfix::before,
+.clearfix::after {
+  content: '';
+  display: table;
+}
+.clearfix::after {
+  clear: both;
 }
