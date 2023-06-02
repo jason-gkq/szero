@@ -151,7 +151,7 @@ export default observer(({ routesData }: { routesData: IMenuProps[] }) => {
         locale='zh-CN'
         location={{ pathname: pathname }}
         menuDataRender={() => menus}
-        menuItemRender={(item: any, dom) => (
+        menuItemRender={(item: any, dom: any) => (
           <a
             onClick={() => {
               if (item.redirect && item.redirect.startsWith('/')) {
@@ -181,7 +181,7 @@ export default observer(({ routesData }: { routesData: IMenuProps[] }) => {
           enableDarkTheme
           getContainer={() => document.getElementById(`${appName}-pro-layout`)}
           settings={settings}
-          onSettingChange={(changeSetting) => {
+          onSettingChange={(changeSetting: any) => {
             setSetting(changeSetting);
           }}
           disableUrlParams

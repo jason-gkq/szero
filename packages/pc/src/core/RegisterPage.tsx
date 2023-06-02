@@ -96,7 +96,11 @@ export default (pageConfig: IPageConfig) => (WrappedComponent: any) => {
             </PageContainer>
           );
         default:
-          return <Result {...(errorInfo || {})} />;
+          return (
+            <PageContainer pageHeaderRender={false}>
+              <Result {...(errorInfo || {})} />
+            </PageContainer>
+          );
       }
     }, [pageStore.pageStatus]);
 
