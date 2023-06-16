@@ -1,5 +1,9 @@
 # `pc`
 
+npm publish --tag beta
+
+1.1.0-beta.2
+
 > TODO: description
 
 ## Usage

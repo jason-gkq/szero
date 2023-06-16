@@ -86,7 +86,10 @@ const getMenusTitle = (routes: MenuDataItem[], parentPath: string) => {
   return pathTitle;
 };
 
-const { appName } = useEnv();
+const {
+  appName,
+  route: { showRoutesTab },
+} = useEnv();
 
 export default observer(({ routesData }: { routesData: IMenuProps[] }) => {
   const layout = toJS(rootStore.appStore.layout);
@@ -100,9 +103,9 @@ export default observer(({ routesData }: { routesData: IMenuProps[] }) => {
     fixSiderbar: true,
     fixedHeader: true,
     navTheme: 'light',
-    layout: 'mix',
-    contentWidth: 'Fluid',
-    splitMenus: true,
+    // layout: 'mix',
+    // contentWidth: 'Fluid',
+    // splitMenus: true,
   });
   useEffect(() => {
     const routeToMenu: MenuDataItem[] = routesData.reduce(
@@ -168,7 +171,11 @@ export default observer(({ routesData }: { routesData: IMenuProps[] }) => {
         {...layout}
       >
         {useMemo(() => {
-          if (!layout.pure && Object.keys(menusTitle).length > 0) {
+          if (
+            !layout.pure &&
+            showRoutesTab &&
+            Object.keys(menusTitle).length > 0
+          ) {
             return <RoutesTab menusTitle={menusTitle} />;
           }
           return;

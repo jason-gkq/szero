@@ -173,25 +173,27 @@ const rootPath = env.appName ? `/${env.appName}` : '/';
 const localRoutes: RouteProps[] = cloneDeep(env.routes);
 
 export default ({ routes }: IProps) => {
-  const allRoutes = [
-    {
-      path: rootPath,
-      children: cloneDeep(routes).concat(localRoutes),
-    },
-  ];
+  let allRoutes;
+  if (routes && routes.length > 0) {
+    allRoutes = cloneDeep(routes);
+    const tempIndex = allRoutes.findIndex((i) => i.path == env.appName);
+    if (tempIndex >= 0) {
+      allRoutes[tempIndex]['children'] =
+        allRoutes[tempIndex]['children'].concat(localRoutes);
+    }
+  } else {
+    allRoutes = [
+      {
+        path: env.appName,
+        children: localRoutes,
+      },
+    ];
+  }
+
   const routesData = treeIterator(allRoutes);
-  const { children } = routesData.find((i) => i.path == rootPath);
+  const { children } = routesData.find((i) => i.path == env.appName);
   const treeRoutes = getRouters(children, false);
   const treeNoRoutes = getRouters(children, true);
-
-  // const [treeRoutes, setTreeRoutes] = useState<any>();
-  // const [treeNoRoutes, setTreeNoRoutes] = useState<any>();
-  // useEffect(() => {
-  //   const treeData = treeIterator(cloneDeep(routes).concat(localRoutes));
-  //   const { children } = treeData.find((i) => i.path == rootPath);
-  //   setTreeRoutes(getRouters(children, false));
-  //   setTreeNoRoutes(getRouters(children, true));
-  // }, [JSON.stringify(routes)]);
 
   return (
     <Routes>
