@@ -74,7 +74,7 @@ const getMenusTitle = (routes: MenuDataItem[], parentPath: string) => {
   const pathTitle: Record<string, string> = {};
   for (let i = 0; i < routes.length; i++) {
     const { children, path, name } = routes[i];
-    const newPath = path.startsWith('/')
+    const newPath = path?.startsWith('/')
       ? `${parentPath}${path}`
       : `${parentPath}/${path}`;
     if (children && children.length > 0) {

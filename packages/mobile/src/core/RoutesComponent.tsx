@@ -45,7 +45,6 @@ const getPageLazyComponent = (
 /**
  * 构建Route树挂载所有路由
  * @param data
- * @param isLayout
  * @param prefix
  * @returns
  */
@@ -58,21 +57,11 @@ const getRouters = (data: IRouteProps[], prefix = '') => {
     if (children && Array.isArray(children) && children.length > 0) {
       const childrenRoutes: any[] = getRouters(children, newprefix);
       if (childrenRoutes.length > 0) {
-        const Element = component && getPageLazyComponent(component.trim());
-        if (Element) {
-          res.push(
-            <Route key={`${path}/*`} path={`${path}/*`}>
-              <Route path='*' element={Element} />
-              {childrenRoutes}
-            </Route>
-          );
-        } else {
-          res.push(
-            <Route path={path} key={`${path}${i}`}>
-              {childrenRoutes}
-            </Route>
-          );
-        }
+        res.push(
+          <Route path={path} key={`${path}${i}`}>
+            {childrenRoutes}
+          </Route>
+        );
       }
     } else {
       const newElement = component ? component : newprefix;

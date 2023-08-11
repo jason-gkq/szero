@@ -1,9 +1,9 @@
+/**
+ * 存储全局环境变量，可在项目启动时候初始化
+ */
+
 class applicationEnv {
   [key: string]: any;
-
-  constructor() {
-    Object.assign(this, process.env.productConfig);
-  }
 
   setEnv = (data: any) => {
     Object.assign(this, data);

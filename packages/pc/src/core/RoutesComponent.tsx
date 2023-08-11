@@ -3,12 +3,11 @@ import type { RouteProps } from 'react-router-dom';
 import { Routes, Route } from 'react-router-dom';
 import { Spin, Result, Button } from 'antd';
 import { PageContainer } from '@ant-design/pro-components';
-import { useEnv } from '@szero/hooks';
-import { cloneDeep } from '@szero/utils';
 
 export interface IRouteProps {
   children?: IRouteProps[];
   path: string;
+  isRouteRoot?: boolean;
   isNoneLayout?: boolean;
   component?: string | null;
   layout?: string | null;
@@ -16,18 +15,18 @@ export interface IRouteProps {
 }
 
 const Layout = React.lazy(
-  () => import(/* webpackChunkName: 'app' */ '../components/layouts/proLayout')
+  () => import(/* webpackChunkName: 'app' */ '../components/layouts/proLayout'),
 );
 
 const getPageLazyComponent = (
-  component: string
+  component: string,
 ): React.ReactElement | undefined => {
   if (!component || component === 'Layout') {
     return;
   }
 
   const Element: any = React.lazy(
-    () => import(/* webpackMode: "lazy" */ `@/src/pages/${component}`)
+    () => import(/* webpackMode: "lazy" */ `@/src/pages/${component}`),
   );
 
   if (!Element) {
@@ -64,12 +63,25 @@ const getRouters = (
   data: IRouteProps[],
   isLayout = false,
   prefix = '',
-  pIsNoneLayout?: boolean | undefined
+  pIsNoneLayout?: boolean | undefined,
 ) => {
   const res: any[] = [];
+  if (!data || data.length == 0) {
+    return res;
+  }
   for (let i = 0; i < data.length; i++) {
-    const { children, path, isNoneLayout, component, layout } = data[i];
+    const { children, path, isNoneLayout, isPlugin, component, layout } =
+      data[i];
     if (path.startsWith('http')) {
+      continue;
+    }
+    if (!!isPlugin) {
+      const Element = component && getPageLazyComponent(component.trim());
+      if (Object.is(isLayout, !!isNoneLayout)) {
+        res.push(
+          <Route path={`${path}/*`} key={`${path}${i}`} element={Element} />,
+        );
+      }
       continue;
     }
     // 获取树形结构的path路径，用于获取component
@@ -84,23 +96,28 @@ const getRouters = (
         children,
         isLayout,
         newprefix,
-        newPIsLayout
+        newPIsLayout,
       );
       const Layout = layout && getPageLazyComponent(layout.trim());
       if (childrenRoutes.length > 0) {
-        const Element = component && getPageLazyComponent(component.trim());
-        if (Element) {
+        if (i == 0) {
           res.push(
-            <Route key={`${path}/*`} path={`${path}/*`} element={Layout}>
-              <Route path='*' element={Element} />
+            <Route
+              index
+              key={`${path}${i}index`}
+              element={<Routes>{childrenRoutes}</Routes>}
+            />,
+          );
+          res.push(
+            <Route path={path} key={`${path}${i}`} element={Layout}>
               {childrenRoutes}
-            </Route>
+            </Route>,
           );
         } else {
           res.push(
             <Route path={path} key={`${path}${i}`} element={Layout}>
               {childrenRoutes}
-            </Route>
+            </Route>,
           );
         }
       }
@@ -122,7 +139,18 @@ const getRouters = (
         const newElement = component ? component : newprefix;
         const Element = getPageLazyComponent(newElement && newElement.trim());
         if (Element) {
-          res.push(<Route path={path} key={`${path}${i}`} element={Element} />);
+          if (i == 0) {
+            res.push(
+              <Route index key={`${path}${i}index`} element={Element} />,
+            );
+            res.push(
+              <Route path={path} key={`${path}${i}`} element={Element} />,
+            );
+          } else {
+            res.push(
+              <Route path={path} key={`${path}${i}`} element={Element} />,
+            );
+          }
         }
       }
     }
@@ -168,32 +196,12 @@ type IProps = {
   routes: RouteProps[];
 };
 
-const env = useEnv();
-const rootPath = env.appName ? `/${env.appName}` : '/';
-const localRoutes: RouteProps[] = cloneDeep(env.routes);
-
 export default ({ routes }: IProps) => {
-  let allRoutes;
-  if (routes && routes.length > 0) {
-    allRoutes = cloneDeep(routes);
-    const tempIndex = allRoutes.findIndex((i) => i.path == env.appName);
-    if (tempIndex >= 0) {
-      allRoutes[tempIndex]['children'] =
-        allRoutes[tempIndex]['children'].concat(localRoutes);
-    }
-  } else {
-    allRoutes = [
-      {
-        path: env.appName,
-        children: localRoutes,
-      },
-    ];
-  }
-
-  const routesData = treeIterator(allRoutes);
-  const { children } = routesData.find((i) => i.path == env.appName);
-  const treeRoutes = getRouters(children, false);
-  const treeNoRoutes = getRouters(children, true);
+  const routesData = treeIterator(routes) || [];
+  const { path, children } = routesData.find((i) => !!i.isRouteRoot) || {};
+  const rootPath = path && path.startsWith('/') ? path : `/${path}`;
+  const treeRoutes = children ? getRouters(children, false) : [];
+  const treeNoRoutes = children ? getRouters(children, true) : [];
 
   return (
     <Routes>

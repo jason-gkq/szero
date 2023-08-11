@@ -1,16 +1,16 @@
 function getTag<T>(value?: T): string {
   if (value == null) {
-    return value === undefined ? "[object Undefined]" : "[object Null]";
+    return value === undefined ? '[object Undefined]' : '[object Null]';
   }
   return Object.prototype.toString.call(value);
 }
 
 function isObjectLike<T>(value?: T): boolean {
-  return typeof value === "object" && value !== null;
+  return typeof value === 'object' && value !== null;
 }
 
 function isPlainObject<T>(value?: T): boolean {
-  if (!isObjectLike(value) || getTag(value) != "[object Object]") {
+  if (!isObjectLike(value) || getTag(value) != '[object Object]') {
     return false;
   }
   if (Object.getPrototypeOf(value) === null) {
@@ -23,9 +23,24 @@ function isPlainObject<T>(value?: T): boolean {
   return Object.getPrototypeOf(value) === proto;
 }
 
-const environment = {
-  prefixUnable: ["token"],
-  prefix: (process as any).env.productConfig.cachePrefix,
+type IEnvironment = {
+  prefixUnable: string[];
+  prefix: string;
+};
+/**
+ * prefix local和session缓存统一前缀，对cookie不生效；
+ * prefixUnable 不需要前缀的的变量，默认统一添加前缀；
+ */
+const environment: IEnvironment = {
+  prefixUnable: [],
+  prefix: '',
+};
+
+export const setCacheEnvironment = (props: {
+  prefixUnable?: string[];
+  prefix?: string;
+}) => {
+  Object.assign(environment, props || {});
 };
 
 class NameStorage {
@@ -107,7 +122,7 @@ export class AbstractStorage {
   constructor(type: string) {
     this.checkStorage();
     if (this.hasStorage[type]) {
-      this.proxy = type === "local" ? localStorage : sessionStorage;
+      this.proxy = type === 'local' ? localStorage : sessionStorage;
     } else {
       this.proxy = new NameStorage(type);
     }
@@ -128,13 +143,13 @@ export class AbstractStorage {
 
   checkStorage() {
     try {
-      sessionStorage.setItem("privateTest", "1");
+      sessionStorage.setItem('privateTest', '1');
     } catch (e) {
       this.hasStorage.session = 0;
     }
 
     try {
-      localStorage.setItem("privateTest", "1");
+      localStorage.setItem('privateTest', '1');
     } catch (e) {
       this.hasStorage.local = 0;
     }
@@ -212,8 +227,8 @@ export class AbstractStorage {
    * @example
    * local.removeHttp('mycar/getMyDefaultCar')
    */
-  removeHttp(url = "") {
-    url = environment.prefix + "http:" + url;
+  removeHttp(url = '') {
+    url = environment.prefix + 'http:' + url;
     for (const i in this.getForObject()) {
       if (i.startsWith(url)) {
         this.proxy.removeItem(i);
@@ -242,7 +257,7 @@ export class AbstractStorage {
             break;
           case 1014:
             // Firefox
-            if (e.name === "NS_ERROR_DOM_QUOTA_REACHED") {
+            if (e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
               quotaExceeded = true;
             }
             break;
@@ -256,22 +271,22 @@ export class AbstractStorage {
   }
 
   setExpires(time: string) {
-    const str = time + "";
+    const str = time + '';
     let count = 0;
 
     str.replace(/(\d+)([DHMS])/g, function (match, $1, $2) {
       $1 = parseInt($1, 10);
       switch ($2) {
-        case "D":
+        case 'D':
           count += $1 * 24 * 3600;
           break;
-        case "H":
+        case 'H':
           count += $1 * 3600;
           break;
-        case "M":
+        case 'M':
           count += $1 * 60;
           break;
-        case "S":
+        case 'S':
           count += $1;
           break;
       }

@@ -1,3 +1,4 @@
+import './initApp';
 import React, { useLayoutEffect, useMemo } from 'react';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
@@ -14,16 +15,12 @@ import zhCN from 'antd/locale/zh_CN';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import { pageStore, rootStore } from '../store';
-
 import RoutesComponent from './RoutesComponent';
 import useGlobalError from './useGlobalError';
-
 import { ModalContextComponent } from '../components/basic/NiceModal';
-
 import '../style/index.less';
 
 dayjs.locale('zh-cn');
-
 const { pathname, state, search } = history.location;
 const route = pathname;
 const params = paramToObject(search, state);

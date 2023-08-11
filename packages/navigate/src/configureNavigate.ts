@@ -1,19 +1,12 @@
-import { history } from './history';
-import { useEnv } from '@szero/hooks';
-
-const {
-  layout: { index },
-  appName,
-} = useEnv();
-
-class configureNavigate {
+export class ConfigureNavigate {
   indexPage: string;
+  history: any;
+  rootRoute?: string;
 
-  constructor() {
-    this.indexPage = appName
-      ? `/${appName}${index || '/index'}`
-      : `${index || '/index'}`;
-
+  constructor(history: any, rootRoute?: string, index?: string) {
+    this.history = history;
+    this.rootRoute = rootRoute;
+    this.indexPage = this.getUrl(index || '/index');
     this.initHistory(history.location);
   }
 
@@ -28,12 +21,21 @@ class configureNavigate {
     let { pathname } = location;
     if (
       pathname === '/' ||
-      (appName && (pathname === `/${appName}` || pathname === `/${appName}/`))
+      (this.rootRoute &&
+        (pathname === `/${this.rootRoute}` ||
+          pathname === `/${this.rootRoute}/`))
     ) {
       pathname = this.indexPage;
-      history.push(pathname);
+      this.history.push(pathname);
+      return;
     }
-    return;
+  };
+
+  getUrl = (url: string) => {
+    if (this.rootRoute && !String(url).startsWith(`/${this.rootRoute}`)) {
+      url = `/${this.rootRoute}${url}`;
+    }
+    return url;
   };
 
   goTo = (
@@ -43,9 +45,7 @@ class configureNavigate {
   ) => {
     url = url || this.indexPage;
     if (String(url).startsWith(`/`)) {
-      if (appName && !String(url).startsWith(`/${appName}`)) {
-        url = `/${appName}${url}`;
-      }
+      url = this.getUrl(url);
       if (options && options.target) {
         window.open(
           `${window.location.protocol}//${window.location.host}${url}`,
@@ -54,7 +54,7 @@ class configureNavigate {
         );
         return;
       }
-      history.push(url, payload);
+      this.history.push(url, payload);
       return;
     }
     if (String(url).startsWith('https:') || String(url).startsWith('http:')) {
@@ -68,20 +68,18 @@ class configureNavigate {
 
   goBack = (delta?: string | number) => {
     if (delta) {
-      history.go(delta);
+      this.history.go(delta);
       return;
     }
-    history.back();
+    this.history.back();
     return;
   };
 
   redirect = (url?: string, payload?: Record<string, any> | null) => {
     url = url || this.indexPage;
     if (String(url).startsWith(`/`)) {
-      if (appName && !String(url).startsWith(`/${appName}`)) {
-        url = `/${appName}${url}`;
-      }
-      history.replace(url, payload);
+      url = this.getUrl(url);
+      this.history.replace(url, payload);
       return;
     }
 
@@ -103,12 +101,8 @@ class configureNavigate {
       window.location.replace(url || window.location.href);
       return;
     }
-    if (url && appName && !String(url).startsWith(`/${appName}`)) {
-      url = `/${appName}${url}`;
-    }
+    url = this.getUrl(url);
     window.location.replace(url || window.location.href);
     return;
   };
 }
-
-export default new configureNavigate();

@@ -1,3 +1,4 @@
+import './initApp';
 import React, { useLayoutEffect, useMemo } from 'react';
 import { ConfigProvider, Spin, Result, App } from 'antd';
 import type { ResultProps } from 'antd';
@@ -88,7 +89,7 @@ export default (appStore: any) => (WrappedComponent: any) => {
             );
         }
       },
-      [appStore.appStatus, JSON.stringify(routes)]
+      [appStore.appStatus, JSON.stringify(routes)],
     );
 
     return (

@@ -1,3 +1,4 @@
+import './initApp';
 import React, { useMemo, useLayoutEffect } from 'react';
 import {
   SafeArea,
@@ -10,7 +11,6 @@ import { observer } from 'mobx-react-lite';
 import { runInAction, toJS } from 'mobx';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { history } from '@szero/navigate';
-import { useEnv } from '@szero/hooks';
 import { paramToObject } from '@szero/utils';
 import RoutesComponent from './RoutesComponent';
 import useGlobalError from './useGlobalError';
@@ -18,7 +18,6 @@ import zhCN from 'antd-mobile/es/locales/zh-CN';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import '../style/index.less';
-dayjs.locale('zh-cn');
 import { pageStore, rootStore } from '../store';
 import NiceNavBar from './NiceNavBar';
 import NiceTabBar from './NiceTabBar';
@@ -30,10 +29,9 @@ export interface IAppStore {
   onHide?(): void;
 }
 
-const { appName } = useEnv();
-
+dayjs.locale('zh-cn');
 const { pathname, state, search } = history.location;
-const route = appName ? String(pathname).replace(`/${appName}`, '') : pathname;
+const route = pathname;
 const params = paramToObject(search, state);
 
 const createApp = (appStore: any) => {
