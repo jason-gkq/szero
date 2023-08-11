@@ -1,6 +1,6 @@
 {
   "name": "@szero/mobile",
-  "version": "1.3.5",
+  "version": "2.0.0-alpha.0",
   "description": "szero-mobile",
   "keywords": [
     "szero-mobile"
@@ -91,11 +91,11 @@
     "rollup-plugin-typescript2": "^0.34.1"
   },
   "dependencies": {
-    "@szero/cache": "1.5.0",
-    "@szero/hooks": "1.5.0",
-    "@szero/navigate": "1.5.0",
-    "@szero/net": "1.5.1",
-    "@szero/utils": "1.5.1",
+    "@szero/cache": "^2.0.0-alpha.0",
+    "@szero/hooks": "^2.0.0-alpha.0",
+    "@szero/navigate": "^2.0.0-alpha.0",
+    "@szero/net": "^2.0.0-alpha.0",
+    "@szero/utils": "^2.0.0-alpha.0",
     "@types/node": "20.1.4",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
