@@ -59,7 +59,7 @@ const getPageLazyComponent = (
  * @param prefix
  * @returns
  */
-const getRouters = (
+export const getRouters = (
   data: IRouteProps[],
   isLayout = false,
   prefix = '',
