@@ -15,18 +15,18 @@ export interface IRouteProps {
 }
 
 const Layout = React.lazy(
-  () => import(/* webpackChunkName: 'app' */ '../components/layouts/proLayout'),
+  () => import(/* webpackChunkName: 'app' */ '../components/layouts/proLayout')
 );
 
 const getPageLazyComponent = (
-  component: string,
+  component: string
 ): React.ReactElement | undefined => {
   if (!component || component === 'Layout') {
     return;
   }
 
   const Element: any = React.lazy(
-    () => import(/* webpackMode: "lazy" */ `@/src/pages/${component}`),
+    () => import(/* webpackMode: "lazy" */ `@/src/pages/${component}`)
   );
 
   if (!Element) {
@@ -63,7 +63,7 @@ const getRouters = (
   data: IRouteProps[],
   isLayout = false,
   prefix = '',
-  pIsNoneLayout?: boolean | undefined,
+  pIsNoneLayout?: boolean | undefined
 ) => {
   const res: any[] = [];
   if (!data || data.length == 0) {
@@ -79,7 +79,7 @@ const getRouters = (
       const Element = component && getPageLazyComponent(component.trim());
       if (Object.is(isLayout, !!isNoneLayout)) {
         res.push(
-          <Route path={`${path}/*`} key={`${path}${i}`} element={Element} />,
+          <Route path={`${path}/*`} key={`${path}${i}`} element={Element} />
         );
       }
       continue;
@@ -96,7 +96,7 @@ const getRouters = (
         children,
         isLayout,
         newprefix,
-        newPIsLayout,
+        newPIsLayout
       );
       const Layout = layout && getPageLazyComponent(layout.trim());
       if (childrenRoutes.length > 0) {
@@ -106,18 +106,18 @@ const getRouters = (
               index
               key={`${path}${i}index`}
               element={<Routes>{childrenRoutes}</Routes>}
-            />,
+            />
           );
           res.push(
             <Route path={path} key={`${path}${i}`} element={Layout}>
               {childrenRoutes}
-            </Route>,
+            </Route>
           );
         } else {
           res.push(
             <Route path={path} key={`${path}${i}`} element={Layout}>
               {childrenRoutes}
-            </Route>,
+            </Route>
           );
         }
       }
@@ -141,14 +141,14 @@ const getRouters = (
         if (Element) {
           if (i == 0) {
             res.push(
-              <Route index key={`${path}${i}index`} element={Element} />,
+              <Route index key={`${path}${i}index`} element={Element} />
             );
             res.push(
-              <Route path={path} key={`${path}${i}`} element={Element} />,
+              <Route path={path} key={`${path}${i}`} element={Element} />
             );
           } else {
             res.push(
-              <Route path={path} key={`${path}${i}`} element={Element} />,
+              <Route path={path} key={`${path}${i}`} element={Element} />
             );
           }
         }
@@ -197,6 +197,42 @@ type IProps = {
 };
 
 export default ({ routes }: IProps) => {
+  if (!routes || routes.length == 0) {
+    return (
+      <Routes>
+        <Route
+          path='*'
+          key='*'
+          element={
+            <React.Suspense fallback={<Spin />}>
+              <PageContainer pageHeaderRender={false}>
+                <Result
+                  status={404}
+                  title='页面不存在'
+                  subTitle='您好，您访问的页面不存在，请刷新重试.'
+                  extra={
+                    <Button
+                      type='primary'
+                      danger
+                      onClick={() => {
+                        window.location.reload();
+                      }}
+                    >
+                      刷新页面
+                    </Button>
+                  }
+                  style={{
+                    height: '100%',
+                    background: '#fff',
+                  }}
+                />
+              </PageContainer>
+            </React.Suspense>
+          }
+        />
+      </Routes>
+    );
+  }
   const routesData = treeIterator(routes) || [];
   const { path, children } = routesData.find((i) => !!i.isRouteRoot) || {};
   const rootPath = path && path.startsWith('/') ? path : `/${path}`;

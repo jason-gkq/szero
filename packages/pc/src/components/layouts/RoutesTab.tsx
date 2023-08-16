@@ -9,7 +9,7 @@ import { DownOutlined } from '@ant-design/icons';
 
 const { appName, layout, route = {} } = useEnv();
 const { routesHistoryLength } = route || {};
-let { index: indexPage } = layout;
+let { index: indexPage } = layout || {};
 
 export default ({ menusTitle }: { menusTitle: Record<string, string> }) => {
   const [activeKey, setActiveKey] = useState(''); // defaultPanes[0].key
@@ -87,7 +87,7 @@ export default ({ menusTitle }: { menusTitle: Record<string, string> }) => {
 
   const closeAll = useCallback(() => {
     const { pathname } = location;
-    if (!indexPage.startsWith(`/${appName}`)) {
+    if (indexPage && !indexPage.startsWith(`/${appName}`)) {
       indexPage = `/${appName}${indexPage}`;
     }
     if (pathname == indexPage) {

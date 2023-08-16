@@ -7,26 +7,17 @@ export class ConfigureNavigate {
     this.history = history;
     this.rootRoute = rootRoute;
     this.indexPage = this.getUrl(index || '/index');
-    this.initHistory(history.location);
   }
 
-  private initHistory = (location: {
-    pathname: string;
-    search: any;
-    state: any;
-  }) => {
-    if (!location) {
-      return;
-    }
-    let { pathname } = location;
+  popIndex = () => {
+    const { pathname } = this.history.location;
     if (
       pathname === '/' ||
       (this.rootRoute &&
         (pathname === `/${this.rootRoute}` ||
           pathname === `/${this.rootRoute}/`))
     ) {
-      pathname = this.indexPage;
-      this.history.push(pathname);
+      this.history.push(this.indexPage);
       return;
     }
   };

@@ -13,14 +13,16 @@ const {
   tokenName,
   cachePrefix,
   route: configRoute,
-  layout: configLayout,
+  layout: configLayout = {},
 } = env;
 
-initNavigate({
+const { navigate } = initNavigate({
   routeType: configRoute?.type,
   rootRoute: appName,
-  index: configLayout.index,
+  index: configLayout?.index,
 });
+
+navigate.popIndex();
 
 const { setTokenName } = useToken();
 if (tokenName) {

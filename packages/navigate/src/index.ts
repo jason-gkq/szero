@@ -11,17 +11,23 @@ export type IRouteEnvironment = {
   routeType: 'Browser' | 'Hash';
   rootRoute?: string | undefined;
   index?: string | undefined;
+  history?: any;
 };
 
 let navigate: any;
 let history: any;
 
 export const initNavigate = (props: IRouteEnvironment) => {
-  if (props.routeType == 'Hash') {
-    history = createHashHistory({ window });
+  if (props.history) {
+    history = props.history;
   } else {
-    history = createBrowserHistory({ window });
+    if (props.routeType == 'Hash') {
+      history = createHashHistory({ window });
+    } else {
+      history = createBrowserHistory({ window });
+    }
   }
+
   navigate = new ConfigureNavigate(history, props.rootRoute, props.index);
   return { history, navigate };
 };
