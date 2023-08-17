@@ -8,6 +8,7 @@ export interface IRouteProps {
   children?: IRouteProps[];
   path: string;
   isRouteRoot?: boolean;
+  isPlugin?: boolean;
   isNoneLayout?: boolean;
   component?: string | null;
   layout?: string | null;
