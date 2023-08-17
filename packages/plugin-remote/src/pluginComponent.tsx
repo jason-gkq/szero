@@ -16,6 +16,7 @@ type IOnMountProps = {
   mountProps?: Record<string, any>;
 };
 
+const mountCache = new Map();
 export const onMount = async (props: IOnMountProps) => {
   const {
     system,
@@ -25,23 +26,28 @@ export const onMount = async (props: IOnMountProps) => {
   if (!system || !url || !scope || !module) {
     return Promise.reject('No system specified');
   }
-  let remoteUrl = '';
 
+  let remoteUrl = '';
   if (typeof url === 'string') {
     remoteUrl = url;
   } else {
     remoteUrl = await url();
   }
+  const key = `${remoteUrl}-${scope}-${module}`;
+  if (mountCache.has(key)) {
+    return Promise.resolve();
+  }
 
   return getModule({
     remoteContainer: {
       global: scope,
-      url: `${remoteUrl}/${remoteEntryFileName}`, //'http://localhost:9000/remoteEntry.js',
+      url: `${remoteUrl}/${remoteEntryFileName}`,
     },
     modulePath:
       module === '.' || module.startsWith('./') ? module : `./${module}`,
     exportName: 'onMount',
   }).then((onMount) => {
+    mountCache.set(key, true);
     if (onMount) {
       return onMount(mountProps);
     } else {
@@ -61,7 +67,6 @@ export const PluginComponent = (props: IPluginProps) => {
   if (!system || !url || !scope || !module) {
     return <h2>No system specified</h2>;
   }
-
   const Component = React.lazy(() => importRemote({ url, scope, module }));
 
   return (
