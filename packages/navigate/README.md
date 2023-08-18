@@ -1,11 +1,11 @@
 # `navigate`
 
-> TODO: description
+> TODO: description1
 
 ## Usage
 
 ```
 const navigate = require('navigate');
 
-// TODO: DEMONSTRATE API 1
+// TODO: DEMONSTRATE API
 ```

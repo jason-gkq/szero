@@ -1,11 +1,11 @@
 # `cache`
 
-> TODO: description
+> TODO: description1
 
 ## Usage
 
 ```
 const cache = require('cache');
 
-// TODO: DEMONSTRATE API 1
+// TODO: DEMONSTRATE API
 ```

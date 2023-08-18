@@ -1,11 +1,11 @@
 # `hooks`
 
-> TODO: description
+> TODO: description1
 
 ## Usage
 
 ```
 const hooks = require('hooks');
 
-// TODO: DEMONSTRATE API 1
+// TODO: DEMONSTRATE API
 ```
