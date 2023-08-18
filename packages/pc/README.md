@@ -13,3 +13,5 @@ const pc = require('pc');
 
 // TODO: DEMONSTRATE API
 ```
+
+lerna exec --scope <package1> --ignore <package2> -- <command>

@@ -60,6 +60,9 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
+  "peerDependencies": {
+    "axios": "^1.3.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.21.0",
     "@babel/core": "^7.21.4",
@@ -74,7 +77,6 @@
     "@rollup/plugin-replace": "^5.0.2",
     "@rollup/plugin-terser": "^0.4.1",
     "@types/node": "^18.15.11",
-    "axios": "^1.3.4",
     "core-js": "^3.30.1",
     "cross-env": "^7.0.3",
     "rollup": "^3.20.2",
@@ -84,6 +86,7 @@
     "typescript": "^5.0.3"
   },
   "dependencies": {
-    "@szero/utils": "^2.0.0"
+    "@szero/utils": "^2.0.0",
+    "axios": "^1.4.0"
   }
 }
