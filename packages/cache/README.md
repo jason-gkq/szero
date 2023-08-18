@@ -7,5 +7,5 @@
 ```
 const cache = require('cache');
 
-// TODO: DEMONSTRATE API
+// TODO: DEMONSTRATE API 1
 ```

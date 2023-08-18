@@ -7,5 +7,5 @@
 ```
 const hooks = require('hooks');
 
-// TODO: DEMONSTRATE API
+// TODO: DEMONSTRATE API 1
 ```

@@ -7,5 +7,5 @@
 ```
 const navigate = require('navigate');
 
-// TODO: DEMONSTRATE API
+// TODO: DEMONSTRATE API 1
 ```
