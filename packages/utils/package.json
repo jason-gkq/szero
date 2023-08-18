@@ -1,6 +1,6 @@
 {
   "name": "@szero/utils",
-  "version": "2.0.0-alpha.0",
+  "version": "2.0.0",
   "description": "szero 工具包",
   "keywords": [
     "szero-utils"

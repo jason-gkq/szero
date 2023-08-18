@@ -1,6 +1,6 @@
 {
   "name": "@szero/plugin-remote",
-  "version": "1.0.1-alpha.1",
+  "version": "1.0.1",
   "description": "szero动态加载子项目",
   "keywords": [
     "plugin-remote"
