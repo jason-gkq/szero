@@ -33,7 +33,7 @@ export default {
       return;
     }
   },
-  external: ['react', 'react-dom', '@szero/cache'],
+  external: ['react', '@szero/cache'],
   plugins: [
     clear({
       targets: ['dist', 'es', 'lib'],
