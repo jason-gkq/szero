@@ -1,6 +1,6 @@
 {
   "name": "@szero/mobile",
-  "version": "2.0.1",
+  "version": "2.0.2-alpha.0",
   "description": "szero-mobile",
   "keywords": [
     "szero-mobile"
@@ -92,8 +92,8 @@
   },
   "dependencies": {
     "@szero/cache": "^2.0.0",
-    "@szero/hooks": "^2.0.0",
-    "@szero/navigate": "^2.0.0",
+    "@szero/hooks": "^2.0.1-alpha.0",
+    "@szero/navigate": "^2.0.1-alpha.0",
     "@szero/net": "^2.0.0",
     "@szero/utils": "^2.0.0",
     "@types/node": "20.1.4",

@@ -1,6 +1,6 @@
 {
   "name": "@szero/pc",
-  "version": "2.0.1",
+  "version": "2.0.2-alpha.0",
   "description": "szero-pc",
   "keywords": [
     "szero-pc"
@@ -92,8 +92,8 @@
     "@ant-design/icons": "~5.0.1",
     "@ant-design/pro-components": "~2.4.16",
     "@szero/cache": "^2.0.0",
-    "@szero/hooks": "^2.0.0",
-    "@szero/navigate": "^2.0.0",
+    "@szero/hooks": "^2.0.1-alpha.0",
+    "@szero/navigate": "^2.0.1-alpha.0",
     "@szero/net": "^2.0.0",
     "@szero/utils": "^2.0.0",
     "@types/node": "^20.1.4",
