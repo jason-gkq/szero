@@ -1,6 +1,6 @@
 {
   "name": "@szero/navigate",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0",
   "description": "路由管理",
   "keywords": [
     "szero-navigate"
@@ -61,7 +61,7 @@
     "typescript": "^5.0.3"
   },
   "dependencies": {
-    "@szero/hooks": "^2.0.0-alpha.0",
+    "@szero/hooks": "^2.0.0",
     "history": "^5.3.0"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@szero/cache",
-  "version": "2.0.0-alpha.0",
+  "version": "2.0.0",
   "description": "缓存包处理",
   "keywords": [
     "szero-cache"
