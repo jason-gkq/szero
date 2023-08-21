@@ -49,7 +49,7 @@ lerna create day utils
 
 -- yes 跳过交互配置
 
-learna create day --yes
+lerna create day --yes
 复制代码
 
 ```
