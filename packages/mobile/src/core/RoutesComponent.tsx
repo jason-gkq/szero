@@ -13,6 +13,8 @@ export interface IRouteProps {
 
 const { appName, routes, route } = useEnv();
 
+console.log(appName, routes, route, '----------->>');
+
 const getPageLazyComponent = (
   component: string
 ): React.ReactElement | undefined => {
