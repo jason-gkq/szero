@@ -4,7 +4,7 @@ import type { ProSettings, MenuDataItem } from '@ant-design/pro-components';
 import { connect } from 'react-redux';
 import { SettingDrawer, ProLayout } from '@ant-design/pro-components';
 import { globalSelectors } from '../../../redux';
-import { useEnv } from '@szero/hooks';
+import { useEnv, useMergeState } from '@szero/hooks';
 import { navigate } from '@szero/navigate';
 import RoutesTab from '../RoutesTab';
 import { CustomBoundary, ZeroIcon } from '../../basic';
@@ -98,8 +98,10 @@ const {
 const Layout = (props: IProps) => {
   const { routesData, layout } = props;
   const location = useLocation();
-  const [menus, setMenus] = useState<MenuDataItem[]>([]);
-  const [menusTitle, setMenusTitle] = useState<Record<string, string>>({});
+  const [state, setState] = useMergeState({
+    menus: [],
+    menusTitle: [],
+  });
   const [pathname, setPathname] = useState(location.pathname);
   const [settings, setSetting] = useState<Partial<ProSettings> | undefined>({
     fixSiderbar: true,
@@ -109,7 +111,7 @@ const Layout = (props: IProps) => {
     contentWidth: 'Fluid',
     splitMenus: true,
   });
-
+  const { menus, menusTitle } = state;
   useEffect(() => {
     const routeToMenu: MenuDataItem[] = routesData.reduce(
       (accumulator, currentValue) => {
@@ -118,8 +120,13 @@ const Layout = (props: IProps) => {
       },
       []
     );
-    setMenus(routeToMenu);
-    setMenusTitle(getMenusTitle(routesData, ''));
+    const menusTitle = getMenusTitle(routesData, '');
+    console.log(menusTitle, '------>');
+
+    setState({
+      menus: routeToMenu,
+      menusTitle,
+    });
   }, [JSON.stringify(routesData)]);
 
   useEffect(() => {
