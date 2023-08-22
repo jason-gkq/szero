@@ -67,7 +67,8 @@ const createPage = (
       const $route = pathname;
       const $payload = paramToObject(search, state);
 
-      const [hasError, setHasError] = useState<ResultProps['status']>(500);
+      const [hasError, setHasError] =
+        useState<ResultProps['status']>(undefined);
       const newCheck = checkPermission
         ? checkPermission.bind(null, permissions)
         : (permissions: string[]) => true;

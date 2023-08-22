@@ -233,28 +233,11 @@ const RoutesComponent = ({ routes }: IProps) => {
       </Routes>
     );
   }
-  const [state, setState] = useMergeState({
-    treeRoutes: [],
-    treeNoRoutes: [],
-    rootPath: '/',
-    routesData: [],
-  });
-  const { treeRoutes, treeNoRoutes, rootPath, routesData } = state;
-  console.log(state, '----------->>>>>>>');
-  useEffect(() => {
-    const routesData = treeIterator(routes) || [];
-    const { path, children } = routesData.find((i) => !!i.isRouteRoot) || {};
-    const rootPath = path && path.startsWith('/') ? path : `/${path}`;
-    const treeRoutes = children ? getRouters(children, false) : [];
-    const treeNoRoutes = children ? getRouters(children, true) : [];
-
-    setState({
-      treeRoutes,
-      treeNoRoutes,
-      rootPath,
-      routesData,
-    });
-  }, [JSON.stringify(routes)]);
+  const routesData = treeIterator(routes) || [];
+  const { path, children } = routesData.find((i) => !!i.isRouteRoot) || {};
+  const rootPath = path && path.startsWith('/') ? path : `/${path}`;
+  const treeRoutes = children ? getRouters(children, false) : [];
+  const treeNoRoutes = children ? getRouters(children, true) : [];
 
   return (
     <Routes>
