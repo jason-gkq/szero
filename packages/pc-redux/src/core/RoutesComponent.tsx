@@ -1,21 +1,21 @@
-import React from 'react';
-import type { RouteProps } from 'react-router-dom';
-import { Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import { Spin, Result, Button } from 'antd';
 import { PageContainer } from '@ant-design/pro-components';
+import type { RouteProps } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
+import { useMergeState } from '@szero/hooks';
 import { isString } from '@szero/utils';
+import { globalSelectors } from '../redux';
 
 export interface IRouteProps {
   children?: IRouteProps[];
   path: string;
-  isRouteRoot?: boolean;
-  isPlugin?: boolean;
   isNoneLayout?: boolean;
   component?: string | null;
   layout?: string | null;
   [key: string]: any;
 }
-
 const Layout = React.lazy(
   () => import(/* webpackChunkName: 'app' */ '../components/layouts/proLayout')
 );
@@ -196,7 +196,7 @@ type IProps = {
   routes: RouteProps[];
 };
 
-export default ({ routes }: IProps) => {
+const RoutesComponent = ({ routes }: IProps) => {
   if (!routes || routes.length == 0) {
     return (
       <Routes>
@@ -233,11 +233,27 @@ export default ({ routes }: IProps) => {
       </Routes>
     );
   }
-  const routesData = treeIterator(routes) || [];
-  const { path, children } = routesData.find((i) => !!i.isRouteRoot) || {};
-  const rootPath = path && path.startsWith('/') ? path : `/${path}`;
-  const treeRoutes = children ? getRouters(children, false) : [];
-  const treeNoRoutes = children ? getRouters(children, true) : [];
+  const [state, setState] = useMergeState({
+    treeRoutes: [],
+    treeNoRoutes: [],
+    rootPath: '/',
+    routesData: [],
+  });
+  const { treeRoutes, treeNoRoutes, rootPath, routesData } = state;
+  useEffect(() => {
+    const routesData = treeIterator(routes) || [];
+    const { path, children } = routesData.find((i) => !!i.isRouteRoot) || {};
+    const rootPath = path && path.startsWith('/') ? path : `/${path}`;
+    const treeRoutes = children ? getRouters(children, false) : [];
+    const treeNoRoutes = children ? getRouters(children, true) : [];
+
+    setState({
+      treeRoutes,
+      treeNoRoutes,
+      rootPath,
+      routesData,
+    });
+  }, [JSON.stringify(routes)]);
 
   return (
     <Routes>
@@ -300,3 +316,8 @@ export default ({ routes }: IProps) => {
     </Routes>
   );
 };
+
+export default connect((state) => {
+  const routes = globalSelectors.app.getRoutes(state);
+  return { routes };
+})(RoutesComponent);

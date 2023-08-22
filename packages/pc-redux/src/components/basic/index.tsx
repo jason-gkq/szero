@@ -10,6 +10,8 @@ export { default as PermissionA } from './Permission/PermissionA';
 export { default as PermissionButton } from './Permission/PermissionButton';
 export { default as ZeroIcon } from './ZeroIcon';
 export { default as CustomBoundary } from './CustomBoundary';
-
-export { useNiceModal, NiceModal } from './NiceModal';
+/**
+ * 组件二次封装
+ */
+export { useNiceModal, NiceModal } from './NiceModalRedex';
 export { default as NiceConfirm } from './NiceConfirm';
