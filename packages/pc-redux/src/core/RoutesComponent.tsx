@@ -240,6 +240,7 @@ const RoutesComponent = ({ routes }: IProps) => {
     routesData: [],
   });
   const { treeRoutes, treeNoRoutes, rootPath, routesData } = state;
+  console.log(state, '----------->>>>>>>');
   useEffect(() => {
     const routesData = treeIterator(routes) || [];
     const { path, children } = routesData.find((i) => !!i.isRouteRoot) || {};
