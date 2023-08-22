@@ -1,6 +1,6 @@
 {
   "name": "@szero/net",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "网络请求封装",
   "keywords": [
     "szero,net"

@@ -1,6 +1,6 @@
 {
   "name": "@szero/pc",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "szero-pc",
   "keywords": [
     "szero-pc"
@@ -104,7 +104,7 @@
     "@szero/cache": "~2.0.0",
     "@szero/hooks": "^2.0.1",
     "@szero/navigate": "^2.0.1",
-    "@szero/net": "^2.0.0",
+    "@szero/net": "^2.0.1",
     "@szero/utils": "^2.0.0",
     "@types/node": "^20.1.4",
     "@types/react": "^18.2.6",
