@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "description": "网络请求封装",
   "keywords": [
-    "szero-net"
+    "szero,net"
   ],
   "author": "guokeqin <guokeqin163@163.com>",
   "homepage": "https://github.com/jason-gkq/szero/tree/main/packages/net#readme",
