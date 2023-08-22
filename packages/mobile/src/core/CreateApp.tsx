@@ -85,7 +85,7 @@ const createApp = (appStore: any) => {
             );
         }
       },
-      [appStore.appStatus, history]
+      [appStore.appStatus]
     );
 
     return (
