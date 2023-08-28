@@ -1,6 +1,6 @@
 import React from 'react';
 import { ErrorBlock, SpinLoading } from 'antd-mobile';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { useEnv } from '@szero/hooks';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
@@ -60,14 +60,18 @@ const getRouters = (data: IRouteProps[], prefix = '') => {
       if (childrenRoutes.length > 0) {
         if (Element) {
           res.push(
-            <Route path={path} key={path}>
-              <Route path='/' element={Element} />
+            <Route path={path} key={path} element={Element}>
+              <Route index key={'index'} element={Element} />
               {childrenRoutes}
             </Route>
           );
         } else {
+          const nextPath = appName
+            ? `/${appName}/${newprefix}/${children[0]['path']}`
+            : `/${newprefix}/${children[0]['path']}`;
           res.push(
             <Route path={path} key={path}>
+              <Route index key='index' element={<Navigate to={nextPath} />} />
               {childrenRoutes}
             </Route>
           );

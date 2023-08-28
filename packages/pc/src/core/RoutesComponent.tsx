@@ -100,82 +100,25 @@ export const getRouters = (
       );
       const Layout = layout && getPageLazyComponent(layout.trim());
       const Element = component && getPageLazyComponent(component.trim());
-
       if (childrenRoutes.length > 0) {
-        if (Layout && Element) {
-          res.push(
-            <Route path={path} key={path} element={Layout}>
-              <Route path='/' element={Element} />
-              {childrenRoutes}
-            </Route>
-          );
-        } else if (!Layout && Element) {
-          res.push(
-            <Route path={path} key={path} element={Element}>
-              {childrenRoutes}
-            </Route>
-          );
-        } else if (Layout && !Element) {
-          res.push(
-            <Route path={path} key={path} element={Layout}>
-              {childrenRoutes}
-            </Route>
-          );
-        } else {
-          res.push(
-            <Route path={path} key={path}>
-              <Route
-                path='/'
-                element={<Navigate to={`/${children[0]['path']}`} />}
-              />
-              {childrenRoutes}
-            </Route>
-          );
-        }
-
-        // if (i == 0) {
-        //   res.push(
-        //     <Route
-        //       index
-        //       key={`${path}-index`}
-        //       element={<Routes>{childrenRoutes}</Routes>}
-        //     />
-        //   );
-        //   if (Element) {
-        //     res.push(
-        //       <Route path={`${path}/*`} key={path} element={Layout}>
-        //         <Route path='/' element={Element} />
-        //         {childrenRoutes}
-        //       </Route>
-        //     );
-        //   } else {
-        //     res.push(
-        //       <Route path={path} key={path} element={Layout}>
-        //         {childrenRoutes}
-        //       </Route>
-        //     );
-        //   }
-        // } else {
-        //   if (Element) {
-        //     res.push(
-        //       <Route path={`${path}/*`} key={path} element={Layout}>
-        //         <Route path='/' element={Element} />
-        //         {childrenRoutes}
-        //       </Route>
-        //     );
-        //   } else {
-        //     res.push(
-        //       <Route path={path} key={path} element={Layout}>
-        //         {childrenRoutes}
-        //       </Route>
-        //     );
-        //   }
-        // }
+        const { path: indexPath } = children.find((citem) =>
+          Reflect.has(citem, 'hideInMenu')
+        );
+        res.push(
+          <Route path={`${path}/*`} key={path} element={Layout}>
+            <Route
+              index
+              key='index'
+              element={Element || <Navigate to={`${newprefix}/${indexPath}`} />}
+            />
+            {childrenRoutes}
+          </Route>
+        );
       } else {
         if (Layout && Element) {
           res.push(
             <Route path={path} key={path} element={Layout}>
-              <Route path='/' element={Element} />
+              <Route index key={'index'} element={Element} />
             </Route>
           );
         } else if (!Layout && Element) {
@@ -202,17 +145,6 @@ export const getRouters = (
         const newElement = component ? component : newprefix;
         const Element = getPageLazyComponent(newElement && newElement.trim());
         if (Element) {
-          if (i == 0) {
-            res.push(
-              <Route
-                path='/'
-                index
-                key='index'
-                element={<Navigate to={`/${path}`} />}
-              />
-            );
-            // res.push(<Route index key={`${path}-index`} element={Element} />);
-          }
           res.push(<Route path={path} key={path} element={Element} />);
         }
       }
