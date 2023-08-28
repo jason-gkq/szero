@@ -1,6 +1,6 @@
 import React from 'react';
 import type { RouteProps } from 'react-router-dom';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { Spin, Result, Button } from 'antd';
 import { PageContainer } from '@ant-design/pro-components';
 import { isString } from '@szero/utils';
@@ -99,26 +99,89 @@ export const getRouters = (
         newPIsLayout
       );
       const Layout = layout && getPageLazyComponent(layout.trim());
+      const Element = component && getPageLazyComponent(component.trim());
+
       if (childrenRoutes.length > 0) {
-        if (i == 0) {
+        if (Layout && Element) {
           res.push(
-            <Route
-              index
-              key={`${path}${i}index`}
-              element={<Routes>{childrenRoutes}</Routes>}
-            />
+            <Route path={path} key={path} element={Layout}>
+              <Route path='/' element={Element} />
+              {childrenRoutes}
+            </Route>
           );
+        } else if (!Layout && Element) {
           res.push(
-            <Route path={path} key={`${path}${i}`} element={Layout}>
+            <Route path={path} key={path} element={Element}>
+              {childrenRoutes}
+            </Route>
+          );
+        } else if (Layout && !Element) {
+          res.push(
+            <Route path={path} key={path} element={Layout}>
               {childrenRoutes}
             </Route>
           );
         } else {
           res.push(
-            <Route path={path} key={`${path}${i}`} element={Layout}>
+            <Route path={path} key={path}>
+              <Route
+                path='/'
+                element={<Navigate to={`/${children[0]['path']}`} />}
+              />
               {childrenRoutes}
             </Route>
           );
+        }
+
+        // if (i == 0) {
+        //   res.push(
+        //     <Route
+        //       index
+        //       key={`${path}-index`}
+        //       element={<Routes>{childrenRoutes}</Routes>}
+        //     />
+        //   );
+        //   if (Element) {
+        //     res.push(
+        //       <Route path={`${path}/*`} key={path} element={Layout}>
+        //         <Route path='/' element={Element} />
+        //         {childrenRoutes}
+        //       </Route>
+        //     );
+        //   } else {
+        //     res.push(
+        //       <Route path={path} key={path} element={Layout}>
+        //         {childrenRoutes}
+        //       </Route>
+        //     );
+        //   }
+        // } else {
+        //   if (Element) {
+        //     res.push(
+        //       <Route path={`${path}/*`} key={path} element={Layout}>
+        //         <Route path='/' element={Element} />
+        //         {childrenRoutes}
+        //       </Route>
+        //     );
+        //   } else {
+        //     res.push(
+        //       <Route path={path} key={path} element={Layout}>
+        //         {childrenRoutes}
+        //       </Route>
+        //     );
+        //   }
+        // }
+      } else {
+        if (Layout && Element) {
+          res.push(
+            <Route path={path} key={path} element={Layout}>
+              <Route path='/' element={Element} />
+            </Route>
+          );
+        } else if (!Layout && Element) {
+          res.push(<Route path={path} key={path} element={Element} />);
+        } else if (Layout && !Element) {
+          res.push(<Route path={path} key={path} element={Layout} />);
         }
       }
     } else {
@@ -141,16 +204,16 @@ export const getRouters = (
         if (Element) {
           if (i == 0) {
             res.push(
-              <Route index key={`${path}${i}index`} element={Element} />
+              <Route
+                path='/'
+                index
+                key='index'
+                element={<Navigate to={`/${path}`} />}
+              />
             );
-            res.push(
-              <Route path={path} key={`${path}${i}`} element={Element} />
-            );
-          } else {
-            res.push(
-              <Route path={path} key={`${path}${i}`} element={Element} />
-            );
+            // res.push(<Route index key={`${path}-index`} element={Element} />);
           }
+          res.push(<Route path={path} key={path} element={Element} />);
         }
       }
     }

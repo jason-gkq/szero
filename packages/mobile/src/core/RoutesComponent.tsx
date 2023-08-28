@@ -13,8 +13,6 @@ export interface IRouteProps {
 
 const { appName, routes, route } = useEnv();
 
-console.log(appName, routes, route, '----------->>');
-
 const getPageLazyComponent = (
   component: string
 ): React.ReactElement | undefined => {
@@ -58,18 +56,32 @@ const getRouters = (data: IRouteProps[], prefix = '') => {
     const newprefix = prefix ? `${prefix}/${path}` : path;
     if (children && Array.isArray(children) && children.length > 0) {
       const childrenRoutes: any[] = getRouters(children, newprefix);
+      const Element = component && getPageLazyComponent(component.trim());
       if (childrenRoutes.length > 0) {
-        res.push(
-          <Route path={path} key={`${path}${i}`}>
-            {childrenRoutes}
-          </Route>
-        );
+        if (Element) {
+          res.push(
+            <Route path={path} key={path}>
+              <Route path='/' element={Element} />
+              {childrenRoutes}
+            </Route>
+          );
+        } else {
+          res.push(
+            <Route path={path} key={path}>
+              {childrenRoutes}
+            </Route>
+          );
+        }
+      } else {
+        if (Element) {
+          res.push(<Route path={path} key={path} element={Element} />);
+        }
       }
     } else {
       const newElement = component ? component : newprefix;
       const Element = getPageLazyComponent(newElement && newElement.trim());
       if (Element) {
-        res.push(<Route path={path} key={`${path}${i}`} element={Element} />);
+        res.push(<Route path={path} key={path} element={Element} />);
       }
     }
   }
