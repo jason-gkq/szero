@@ -109,7 +109,7 @@ export const getRouters = (
             <Route
               index
               key='index'
-              element={Element || <Navigate to={`${newprefix}/${indexPath}`} />}
+              element={Element || <Navigate to={`${indexPath}`} />}
             />
             {childrenRoutes}
           </Route>

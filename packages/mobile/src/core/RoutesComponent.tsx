@@ -66,12 +66,16 @@ const getRouters = (data: IRouteProps[], prefix = '') => {
             </Route>
           );
         } else {
-          const nextPath = appName
-            ? `/${appName}/${newprefix}/${children[0]['path']}`
-            : `/${newprefix}/${children[0]['path']}`;
+          // const nextPath = appName
+          //   ? `/${appName}/${newprefix}/${children[0]['path']}`
+          //   : `/${newprefix}/${children[0]['path']}`;
           res.push(
             <Route path={path} key={path}>
-              <Route index key='index' element={<Navigate to={nextPath} />} />
+              <Route
+                index
+                key='index'
+                element={<Navigate to={`${children[0]['path']}`} />}
+              />
               {childrenRoutes}
             </Route>
           );
