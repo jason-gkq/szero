@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Spin, Result, Button } from 'antd';
 import { PageContainer } from '@ant-design/pro-components';
 import type { RouteProps } from 'react-router-dom';
-import { Routes, Route } from 'react-router-dom';
-import { useMergeState } from '@szero/hooks';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { isString } from '@szero/utils';
 import { globalSelectors } from '../redux';
 
@@ -99,26 +98,33 @@ export const getRouters = (
         newPIsLayout
       );
       const Layout = layout && getPageLazyComponent(layout.trim());
+      const Element = component && getPageLazyComponent(component.trim());
       if (childrenRoutes.length > 0) {
-        if (i == 0) {
-          res.push(
+        const { path: indexPath } =
+          children?.find((citem) => Reflect.has(citem, 'hideInMenu')) || {};
+        res.push(
+          <Route path={`${path}/*`} key={path} element={Layout}>
             <Route
               index
-              key={`${path}${i}index`}
-              element={<Routes>{childrenRoutes}</Routes>}
+              key='index'
+              element={
+                Element || (indexPath && <Navigate to={`${indexPath}`} />)
+              }
             />
-          );
+            {childrenRoutes}
+          </Route>
+        );
+      } else {
+        if (Layout && Element) {
           res.push(
-            <Route path={path} key={`${path}${i}`} element={Layout}>
-              {childrenRoutes}
+            <Route path={path} key={path} element={Layout}>
+              <Route index key={'index'} element={Element} />
             </Route>
           );
-        } else {
-          res.push(
-            <Route path={path} key={`${path}${i}`} element={Layout}>
-              {childrenRoutes}
-            </Route>
-          );
+        } else if (!Layout && Element) {
+          res.push(<Route path={path} key={path} element={Element} />);
+        } else if (Layout && !Element) {
+          res.push(<Route path={path} key={path} element={Layout} />);
         }
       }
     } else {
@@ -139,18 +145,7 @@ export const getRouters = (
         const newElement = component ? component : newprefix;
         const Element = getPageLazyComponent(newElement && newElement.trim());
         if (Element) {
-          if (i == 0) {
-            res.push(
-              <Route index key={`${path}${i}index`} element={Element} />
-            );
-            res.push(
-              <Route path={path} key={`${path}${i}`} element={Element} />
-            );
-          } else {
-            res.push(
-              <Route path={path} key={`${path}${i}`} element={Element} />
-            );
-          }
+          res.push(<Route path={path} key={path} element={Element} />);
         }
       }
     }

@@ -17,5 +17,5 @@ export { default as useSelectEnum } from './useSelectEnum';
 export { useSingleton } from './useSingleton';
 export { default as useUpdate } from './useUpdate';
 export { default as useToken } from './useToken';
-
+export { setTokenName } from './useToken';
 export type { IUseSelectEnum } from './useSelectEnum';

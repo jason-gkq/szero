@@ -1,4 +1,4 @@
-import { useEnv, useToken } from '@szero/hooks';
+import { useEnv, setTokenName } from '@szero/hooks';
 import { setCacheEnvironment } from '@szero/cache';
 import { initNavigate } from '@szero/navigate';
 
@@ -24,7 +24,6 @@ const { navigate } = initNavigate({
 
 navigate.popIndex();
 
-const { setTokenName } = useToken();
 if (tokenName) {
   setTokenName(tokenName);
 } else {

@@ -1,12 +1,12 @@
 import { cookieStorage } from '@szero/cache';
 
+let tokenName = 'token';
+
+export const setTokenName = (name: string) => {
+  tokenName = name;
+};
+
 export default () => {
-  let tokenName = 'token';
-
-  const setTokenName = (name: string) => {
-    tokenName = name;
-  };
-
   const setToken = (token: string) => {
     cookieStorage.setItem(tokenName, token, Infinity);
     return true;

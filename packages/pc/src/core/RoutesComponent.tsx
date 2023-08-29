@@ -101,15 +101,16 @@ export const getRouters = (
       const Layout = layout && getPageLazyComponent(layout.trim());
       const Element = component && getPageLazyComponent(component.trim());
       if (childrenRoutes.length > 0) {
-        const { path: indexPath } = children.find((citem) =>
-          Reflect.has(citem, 'hideInMenu')
-        );
+        const { path: indexPath } =
+          children?.find((citem) => Reflect.has(citem, 'hideInMenu')) || {};
         res.push(
           <Route path={`${path}/*`} key={path} element={Layout}>
             <Route
               index
               key='index'
-              element={Element || <Navigate to={`${indexPath}`} />}
+              element={
+                Element || (indexPath && <Navigate to={`${indexPath}`} />)
+              }
             />
             {childrenRoutes}
           </Route>
