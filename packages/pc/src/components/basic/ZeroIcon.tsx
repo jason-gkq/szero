@@ -2,10 +2,10 @@ import React from 'react';
 import { createFromIconfontCN } from '@ant-design/icons';
 import { useEnv } from '@szero/hooks';
 
-const { IconFontUrls } = useEnv();
+const env = useEnv();
 
 const IconFont = createFromIconfontCN({
-  scriptUrl: IconFontUrls,
+  scriptUrl: env.IconFontUrls,
 });
 
 type IProps = {
@@ -21,6 +21,6 @@ export default ({ type, options }: IProps) => {
   if (ICON) {
     return <ICON {...options} />;
   } else {
-    return (IconFontUrls && <IconFont type={type} {...options} />) || <></>;
+    return (env.IconFontUrls && <IconFont type={type} {...options} />) || <></>;
   }
 };

@@ -109,7 +109,12 @@ export const getRouters = (
               index
               key='index'
               element={
-                Element || (indexPath && <Navigate to={`${indexPath}`} />)
+                Element ||
+                (indexPath && (
+                  <PageContainer pageHeaderRender={false}>
+                    <Navigate to={`${indexPath}`} />
+                  </PageContainer>
+                ))
               }
             />
             {childrenRoutes}
