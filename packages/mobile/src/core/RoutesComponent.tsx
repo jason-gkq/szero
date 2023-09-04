@@ -60,7 +60,7 @@ const getRouters = (data: IRouteProps[], prefix = '') => {
       if (childrenRoutes.length > 0) {
         if (Element) {
           res.push(
-            <Route path={path} key={path} element={Element}>
+            <Route path={path} key={path}>
               <Route index key={'index'} element={Element} />
               {childrenRoutes}
             </Route>
