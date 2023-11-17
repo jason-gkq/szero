@@ -117,7 +117,7 @@ export const getRouters = (
                 ))
               }
             />
-            {childrenRoutes}
+            {...childrenRoutes}
           </Route>
         );
       } else {
