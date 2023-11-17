@@ -4,7 +4,11 @@ export { default as createPage } from './CreatePage';
 export { default as RegisterPage } from './RegisterPage';
 export { default as RegisterApp } from './RegisterApp';
 
-export { getRouters } from './RoutesComponent';
+export {
+  getRouters,
+  getPageLazyComponent,
+  treeIterator,
+} from './RoutesComponent';
 
 export type { ICProps, IPageConfig } from './CreatePage';
 

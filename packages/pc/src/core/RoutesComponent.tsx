@@ -20,7 +20,7 @@ const Layout = React.lazy(
   () => import(/* webpackChunkName: 'app' */ '../components/layouts/proLayout')
 );
 
-const getPageLazyComponent = (component: string) => {
+export const getPageLazyComponent = (component: string) => {
   if (!component || !isString(component)) {
     return component;
   }
@@ -163,7 +163,7 @@ export const getRouters = (
  * @param tree
  * @returns
  */
-const treeIterator = (tree: any[]) => {
+export const treeIterator = (tree: any[]) => {
   const arr: any[] = [];
   if (!Array.isArray(tree) || !tree.length) return arr;
   tree.forEach((e: any) => {
