@@ -73,12 +73,15 @@ const menusFormat = (
 const getMenusTitle = (routes: MenuDataItem[], parentPath: string) => {
   const pathTitle: Record<string, string> = {};
   for (let i = 0; i < routes.length; i++) {
-    const { children, path, name } = routes[i];
+    const { children, path, name, component } = routes[i];
     const newPath = path?.startsWith('/')
       ? `${parentPath}${path}`
       : `${parentPath}/${path}`;
     if (children && children.length > 0) {
       Object.assign(pathTitle, getMenusTitle(children, newPath));
+      if (component) {
+        pathTitle[newPath] = name || '';
+      }
     } else {
       pathTitle[newPath] = name || '';
     }
