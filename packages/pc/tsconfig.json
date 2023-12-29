@@ -9,15 +9,15 @@
     "jsx": "react",
     "jsxFactory": "React.createElement",
     "jsxFragmentFactory": "React.Fragment",
-    "lib": ["dom", "es2017", "esnext"],
-    "module": "esnext",
+    "lib": ["dom", "es2017", "ESNext"],
+    "module": "ESNext",
     "moduleResolution": "node",
     "outDir": "lib",
     "strict": true,
     "strictNullChecks": false,
     "skipLibCheck": true,
     "stripInternal": true,
-    "target": "es6"
+    "target": "ESNext"
     // "noUnusedParameters": true,
     // "noUnusedLocals": true,
     // "noImplicitAny": true,

@@ -26,7 +26,10 @@ export const getPageLazyComponent = (component: string) => {
   }
 
   const Element: any = React.lazy(
-    () => import(/* webpackMode: "lazy" */ `@/src/pages/${component}`)
+    () =>
+      import(
+        /* webpackMode: "lazy" */ /* @vite-ignore */ `@/src/pages/${component}`
+      )
   );
 
   if (!Element) {
