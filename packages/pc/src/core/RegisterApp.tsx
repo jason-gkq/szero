@@ -34,7 +34,7 @@ const params = paramToObject(search, state);
  * 4. 定义项目入口
  * 5. 添加全局错误监听
  */
-export default (appStore: any) => (WrappedComponent: any) => {
+export default (appStore: any) => () => {
   runInAction(() => {
     rootStore.appStore = appStore;
     rootStore.pageStore = pageStore;
@@ -89,7 +89,7 @@ export default (appStore: any) => (WrappedComponent: any) => {
             );
         }
       },
-      [appStore.appStatus, JSON.stringify(routes)],
+      [appStore.appStatus, JSON.stringify(routes)]
     );
 
     return (

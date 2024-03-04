@@ -13,9 +13,9 @@ import { paramToObject } from '@szero/utils';
 import { pageStore, rootStore } from '../store';
 
 export interface IPageConfig {
-  isNeedLogin?: boolean;
-  pageId: string;
+  pageId?: string;
   permissions?: string[];
+  isNeedLogin?: boolean;
   pageStatus?: 'loading' | 'skeleton' | 'error' | 'success';
   skeletonOptions?: Record<string, any>;
   loadingOptions?: Record<string, any>;

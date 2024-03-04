@@ -9,11 +9,11 @@ import { useLocation } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { runInAction, toJS } from 'mobx';
 import { Spin, Skeleton, Result } from 'antd';
-import { paramToObject } from '@szero/utils';
+import { paramToObject, curry } from '@szero/utils';
 import { pageStore, rootStore } from '../store';
 
 export interface IPageConfig {
-  pageId: string;
+  pageId?: string;
   permissions?: string[];
   isNeedLogin?: boolean;
   pageStatus?: 'loading' | 'skeleton' | 'error' | 'success';
