@@ -58,7 +58,7 @@ export const getPageLazyComponent = (component: string) => {
 /**
  * 构建Route树挂载所有路由
  * @param data
- * @param isLayout
+ * @param isLayout 标识是否需要layout
  * @param prefix
  * @returns
  */
