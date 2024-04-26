@@ -25,12 +25,47 @@ export const getPageLazyComponent = (component: string) => {
     return component;
   }
 
-  const Element: any = React.lazy(
-    () =>
-      import(
-        /* webpackMode: "lazy" */ /* @vite-ignore */ `@/src/pages/${component}`
-      )
-  );
+  let Element;
+  const splitName = component.split('/');
+  if (splitName.length === 1) {
+    Element = React.lazy(() => import(`@/src/pages/${splitName[0]}/index.tsx`));
+  }
+  if (splitName.length === 2) {
+    Element = React.lazy(
+      () => import(`@/src/pages/${splitName[0]}/${splitName[1]}/index.tsx`)
+    );
+  }
+  if (splitName.length === 3) {
+    Element = React.lazy(
+      () =>
+        import(
+          `@/src/pages/${splitName[0]}/${splitName[1]}/${splitName[2]}/index.tsx`
+        )
+    );
+  }
+  if (splitName.length === 4) {
+    Element = React.lazy(
+      () =>
+        import(
+          `@/src/pages/${splitName[0]}/${splitName[1]}/${splitName[2]}/${splitName[3]}/index.tsx`
+        )
+    );
+  }
+  if (splitName.length === 5) {
+    Element = React.lazy(
+      () =>
+        import(
+          `@/src/pages/${splitName[0]}/${splitName[1]}/${splitName[2]}/${splitName[3]}/${splitName[4]}/index.tsx`
+        )
+    );
+  }
+
+  // const Element: any = React.lazy(
+  //   () =>
+  //     import(
+  //       /* webpackMode: "lazy" */ /* @vite-ignore */ `@/src/pages/${component}`
+  //     )
+  // );
 
   if (!Element) {
     return;
