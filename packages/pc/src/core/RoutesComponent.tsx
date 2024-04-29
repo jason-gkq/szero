@@ -16,6 +16,10 @@ export interface IRouteProps {
   [key: string]: any;
 }
 
+const Modules =
+  // @ts-ignore
+  !import.meta.webpack && import.meta.glob('@/src/pages/**/*.tsx');
+
 const Layout = React.lazy(
   () => import(/* webpackChunkName: 'app' */ '../components/layouts/proLayout')
 );
@@ -26,40 +30,15 @@ export const getPageLazyComponent = (component: string) => {
   }
 
   let Element;
-  const splitName = component.split('/');
-  if (splitName.length === 1) {
-    Element = React.lazy(() => import(`@/src/pages/${splitName[0]}/index.tsx`));
-  }
-  if (splitName.length === 2) {
+  if (Modules) {
+    // vite打包则从Modules中获取页面组件
+    Element = React.lazy(Modules[`/src/pages/${component}/index.tsx`] as any);
+  } else {
+    // 如果是webpack 5 打包则请求组件
     Element = React.lazy(
-      () => import(`@/src/pages/${splitName[0]}/${splitName[1]}/index.tsx`)
+      () => import(/* webpackMode: "lazy" */ `@/src/pages/${component}`)
     );
   }
-  if (splitName.length === 3) {
-    Element = React.lazy(
-      () =>
-        import(
-          `@/src/pages/${splitName[0]}/${splitName[1]}/${splitName[2]}/index.tsx`
-        )
-    );
-  }
-  if (splitName.length === 4) {
-    Element = React.lazy(
-      () =>
-        import(
-          `@/src/pages/${splitName[0]}/${splitName[1]}/${splitName[2]}/${splitName[3]}/index.tsx`
-        )
-    );
-  }
-  if (splitName.length === 5) {
-    Element = React.lazy(
-      () =>
-        import(
-          `@/src/pages/${splitName[0]}/${splitName[1]}/${splitName[2]}/${splitName[3]}/${splitName[4]}/index.tsx`
-        )
-    );
-  }
-
   // const Element: any = React.lazy(
   //   () =>
   //     import(
