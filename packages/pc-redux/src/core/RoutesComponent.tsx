@@ -10,23 +10,43 @@ import { globalSelectors } from '../redux';
 export interface IRouteProps {
   children?: IRouteProps[];
   path: string;
+  isRouteRoot?: boolean;
+  isPlugin?: boolean;
   isNoneLayout?: boolean;
   component?: string | null;
   layout?: string | null;
   [key: string]: any;
 }
+
+const Modules =
+  // @ts-ignore
+  !import.meta.webpack && import.meta.glob('@/src/pages/**/*.tsx');
+
 const Layout = React.lazy(
   () => import(/* webpackChunkName: 'app' */ '../components/layouts/proLayout')
 );
 
-const getPageLazyComponent = (component: string) => {
+export const getPageLazyComponent = (component: string) => {
   if (!component || !isString(component)) {
     return component;
   }
 
-  const Element: any = React.lazy(
-    () => import(/* webpackMode: "lazy" */ `@/src/pages/${component}`)
-  );
+  let Element;
+  if (Modules) {
+    // vite打包则从Modules中获取页面组件
+    Element = React.lazy(Modules[`/src/pages/${component}/index.tsx`] as any);
+  } else {
+    // 如果是webpack 5 打包则请求组件
+    Element = React.lazy(
+      () => import(/* webpackMode: "lazy" */ `@/src/pages/${component}`)
+    );
+  }
+  // const Element: any = React.lazy(
+  //   () =>
+  //     import(
+  //       /* webpackMode: "lazy" */ /* @vite-ignore */ `@/src/pages/${component}`
+  //     )
+  // );
 
   if (!Element) {
     return;
@@ -54,7 +74,7 @@ const getPageLazyComponent = (component: string) => {
 /**
  * 构建Route树挂载所有路由
  * @param data
- * @param isLayout
+ * @param isLayout 标识是否需要layout
  * @param prefix
  * @returns
  */
@@ -108,10 +128,15 @@ export const getRouters = (
               index
               key='index'
               element={
-                Element || (indexPath && <Navigate to={`${indexPath}`} />)
+                Element ||
+                (indexPath && (
+                  <PageContainer pageHeaderRender={false}>
+                    <Navigate to={`${indexPath}`} />
+                  </PageContainer>
+                ))
               }
             />
-            {childrenRoutes}
+            {...childrenRoutes}
           </Route>
         );
       } else {
@@ -157,7 +182,7 @@ export const getRouters = (
  * @param tree
  * @returns
  */
-const treeIterator = (tree: any[]) => {
+export const treeIterator = (tree: any[]) => {
   const arr: any[] = [];
   if (!Array.isArray(tree) || !tree.length) return arr;
   tree.forEach((e: any) => {

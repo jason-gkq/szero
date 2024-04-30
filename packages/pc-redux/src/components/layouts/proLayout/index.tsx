@@ -4,7 +4,7 @@ import type { ProSettings, MenuDataItem } from '@ant-design/pro-components';
 import { connect } from 'react-redux';
 import { SettingDrawer, ProLayout } from '@ant-design/pro-components';
 import { globalSelectors } from '../../../redux';
-import { useEnv, useMergeState } from '@szero/hooks';
+import { useEnv } from '@szero/hooks';
 import { navigate } from '@szero/navigate';
 import RoutesTab from '../RoutesTab';
 import { CustomBoundary, ZeroIcon } from '../../basic';
@@ -41,7 +41,7 @@ const menusFormat = (
       ICON = <ZeroIcon type={icon as string} />;
     }
     let newPath = String(path);
-    if (lavel === 1) {
+    if (lavel === 1 && !newPath.startsWith('http')) {
       /**
        * 第一级路由必须以 / 开头
        * 如果设置了appName 则给一级菜单添加对应前缀
@@ -77,14 +77,17 @@ const menusFormat = (
 const getMenusTitle = (routes: MenuDataItem[], parentPath: string) => {
   const pathTitle: Record<string, string> = {};
   for (let i = 0; i < routes.length; i++) {
-    const { children, path, name } = routes[i];
+    const { children, path, name, component } = routes[i];
+    const newPath = path?.startsWith('/')
+      ? `${parentPath}${path}`
+      : `${parentPath}/${path}`;
     if (children && children.length > 0) {
-      Object.assign(
-        pathTitle,
-        getMenusTitle(children, `${parentPath}/${path}`)
-      );
+      Object.assign(pathTitle, getMenusTitle(children, newPath));
+      if (component) {
+        pathTitle[newPath] = name || '';
+      }
     } else {
-      pathTitle[`${parentPath}/${path}`] = name || '';
+      pathTitle[newPath] = name || '';
     }
   }
   return pathTitle;
@@ -98,20 +101,18 @@ const {
 const Layout = (props: IProps) => {
   const { routesData, layout } = props;
   const location = useLocation();
-  const [state, setState] = useMergeState({
-    menus: [],
-    menusTitle: [],
-  });
+
+  const [menus, setMenus] = useState<MenuDataItem[]>([]);
+  const [menusTitle, setMenusTitle] = useState<Record<string, string>>({});
   const [pathname, setPathname] = useState(location.pathname);
   const [settings, setSetting] = useState<Partial<ProSettings> | undefined>({
     fixSiderbar: true,
     fixedHeader: true,
     navTheme: 'light',
-    layout: 'mix',
-    contentWidth: 'Fluid',
-    splitMenus: true,
+    // layout: 'mix',
+    // contentWidth: 'Fluid',
+    // splitMenus: true,
   });
-  const { menus, menusTitle } = state;
   useEffect(() => {
     const routeToMenu: MenuDataItem[] = routesData.reduce(
       (accumulator, currentValue) => {
@@ -120,13 +121,8 @@ const Layout = (props: IProps) => {
       },
       []
     );
-    const menusTitle = getMenusTitle(routesData, '');
-    console.log(menusTitle, '------>');
-
-    setState({
-      menus: routeToMenu,
-      menusTitle,
-    });
+    setMenus(routeToMenu);
+    setMenusTitle(getMenusTitle(routesData, ''));
   }, [JSON.stringify(routesData)]);
 
   useEffect(() => {
@@ -138,7 +134,8 @@ const Layout = (props: IProps) => {
       id={`${appName}-pro-layout`}
       style={{
         height: '100vh',
-        overflowX: 'hidden',
+        minWidth: '1210px',
+        overflowX: 'auto',
       }}
     >
       <ProLayout
@@ -163,7 +160,7 @@ const Layout = (props: IProps) => {
         locale='zh-CN'
         location={{ pathname: pathname }}
         menuDataRender={() => menus}
-        menuItemRender={(item: any, dom) => (
+        menuItemRender={(item: any, dom: any) => (
           <a
             onClick={() => {
               if (item.redirect && item.redirect.startsWith('/')) {
@@ -197,7 +194,7 @@ const Layout = (props: IProps) => {
           enableDarkTheme
           getContainer={() => document.getElementById(`${appName}-pro-layout`)}
           settings={settings}
-          onSettingChange={(changeSetting) => {
+          onSettingChange={(changeSetting: any) => {
             setSetting(changeSetting);
           }}
           disableUrlParams

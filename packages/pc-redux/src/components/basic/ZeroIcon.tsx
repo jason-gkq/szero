@@ -1,6 +1,8 @@
 import React from 'react';
 import { createFromIconfontCN } from '@ant-design/icons';
 import { useEnv } from '@szero/hooks';
+import * as Icons from '@ant-design/icons';
+// const Icons: any = await import('@ant-design/icons');
 
 const { IconFontUrls } = useEnv();
 
@@ -16,7 +18,7 @@ type IProps = {
 export default ({ type, options }: IProps) => {
   let ICON;
   if (type) {
-    ICON = require(`@ant-design/icons`)[String(type)];
+    ICON = (Icons as any)[String(type)];
   }
   if (ICON) {
     return <ICON {...options} />;

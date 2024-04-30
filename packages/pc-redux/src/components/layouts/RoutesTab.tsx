@@ -30,7 +30,7 @@ export default ({ menusTitle }: { menusTitle: Record<string, string> }) => {
         };
         setItems([...items]);
         routesHistoryLength && localStorage.set('routes-history', [...items]);
-      } else {
+      } else if (menusTitle[pathname]) {
         const label = menusTitle[pathname] || '';
 
         let newItems = [
