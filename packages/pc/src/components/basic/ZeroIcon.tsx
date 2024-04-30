@@ -4,10 +4,10 @@ import { useEnv } from '@szero/hooks';
 import * as Icons from '@ant-design/icons';
 // const Icons: any = await import('@ant-design/icons');
 
-const env = useEnv();
+const { IconFontUrls } = useEnv();
 
 const IconFont = createFromIconfontCN({
-  scriptUrl: env.IconFontUrls,
+  scriptUrl: IconFontUrls,
 });
 
 type IProps = {
@@ -23,6 +23,6 @@ export default ({ type, options }: IProps) => {
   if (ICON) {
     return <ICON {...options} />;
   } else {
-    return (env.IconFontUrls && <IconFont type={type} {...options} />) || <></>;
+    return (IconFontUrls && <IconFont type={type} {...options} />) || <></>;
   }
 };

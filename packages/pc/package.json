@@ -1,6 +1,6 @@
 {
   "name": "@szero/pc",
-  "version": "2.2.0",
+  "version": "2.2.3",
   "description": "szero-pc",
   "keywords": [
     "szero-pc"
@@ -96,10 +96,10 @@
     "react-router-dom": "^6.0.0"
   },
   "dependencies": {
-    "@ant-design/cssinjs": "~1.9.1",
-    "@ant-design/icons": "~5.2.5",
-    "@ant-design/pro-components": "2.4.16",
-    "@szero/cache": "~2.0.0",
+    "@ant-design/cssinjs": "^1.9.1",
+    "@ant-design/icons": "^5.2.5",
+    "@ant-design/pro-components": "^2.4.16",
+    "@szero/cache": "^2.0.0",
     "@szero/hooks": "^2.0.3",
     "@szero/navigate": "^2.0.3",
     "@szero/net": "^2.0.1",
@@ -108,10 +108,10 @@
     "@types/react": "^18.2.6",
     "@types/react-dom": "^18.2.4",
     "@types/react-router-dom": "^5.3.3",
-    "antd": "~5.4.7",
+    "antd": "^5.4.7",
     "core-js": "^3.30.0",
-    "mobx": "~6.10.0",
-    "mobx-react-lite": "~4.0.4",
+    "mobx": "^6.10.0",
+    "mobx-react-lite": "^4.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.10.0",

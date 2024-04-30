@@ -1,5 +1,5 @@
-import { useContext, useCallback, useMemo } from "react";
-import { ModalContext, showModal, hideModal } from "./ModalContext";
+import { useContext, useCallback, useMemo } from 'react';
+import { ModalContext, showModal, hideModal } from './ModalContext';
 
 const modalCallbacks = {} as any;
 export const useNiceModal = (modalId: string) => {

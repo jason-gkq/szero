@@ -25,7 +25,7 @@ const { pathname, state, search } = history.location;
 const route = pathname;
 const params = paramToObject(search, state);
 
-const createApp = (appStore: any) => {
+export default (appStore: any) => {
   runInAction(() => {
     rootStore.appStore = appStore;
     rootStore.pageStore = pageStore;
@@ -97,5 +97,3 @@ const createApp = (appStore: any) => {
     );
   });
 };
-
-export default createApp;

@@ -1,11 +1,11 @@
-import React, { useReducer } from "react";
+import React, { useReducer } from 'react';
 
 export const ModalContext = React.createContext({});
-ModalContext.displayName = "ModalContext";
+ModalContext.displayName = 'ModalContext';
 
 const modalReducer = (state = { hiding: {} }, action: any) => {
   switch (action.type) {
-    case "nice-modal/show":
+    case 'nice-modal/show':
       return {
         ...state,
         [action.payload.modalId]: action.payload.args || true,
@@ -14,7 +14,7 @@ const modalReducer = (state = { hiding: {} }, action: any) => {
           [action.payload.modalId]: false,
         },
       };
-    case "nice-modal/hide":
+    case 'nice-modal/hide':
       return action.payload.force
         ? {
             ...state,
@@ -29,7 +29,7 @@ const modalReducer = (state = { hiding: {} }, action: any) => {
 
 export function showModal(modalId: string, args: any) {
   return {
-    type: "nice-modal/show",
+    type: 'nice-modal/show',
     payload: {
       modalId,
       args,
@@ -39,7 +39,7 @@ export function showModal(modalId: string, args: any) {
 
 export function hideModal(modalId: string, force: any) {
   return {
-    type: "nice-modal/hide",
+    type: 'nice-modal/hide',
     payload: {
       modalId,
       force,
