@@ -48,11 +48,7 @@ const middlewares: Array<Middleware<{}, any, Dispatch<AnyAction>>> = [
 ];
 
 if (ENV != 'prod') {
-  const loggerMiddleware: Middleware<
-    {},
-    any,
-    Dispatch<AnyAction>
-  > = createLogger();
+  const loggerMiddleware: any = createLogger();
   middlewares.push(loggerMiddleware);
 }
 
