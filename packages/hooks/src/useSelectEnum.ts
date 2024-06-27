@@ -13,7 +13,7 @@ export interface IUseSelectEnum {
    * getEnum({'0': 'Error', '1': 'Success'}) // 返回格式：{ '0': {text: '停用', status: 'Error'}, '1': {text: '启用', status: 'Success'} }
    * ```
    */
-  getEnum: () => Record<string, any>;
+  getEnum: (status?: { [key: string]: string }) => Record<string, any>;
   /**
    * 根据数据源获取枚举数据，仅用于列表中枚举 antd options 数据组装
    * @returns {{ value: string; label: string } & Record<string, any>[]}
