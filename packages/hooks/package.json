@@ -1,6 +1,6 @@
 {
   "name": "@szero/hooks",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "szero hooks",
   "keywords": [
     "szero-hooks"
@@ -90,6 +90,6 @@
     "typescript": "^5.0.3"
   },
   "dependencies": {
-    "@szero/cache": "^2.0.0"
+    "@szero/cache": "^2.1.0"
   }
 }
