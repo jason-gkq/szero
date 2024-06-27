@@ -13,9 +13,7 @@ import { useState, type Dispatch, type SetStateAction } from 'react';
  * setMergeState((prevState) => ({ count: prevState.count + 1 })); // { count: 2 }
  * ```
  */
-export const useMergeState = <
-  T extends Record<string, any> = Record<string, any>
->(
+export const useMergeState = <T extends Record<string, any> = any>(
   initialState?: T
 ) => {
   const [state, setState] = useState<T | undefined>(initialState);
