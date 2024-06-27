@@ -1,10 +1,13 @@
 import isPlainObject from './isPlainObject';
 /**
- * 处理查询参数对象, 如果需要拼接在url参数里面，需要自行调用encodeURIComponent(util.param({k: 'v'}))
+ * @description 需要拼接在url参数里面,处理查询参数对象
  * @param query
  * @param isEncode
  * @returns
+ * @example
+ * ```
  * objectToParam({key: value, k: v}) => key=value&k=v
+ * ```
  */
 export function objectToParam<T>(query: T, isEncode: boolean = true): string {
   const params: string[] = [];

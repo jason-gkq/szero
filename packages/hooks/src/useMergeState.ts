@@ -1,44 +1,28 @@
-import { useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from 'react';
 /* 自定义合并依赖项 */
 
-export interface IUseMergeState {
-  <S>(initialState?: Partial<S>): [Partial<S>, (newState: Partial<S>) => void];
-}
-
-// let useMergeState: IUseMergeState;
-// export const useMergeState: IUseMergeState = function <S>(
-//   initialState?: Partial<S>
-// ) {
-//   const [state, setState] = useState<Partial<S>>(initialState || ({} as S));
-//   const setMergeState = (newState: Partial<S>) =>
-//     setState((prevState) => ({
-//       ...prevState,
-//       ...newState,
-//     }));
-
-//   return [state, setMergeState];
-// };
-
-export const useMergeState = (initialState?: any) => {
-  const [state, setState] = useState(initialState);
-  const setMergeState = (newState: any) =>
-    setState((prevState: any) => ({
+/**
+ * @description 合并状态
+ * @param initialState 初始状态
+ * @returns
+ * @example
+ * ```tsx
+ * const [state, setMergeState] = useMergeState({ count: 0 });
+ * const [state, setMergeState] = useMergeState<ExampleState>({ count: 0, text: '' });
+ * setMergeState({ count: 1 }); // { count: 1 }
+ * setMergeState((prevState) => ({ count: prevState.count + 1 })); // { count: 2 }
+ * ```
+ */
+export const useMergeState = <
+  T extends Record<string, any> = Record<string, any>
+>(
+  initialState?: T
+) => {
+  const [state, setState] = useState<T | undefined>(initialState);
+  const setMergeState: Dispatch<SetStateAction<Partial<T>>> = (newState) =>
+    setState((prevState) => ({
       ...prevState,
-      ...newState,
+      ...(typeof newState === 'function' ? newState(prevState) : newState),
     }));
-  return [state, setMergeState];
+  return [state, setMergeState] as const;
 };
-
-// export const useMergeState = <S,>(
-//   initialState?: S | (() => S)
-// ): [S, (newState: Partial<S>) => void] => {
-//   const [state, setState] = useState<S>(initialState || ({} as S));
-//   const setMergeState: (newState: Partial<S>) => void = (
-//     newState: Partial<S>
-//   ) =>
-//     setState((prevState: S) => ({
-//       ...prevState,
-//       ...newState,
-//     }));
-//   return [state, setMergeState];
-// };

@@ -1,14 +1,16 @@
 import isEmptyObject from './isEmptyObject';
 import objectToParam from './objectToParam';
 /**
- * 追加url参数
+ * @description 追加url参数
  * @param {string} url url参数
  * @param {string|object} key 名字或者对象
  * @param {string} value 值
  * @return {string} 返回新的url
  * @example
+ * ```tsx
  * appendParam('lechebang.com', 'id', 3);
  * appendParam('lechebang.com?key=value', { cityId:2,cityName: '北京'});
+ * ```
  */
 export function appendParam(
   url: string,

@@ -12,6 +12,10 @@ class applicationEnv {
 
 const env = new applicationEnv();
 
-export const useEnv = (): applicationEnv => {
+/**
+ * @description 获取配置文件中的环境变量
+ * @returns {Record<string, any>}
+ */
+export const useEnv = () => {
   return env;
 };

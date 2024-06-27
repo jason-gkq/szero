@@ -1,12 +1,6 @@
-/**
- * @description 一种具备响应式的useState
- * @example
- *
- */
-
-import { useRef } from "react";
-import useCreation from "./useCreation";
-import useUpdate from "./useUpdate";
+import { useRef } from 'react';
+import useCreation from './useCreation';
+import useUpdate from './useUpdate';
 
 const observer = <T extends Record<string, any>>(
   initialVal: T,
@@ -15,7 +9,7 @@ const observer = <T extends Record<string, any>>(
   const proxy = new Proxy<T>(initialVal, {
     get(target, key, receiver) {
       const res = Reflect.get(target, key, receiver);
-      return typeof res === "object"
+      return typeof res === 'object'
         ? observer(res, cb)
         : Reflect.get(target, key);
     },
@@ -28,7 +22,13 @@ const observer = <T extends Record<string, any>>(
 
   return proxy;
 };
-
+/**
+ * @description 一种具备响应式的useState
+ * @example
+ * ```tsx
+ * const state = useReactive({ count: 0 });
+ * ```
+ */
 const useReactive = <T extends Record<string, any>>(initialState: T): T => {
   const ref = useRef<T>(initialState);
   const update = useUpdate();

@@ -23,9 +23,16 @@ function ext<T>(target: T, source: T): T {
   return target;
 }
 /**
- * 深拷贝
- * @param obj
- * @returns
+ * @description 深拷贝
+ * @param obj 要拷贝的对象
+ * @returns 拷贝后的对象
+ * @example
+ * ```ts
+ * import { cloneDeep } from '@szero/utils';
+ * const obj = { a: 1, b: { c: 2, d: [3, 4] } };
+ * const newObj = cloneDeep(obj);
+ * console.log(newObj); // { a: 1, b: { c: 2, d: [3, 4] } }
+ * ```
  */
 export function cloneDeep<T>(obj: T): T | any[] {
   if (!isObject(obj)) return obj;

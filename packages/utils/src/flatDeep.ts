@@ -1,8 +1,10 @@
 /**
- * 数组深度摊平
+ * @description 数组深度摊平
  * @param data
  * @param rel
  * @returns
+ * @example
+ * flatDeep([1, [2, [3, 4], 5], 6]) => [1, 2, 3, 4, 5, 6]
  */
 export function flatDeep(data?: any, rel: Array<any> = []) {
   if (!data) {

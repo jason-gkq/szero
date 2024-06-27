@@ -281,6 +281,6 @@ class Net {
   };
 }
 
-const net = new Net();
-const HttpClient = net.instance;
+const net: Net = new Net();
+const HttpClient: AxiosInstance = net.instance;
 export { net, HttpClient };

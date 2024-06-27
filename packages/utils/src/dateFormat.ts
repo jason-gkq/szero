@@ -1,10 +1,13 @@
 /**
- * 时间格式化
- * dateFormat("YYYY-mm-dd HH:MM:SS", 2021-12-30T09:02:24.000+08:00) => 2021-12-30 09:02:24
- *
- * @param fmt
- * @param date
- * @returns
+ * @description 时间格式化
+ * @param fmt 格式化字符串 YYYY-MM-DD HH:mm:ss
+ * @param date 时间对象或时间字符串
+ * @returns 格式化后的字符串
+ * @example
+ * ```typescript
+ * dateFormat('YYYY-MM-DD', new Date()) // 2022-01-01
+ * dateFormat('YYYY-MM-DD HH:mm:ss', new Date()) // 2022-01-01 00:00:00
+ * ```
  */
 export function dateFormat(fmt: string, date: Date | string) {
   if (!date) {

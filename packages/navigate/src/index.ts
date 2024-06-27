@@ -1,4 +1,9 @@
-import { createBrowserHistory, createHashHistory } from 'history';
+import {
+  createBrowserHistory,
+  createHashHistory,
+  type BrowserHistory,
+  type HashHistory,
+} from 'history';
 import { ConfigureNavigate } from './configureNavigate';
 /**
  * @routeType 路由类型Browser 传统，Hash 哈希路由
@@ -8,27 +13,27 @@ import { ConfigureNavigate } from './configureNavigate';
  *      如果设置该参数 则可以写为：navigate.goTo('/index/index');
  */
 export type IRouteEnvironment = {
-  routeType: 'Browser' | 'Hash';
-  rootRoute?: string | undefined;
-  index?: string | undefined;
-  history?: any;
+  routeType?: 'Browser' | 'Hash';
+  rootRoute?: string;
+  index?: string;
+  history?: BrowserHistory | HashHistory;
 };
 
-let navigate: any;
-let history: any;
+let history: BrowserHistory | HashHistory = createBrowserHistory({ window });
+const navigate: ConfigureNavigate = new ConfigureNavigate(history);
 
 export const initNavigate = (props: IRouteEnvironment) => {
   if (props.history) {
     history = props.history;
+    navigate.history = history;
   } else {
     if (props.routeType == 'Hash') {
       history = createHashHistory({ window });
-    } else {
-      history = createBrowserHistory({ window });
+      navigate.history = history;
     }
   }
-
-  navigate = new ConfigureNavigate(history, props.rootRoute, props.index);
+  navigate.rootRoute = props.rootRoute;
+  navigate.indexPage = navigate.getUrl(props.index || '/index');
   return { history, navigate };
 };
 

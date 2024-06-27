@@ -1,33 +1,79 @@
 export interface IUseSelectEnum {
-  getData: Function;
-  getEnum: Function;
-  getOptions: Function;
-  getLabel: Function;
-  getKey: Function;
+  /**
+   * @description 获取数据源
+   * @returns {Record<string, any>[]}
+   */
+  getData: () => Record<string, any>[];
+  /**
+   * 根据数据源获取枚举数据，仅用于列表中枚举 antd valueEnum 数据组装
+   * @returns {Record<string, any>}
+   * @example
+   * ```tsx
+   * getEnum() // 返回格式：{ '0': {text: '停用'}, '1': {text: '启用'} }
+   * getEnum({'0': 'Error', '1': 'Success'}) // 返回格式：{ '0': {text: '停用', status: 'Error'}, '1': {text: '启用', status: 'Success'} }
+   * ```
+   */
+  getEnum: () => Record<string, any>;
+  /**
+   * 根据数据源获取枚举数据，仅用于列表中枚举 antd options 数据组装
+   * @returns {{ value: string; label: string } & Record<string, any>[]}
+   * @example
+   * ```tsx
+   * getOptions() // 返回格式：[{ value: '0', label: '停用' }, { value: '1', label: '启用' }]
+   * ```
+   */
+  getOptions: () => { value: string; label: string } & Record<string, any>[];
+  /**
+   * 根据数据源获取枚举值获取枚举名称
+   * @param value 枚举值
+   * @returns {string}
+   * @example
+   * ```tsx
+   * getLabel('1') // "启用"
+   * getLabel('0') // "停用"
+   * ```
+   */
+  getLabel: (value: string | number | boolean) => string | number | boolean;
+  /**
+   * 根据数据源获取枚举值获取枚举状态
+   * @param value
+   * @returns
+   * @example
+   * ```tsx
+   * getKey('启用')  //  1
+   * getKey('停用')  //  0
+   * ```
+   */
+  getKey: (value: string | number | boolean) => string | number | boolean;
+  /**
+   * 根据数据源获取枚举名称获取枚举值
+   * @param value 枚举名称
+   * @returns
+   * @example
+   * ```tsx
+   * getValue('启用')  //  1
+   * getValue('停用')  //  0
+   * ```
+   */
+  getValue: (value: string | number | boolean) => string | number | boolean;
 }
 
 /**
- * getEnum
- * getOptions
- * getLabel
+ * @description 枚举选择器
+ * @param data 数据源
+ * @param key 节点值字段
+ * @param label 节点名称字段
+ * @returns {IUseSelectEnum}
  */
 export default (
-  data: any[],
-  key = "value",
-  label = "label"
+  data: Record<string, any>[],
+  key = 'value',
+  label = 'label'
 ): IUseSelectEnum => {
   const getData = () => {
     return data;
   };
 
-  /**
-   * 仅用于列表中枚举 ProTable valueEnum
-   * 单条数据组装
-   * getEnum() 返回格式：{ '0': {text: '停用'}, '1': {text: '启用'} }
-   * getEnum({'0': 'Error', '1': 'Success'}) 返回格式：{ '0': {text: '停用', status: 'Error'}, '1': {text: '启用', status: 'Success'} }
-   * @param dictType
-   * @returns
-   */
   const getEnum = (status?: { [key: string]: string }) => {
     if (!data) {
       return {};
@@ -46,64 +92,41 @@ export default (
     }, groups);
     return groups;
   };
-
-  /**
-   * 单条数据组装，只针对 Select
-   * 返回格式：[<Option key="0" >停用</Option>, <Option key="1">启用</Option>]
-   * @param dictType
-   * @returns
-   */
   const getOptions = () => {
     if (!data) {
       return [];
     }
-    return data.map((item) => {
-      return {
+    return data.reduce((options: any, item: any) => {
+      options.push({
         value: item[key],
         label: item[label],
         ...item,
-      };
-    });
+      });
+      return options;
+    }, []);
   };
-  /**
-   * 获取数据的单个节点名称
-   * getLabel('1')  =>  "启用"
-   * getLabel('0')  =>  "停用"
-   * @param dictType
-   * @returns
-   */
-  const getLabel = (value: string | number): string | number => {
+  const getLabel = (
+    value: string | number | boolean
+  ): string | number | boolean => {
     if (!data) {
       return value;
     }
-
-    let labelName;
-    data.forEach((element: any) => {
-      if (String(element[key]) == String(value)) {
-        labelName = element[label];
-      }
-    });
-    return labelName || value;
+    const currentData = data.find(
+      (item) => String(item[key]) === String(value)
+    );
+    return currentData?.[label] || value;
   };
-  /**
-   * 获取数据的单个节点名称
-   * getKey('启用')  =>  1
-   * getLabel('停用')  =>  0
-   * @param dictType
-   * @returns
-   */
-  const getKey = (value: string | number): string | number => {
+  const getValue = (
+    value: string | number | boolean
+  ): string | number | boolean => {
     if (!data) {
       return value;
     }
-
-    let keyValue;
-    data.forEach((element: any) => {
-      if (String(element[label]) == String(value)) {
-        keyValue = element[key];
-      }
-    });
-    return keyValue || value;
+    const currentData = data.find(
+      (item) => String(item[label]) === String(value)
+    );
+    return currentData?.[key] || value;
   };
-  return { getData, getEnum, getOptions, getLabel, getKey };
+  const getKey = getValue;
+  return { getData, getEnum, getOptions, getLabel, getKey, getValue };
 };

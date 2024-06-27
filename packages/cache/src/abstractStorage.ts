@@ -27,6 +27,7 @@ type IEnvironment = {
   prefixUnable: string[];
   prefix: string;
 };
+type CacheType = 'local' | 'session';
 /**
  * prefix local和session缓存统一前缀，对cookie不生效；
  * prefixUnable 不需要前缀的的变量，默认统一添加前缀；
@@ -44,10 +45,10 @@ export const setCacheEnvironment = (props: {
 };
 
 class NameStorage {
-  store: any;
-  proxy: any;
+  store: Record<string, any>;
+  proxy: { local: Record<string, any>; session: Record<string, any> };
 
-  constructor(type: string) {
+  constructor(type: CacheType) {
     let ret;
 
     if (window.name) {
@@ -74,52 +75,46 @@ class NameStorage {
     this.proxy.session = ret.session;
 
     this.store = this.proxy[type];
-
-    this.getItem = this.getItem.bind(this);
-    this.setItem = this.setItem.bind(this);
-    this.removeItem = this.removeItem.bind(this);
-    this.clear = this.clear.bind(this);
-    this._saveNameValue = this._saveNameValue.bind(this);
   }
 
-  getItem(key: string) {
+  getItem = (key: string) => {
     return this.store[key];
-  }
+  };
 
-  setItem(key: string, value: any) {
+  setItem = (key: string, value: any) => {
     this.store[key] = value;
     this._saveNameValue();
-  }
+  };
 
-  removeItem(key: string) {
+  removeItem = (key: string) => {
     delete this.store[key];
     this._saveNameValue();
-  }
+  };
 
-  clear() {
+  clear = () => {
     this.store = {};
     this._saveNameValue();
-  }
+  };
 
-  _saveNameValue() {
+  _saveNameValue = () => {
     const ret = {
       session: this.proxy.session,
       local: this.proxy.local,
     };
 
     window.name = JSON.stringify(ret);
-  }
+  };
 }
 
 export class AbstractStorage {
-  hasStorage: any = {
+  hasStorage: { local: number; session: number } = {
     local: 1,
     session: 1,
   };
-  type: string;
-  proxy: any;
+  type: CacheType;
+  proxy: Storage | NameStorage;
 
-  constructor(type: string) {
+  constructor(type: CacheType) {
     this.checkStorage();
     if (this.hasStorage[type]) {
       this.proxy = type === 'local' ? localStorage : sessionStorage;
@@ -127,21 +122,15 @@ export class AbstractStorage {
       this.proxy = new NameStorage(type);
     }
     this.type = type;
-
-    this.checkStorage = this.checkStorage.bind(this);
-    this.get = this.get.bind(this);
-    this.set = this.set.bind(this);
-    this.remove = this.remove.bind(this);
-    this.clear = this.clear.bind(this);
-    this.clearAll = this.clearAll.bind(this);
-    this.removeHttp = this.removeHttp.bind(this);
-    this.getKey = this.getKey.bind(this);
-    this.getForObject = this.getForObject.bind(this);
-    this.isQuotaExceeded = this.isQuotaExceeded.bind(this);
-    this.setExpires = this.setExpires.bind(this);
   }
 
-  checkStorage() {
+  /**
+   * @description
+   * 检查浏览器是否支持本地存储
+   * @example
+   * local.checkStorage()
+   */
+  checkStorage = () => {
     try {
       sessionStorage.setItem('privateTest', '1');
     } catch (e) {
@@ -153,9 +142,15 @@ export class AbstractStorage {
     } catch (e) {
       this.hasStorage.local = 0;
     }
-  }
+  };
 
-  get(key: string) {
+  /**
+   * @description
+   * 获取缓存
+   * @example
+   * local.get('mykey')
+   */
+  get = (key: string) => {
     key = this.getKey(key);
     let value = this.proxy.getItem(key);
 
@@ -180,9 +175,15 @@ export class AbstractStorage {
     } else {
       return null;
     }
-  }
+  };
 
-  set(key: string, value: any, expires?: string) {
+  /**
+   * @description
+   * 设置缓存
+   * @example
+   * local.set('mykey', 'value', '1D')
+   */
+  set = (key: string, value: any, expires?: string) => {
     key = this.getKey(key);
     const ret: any = {
       value: value,
@@ -201,25 +202,43 @@ export class AbstractStorage {
         this.removeHttp();
       }
     }
-  }
+  };
 
-  remove(key: string) {
+  /**
+   * @description
+   * 删除缓存
+   * @example
+   * local.remove('mykey')
+   */
+  remove = (key: string) => {
     this.proxy.removeItem(this.getKey(key));
-  }
+  };
 
-  clear() {
-    for (const i of this.getForObject()) {
+  /**
+   * @description
+   * 清除所有缓存
+   * @example
+   * local.clear()
+   */
+  clear = () => {
+    for (const i in this.getForObject()) {
       if (environment.prefixUnable.indexOf(i) === -1) {
         this.proxy.removeItem(i);
       }
     }
-  }
+  };
 
-  clearAll() {
+  /**
+   * @description
+   * 清除所有缓存
+   * @example
+   * local.clearAll()
+   */
+  clearAll = () => {
     for (const i in this.getForObject()) {
       this.proxy.removeItem(i);
     }
-  }
+  };
 
   /**
    * @description
@@ -227,27 +246,39 @@ export class AbstractStorage {
    * @example
    * local.removeHttp('mycar/getMyDefaultCar')
    */
-  removeHttp(url = '') {
+  removeHttp = (url = '') => {
     url = environment.prefix + 'http:' + url;
     for (const i in this.getForObject()) {
       if (i.startsWith(url)) {
         this.proxy.removeItem(i);
       }
     }
-  }
+  };
 
-  getKey(key: string) {
+  /**
+   * @description
+   * 获取缓存key
+   * @example
+   * local.getKey('mykey')
+   */
+  getKey = (key: string) => {
     if (environment.prefixUnable.indexOf(key) !== -1) {
       return key;
     }
     return environment.prefix + key;
-  }
+  };
 
-  getForObject() {
+  /**
+   * @description
+   * 获取所有缓存key
+   * @example
+   * local.getForObject()
+   */
+  getForObject = () => {
     return this.proxy instanceof NameStorage ? this.proxy.store : this.proxy;
-  }
+  };
 
-  isQuotaExceeded(e?: any): boolean {
+  isQuotaExceeded = (e?: any): boolean => {
     let quotaExceeded = false;
     if (e) {
       if (e.code) {
@@ -268,9 +299,9 @@ export class AbstractStorage {
       }
     }
     return quotaExceeded;
-  }
+  };
 
-  setExpires(time: string) {
+  setExpires = (time: string) => {
     const str = time + '';
     let count = 0;
 
@@ -296,5 +327,5 @@ export class AbstractStorage {
     // time = count ? count : time;
 
     return count * 1000;
-  }
+  };
 }
