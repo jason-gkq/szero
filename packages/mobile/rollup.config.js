@@ -52,14 +52,14 @@ export default {
       file: `dist/index.js`,
       format: 'umd',
       name: '@szero/mobile',
-      sourcemap: true,
+      sourcemap: false,
       inlineDynamicImports: true,
     },
     {
       // file: `es/index${env === "production" ? ".min" : ""}.js`,
       format: 'es',
       dir: 'es',
-      sourcemap: true,
+      sourcemap: false,
     },
   ],
   // 注入全局变量比如jQuery的$这里只是尝试 并未启用
@@ -156,8 +156,8 @@ export default {
           {
             modules: false,
             // loose: true,
-            useBuiltIns: 'usage',
-            // useBuiltIns: 'entry',
+            // useBuiltIns: 'usage',
+            useBuiltIns: 'entry',
             corejs: 3,
             debug: true,
           },
