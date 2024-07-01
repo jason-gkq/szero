@@ -1,6 +1,6 @@
 {
   "name": "@szero/pc",
-  "version": "2.2.3",
+  "version": "2.3.3",
   "description": "szero-pc",
   "keywords": [
     "szero-pc"
@@ -99,11 +99,11 @@
     "@ant-design/cssinjs": "^1.9.1",
     "@ant-design/icons": "^5.2.5",
     "@ant-design/pro-components": "^2.4.16",
-    "@szero/cache": "^2.0.0",
-    "@szero/hooks": "^2.0.3",
-    "@szero/navigate": "^2.0.3",
-    "@szero/net": "^2.0.1",
-    "@szero/utils": "^2.0.0",
+    "@szero/cache": "~2.1.1",
+    "@szero/hooks": "~2.1.3",
+    "@szero/navigate": "~2.1.3",
+    "@szero/net": "~2.1.1",
+    "@szero/utils": "~2.1.1",
     "@types/node": "^20.1.4",
     "@types/react": "^18.2.6",
     "@types/react-dom": "^18.2.4",
