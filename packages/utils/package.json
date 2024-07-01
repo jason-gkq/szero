@@ -1,6 +1,6 @@
 {
   "name": "@szero/utils",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "szero 工具包",
   "keywords": [
     "szero-utils"
@@ -73,7 +73,7 @@
     "@rollup/plugin-node-resolve": "^15.0.2",
     "@rollup/plugin-replace": "^5.0.2",
     "@rollup/plugin-terser": "^0.4.1",
-    "@types/node": "^18.15.11",
+    "@types/node": "^20.14.9",
     "core-js": "^3.30.1",
     "cross-env": "^7.0.3",
     "rollup": "^3.20.2",
