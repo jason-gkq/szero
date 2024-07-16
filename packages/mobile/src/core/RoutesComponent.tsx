@@ -3,6 +3,7 @@ import { ErrorBlock, SpinLoading } from 'antd-mobile';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { useEnv } from '@szero/hooks';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { isString } from '@szero/utils';
 
 export interface IRouteProps {
   children?: IRouteProps[];
@@ -13,10 +14,24 @@ export interface IRouteProps {
 
 const { appName, routes, route } = useEnv();
 
-const getPageLazyComponent = (
-  component: string
-): React.ReactElement | undefined => {
-  const Element: any = React.lazy(() => import(`@/src/pages/${component}`));
+const Modules =
+  // @ts-ignore
+  !import.meta.webpack && import.meta.glob('@/src/pages/**/*.tsx');
+
+const getPageLazyComponent = (component: string) => {
+  if (!component || !isString(component)) {
+    return component;
+  }
+  let Element;
+  if (Modules) {
+    // vite打包则从Modules中获取页面组件
+    Element = React.lazy(Modules[`/src/pages/${component}/index.tsx`] as any);
+  } else {
+    // 如果是webpack 5 打包则请求组件
+    Element = React.lazy(
+      () => import(/* webpackMode: "lazy" */ `@/src/pages/${component}`),
+    );
+  }
 
   if (!Element) {
     return;
@@ -63,12 +78,9 @@ const getRouters = (data: IRouteProps[], prefix = '') => {
             <Route path={path} key={path}>
               <Route index key={'index'} element={Element} />
               {childrenRoutes}
-            </Route>
+            </Route>,
           );
         } else {
-          // const nextPath = appName
-          //   ? `/${appName}/${newprefix}/${children[0]['path']}`
-          //   : `/${newprefix}/${children[0]['path']}`;
           res.push(
             <Route path={path} key={path}>
               <Route
@@ -77,7 +89,7 @@ const getRouters = (data: IRouteProps[], prefix = '') => {
                 element={<Navigate to={`${children[0]['path']}`} />}
               />
               {childrenRoutes}
-            </Route>
+            </Route>,
           );
         }
       } else {

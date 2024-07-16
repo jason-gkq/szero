@@ -23,7 +23,7 @@ const Modules =
   !import.meta.webpack && import.meta.glob('@/src/pages/**/*.tsx');
 
 const Layout = React.lazy(
-  () => import(/* webpackChunkName: 'app' */ '../components/layouts/proLayout')
+  () => import(/* webpackChunkName: 'app' */ '../components/layouts/proLayout'),
 );
 
 export const getPageLazyComponent = (component: string) => {
@@ -38,7 +38,7 @@ export const getPageLazyComponent = (component: string) => {
   } else {
     // 如果是webpack 5 打包则请求组件
     Element = React.lazy(
-      () => import(/* webpackMode: "lazy" */ `@/src/pages/${component}`)
+      () => import(/* webpackMode: "lazy" */ `@/src/pages/${component}`),
     );
   }
   // const Element: any = React.lazy(
@@ -82,7 +82,7 @@ export const getRouters = (
   data: IRouteProps[],
   isLayout = false,
   prefix = '',
-  pIsNoneLayout?: boolean | undefined
+  pIsNoneLayout?: boolean | undefined,
 ) => {
   const res: any[] = [];
   if (!data || data.length == 0) {
@@ -98,7 +98,7 @@ export const getRouters = (
       const Element = component && getPageLazyComponent(component.trim());
       if (Object.is(isLayout, !!isNoneLayout)) {
         res.push(
-          <Route path={`${path}/*`} key={`${path}${i}`} element={Element} />
+          <Route path={`${path}/*`} key={`${path}${i}`} element={Element} />,
         );
       }
       continue;
@@ -115,7 +115,7 @@ export const getRouters = (
         children,
         isLayout,
         newprefix,
-        newPIsLayout
+        newPIsLayout,
       );
       const Layout = layout && getPageLazyComponent(layout.trim());
       const Element = component && getPageLazyComponent(component.trim());
@@ -137,14 +137,14 @@ export const getRouters = (
               }
             />
             {...childrenRoutes}
-          </Route>
+          </Route>,
         );
       } else {
         if (Layout && Element) {
           res.push(
             <Route path={path} key={path} element={Layout}>
               <Route index key={'index'} element={Element} />
-            </Route>
+            </Route>,
           );
         } else if (!Layout && Element) {
           res.push(<Route path={path} key={path} element={Element} />);
@@ -255,7 +255,10 @@ const RoutesComponent = ({ routes }: IProps) => {
   }
   const routesData = treeIterator(routes) || [];
   const { path, children } = routesData.find((i) => !!i.isRouteRoot) || {};
-  const rootPath = path && path.startsWith('/') ? path : `/${path}`;
+  let rootPath = '/';
+  if (path && path != '/') {
+    rootPath = path.startsWith('/') ? path : `/${path}`;
+  }
   const treeRoutes = children ? getRouters(children, false) : [];
   const treeNoRoutes = children ? getRouters(children, true) : [];
 

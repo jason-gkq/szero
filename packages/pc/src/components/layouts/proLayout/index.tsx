@@ -22,7 +22,7 @@ export interface IMenuProps {
 const menusFormat = (
   routes: MenuDataItem[],
   appName: string | undefined | null,
-  lavel: number
+  lavel: number,
 ) => {
   const newRoutes: MenuDataItem[] = [];
   for (let i = 0; i < routes.length; i++) {
@@ -45,7 +45,7 @@ const menusFormat = (
       if (!newPath.startsWith(`/`)) {
         newPath = `/${newPath}`;
       }
-      if (appName && !newPath.startsWith(`/${appName}`)) {
+      if (appName && appName != '/' && !newPath.startsWith(`/${appName}`)) {
         newPath = `/${appName}${newPath}`;
       }
     }
@@ -116,7 +116,7 @@ export default observer(({ routesData }: { routesData: IMenuProps[] }) => {
         const { path, children } = currentValue;
         return accumulator.concat(menusFormat(children, path, 1));
       },
-      []
+      [],
     );
     setMenus(routeToMenu);
     setMenusTitle(getMenusTitle(routesData, ''));
