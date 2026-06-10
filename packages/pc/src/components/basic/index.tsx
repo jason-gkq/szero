@@ -11,5 +11,3 @@ export { default as PermissionButton } from './Permission/PermissionButton';
 export { default as ZeroIcon } from './ZeroIcon';
 export { default as CustomBoundary } from './CustomBoundary';
 
-export { useNiceModal, NiceModal } from './NiceModal';
-export { default as NiceConfirm } from './NiceConfirm';
