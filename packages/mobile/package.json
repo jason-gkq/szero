@@ -1,6 +1,6 @@
 {
   "name": "@szero/mobile",
-  "version": "3.0.1",
+  "version": "4.0.0-alpha.0",
   "description": "szero-mobile",
   "keywords": [
     "szero-mobile"
@@ -99,11 +99,11 @@
     "react-router-dom": "^6.0.0"
   },
   "dependencies": {
-    "@szero/cache": "~3.0.0",
-    "@szero/hooks": "~3.0.0",
-    "@szero/navigate": "~3.0.0",
-    "@szero/net": "~3.0.0",
-    "@szero/utils": "~3.0.0",
+    "@szero/cache": "^4.0.0-alpha.0",
+    "@szero/hooks": "^4.0.0-alpha.0",
+    "@szero/navigate": "^4.0.0-alpha.0",
+    "@szero/net": "^4.0.0-alpha.0",
+    "@szero/utils": "^4.0.0-alpha.0",
     "@types/node": "^25.9.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
