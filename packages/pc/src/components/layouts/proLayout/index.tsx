@@ -132,7 +132,7 @@ export default observer(({ routesData }: { routesData: IMenuProps[] }) => {
       style={{
         height: '100vh',
         minWidth: '1210px',
-        overflowX: 'auto',
+        // overflowX: 'auto',
       }}
     >
       <ProLayout

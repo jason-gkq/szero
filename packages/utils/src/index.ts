@@ -2,10 +2,7 @@
  * @link [underscorejs](https://underscorejs.org)
  */
 export { appendParam } from './appendParam';
-export { arrayToTree } from './arrayToTree';
 export { cloneDeep } from './cloneDeep';
-export { curry } from './curry';
-export { dateFormat } from './dateFormat';
 export { debounce } from './debounce';
 export { deleteUndefined } from './deleteUndefined';
 export { flatDeep } from './flatDeep';
@@ -34,12 +31,9 @@ export { isPlainObject } from './isPlainObject';
 export { isPromise } from './isPromise';
 export { isString } from './isString';
 export { isUndefined } from './isUndefined';
-export { nextTick } from './nextTick';
 export { default as now } from './now';
 export { objectToParam } from './objectToParam';
 export { paramToObject } from './paramToObject';
-export { pick } from './pick';
 export { restArguments } from './restArguments';
-export { run } from './run';
 export { throttle } from './throttle';
 export { unique } from './unique';
