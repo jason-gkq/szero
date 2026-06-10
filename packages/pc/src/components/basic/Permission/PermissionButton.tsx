@@ -1,4 +1,3 @@
-import React from 'react';
 import GuardPermission from './GuardPermission';
 import { Button } from 'antd';
 

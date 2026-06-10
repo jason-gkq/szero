@@ -39,8 +39,6 @@ import postcssPresetEnv from 'postcss-preset-env';
 // css代码压缩
 import cssnano from 'cssnano';
 
-import filesize from 'rollup-plugin-filesize';
-
 const env = process.env.NODE_ENV;
 
 export default {
@@ -162,6 +160,5 @@ export default {
     // 生产环境执行terser压缩代码
     env === 'production' && terser(),
     sourceMaps(),
-    filesize(),
   ],
 };

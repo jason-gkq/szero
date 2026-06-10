@@ -16,8 +16,6 @@ import replace from '@rollup/plugin-replace';
 // 压缩打包代码
 import terser from '@rollup/plugin-terser';
 
-import filesize from 'rollup-plugin-filesize';
-
 const env = process.env.NODE_ENV;
 
 export default {
@@ -95,6 +93,5 @@ export default {
     // 生产环境执行terser压缩代码
     env === 'production' && terser(),
     sourceMaps(),
-    filesize(),
   ],
 };

@@ -70,7 +70,7 @@ class NameStorage {
     if (!ret.local) {
       ret.local = {};
     }
-
+    this.proxy = {} as any;
     this.proxy.local = ret.local;
     this.proxy.session = ret.session;
 

@@ -113,8 +113,8 @@ export default observer(({ routesData }: { routesData: IMenuProps[] }) => {
   useEffect(() => {
     const routeToMenu: MenuDataItem[] = routesData.reduce(
       (accumulator, currentValue) => {
-        const { path, children } = currentValue;
-        return accumulator.concat(menusFormat(children, path, 1));
+        const { path, children } = currentValue as any;
+        return accumulator.concat(menusFormat(children as any, path as any, 1) as any);
       },
       [],
     );

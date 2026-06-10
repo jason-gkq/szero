@@ -1,4 +1,3 @@
-import React from 'react';
 import { createFromIconfontCN } from '@ant-design/icons';
 import { useEnv } from '@szero/hooks';
 import * as Icons from '@ant-design/icons';

@@ -32,7 +32,7 @@ export interface IAppStore {
 dayjs.locale('zh-cn');
 const { pathname, state, search } = history.location;
 const route = pathname;
-const params = paramToObject(search, state);
+const params = paramToObject(search, state as Record<string, any>);
 
 const createApp = (appStore: any) => {
   runInAction(() => {

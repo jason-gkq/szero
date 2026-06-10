@@ -18,7 +18,7 @@ export const useMergeState = <T extends Record<string, any> = any>(
 ) => {
   const [state, setState] = useState<T | undefined>(initialState);
   const setMergeState: Dispatch<SetStateAction<Partial<T>>> = (newState) =>
-    setState((prevState) => ({
+    setState((prevState: any) => ({
       ...prevState,
       ...(typeof newState === 'function' ? newState(prevState) : newState),
     }));

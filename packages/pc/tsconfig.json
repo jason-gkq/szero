@@ -1,27 +1,60 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "alwaysStrict": true,
-    "checkJs": true,
-    "declaration": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "jsx": "react",
-    "jsxFactory": "React.createElement",
-    "jsxFragmentFactory": "React.Fragment",
-    "lib": ["dom", "es2017", "ESNext"],
+    "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
+
+    "rootDir": "src",
     "outDir": "lib",
+
+    "lib": ["DOM", "ESNext"],
+
     "strict": true,
-    "strictNullChecks": false,
+
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
     "skipLibCheck": true,
+
+    "isolatedModules": true,
+    "useDefineForClassFields": true,
+
+    "declaration": true,
+    "declarationMap": true,
+    // "emitDeclarationOnly": true,
+
     "stripInternal": true,
-    "target": "ESNext"
-    // "noUnusedParameters": true,
-    // "noUnusedLocals": true,
-    // "noImplicitAny": true,
+
+    "jsx": "react-jsx",
   },
   "include": ["src"],
   "exclude": ["node_modules", "lib", "dist", "es"]
 }
+
+
+
+
+// {
+//   "compilerOptions": {
+//     "allowJs": true,
+//     "alwaysStrict": true,
+//     "checkJs": true,
+//     "declaration": true,
+//     "esModuleInterop": true,
+//     "experimentalDecorators": true,
+//     "jsx": "react",
+//     "jsxFactory": "React.createElement",
+//     "jsxFragmentFactory": "React.Fragment",
+//     "lib": ["dom", "es2017", "ESNext"],
+//     "module": "ESNext",
+//     "moduleResolution": "node",
+//     "outDir": "lib",
+//     "strict": true,
+//     "strictNullChecks": false,
+//     "skipLibCheck": true,
+//     "stripInternal": true,
+//     "target": "ESNext"
+//   },
+//   "include": ["src"],
+//   "exclude": ["node_modules", "lib", "dist", "es"]
+// }

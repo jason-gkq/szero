@@ -1,5 +1,5 @@
 import './initApp';
-import React, { useLayoutEffect, useMemo } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { runInAction, toJS } from 'mobx';
@@ -17,13 +17,12 @@ import 'dayjs/locale/zh-cn';
 import { pageStore, rootStore } from '../store';
 import RoutesComponent from './RoutesComponent';
 import useGlobalError from './useGlobalError';
-import { ModalContextComponent } from '../components/basic/NiceModal';
 import '../style/index.less';
 
 dayjs.locale('zh-cn');
 const { pathname, state, search } = history.location;
 const route = pathname;
-const params = paramToObject(search, state);
+const params = paramToObject(search, state as Record<string, any>);
 
 export default (appStore: any) => {
   runInAction(() => {
@@ -90,7 +89,7 @@ export default (appStore: any) => {
             hashPriority='high'
             transformers={[legacyLogicalPropertiesTransformer]}
           >
-            <ModalContextComponent>{renderContent()}</ModalContextComponent>
+            {renderContent()}
           </StyleProvider>
         </App>
       </ConfigProvider>

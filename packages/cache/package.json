@@ -78,9 +78,11 @@
     "cross-env": "^10.1.0",
     "rollup": "^4.61.1",
     "rollup-plugin-clear": "^2.0.7",
-    "rollup-plugin-filesize": "^10.0.0",
     "rollup-plugin-sourcemaps": "^0.6.3",
     "rollup-plugin-typescript2": "^0.37.0",
     "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "require": "0.4.4"
   }
 }
