@@ -20,11 +20,11 @@
     "prettier:write": "prettier --write ./packages"
   },
   "devDependencies": {
-    "@lerna/legacy-package-management": "^8.1.5",
-    "husky": "^9.0.11",
-    "lerna": "^8.1.5",
-    "lint-staged": "^15.2.7",
-    "prettier": "^3.3.2"
+    "@lerna/legacy-package-management": "^8.2.4",
+    "husky": "^9.1.7",
+    "lerna": "^9.0.7",
+    "lint-staged": "^17.0.7",
+    "prettier": "^3.8.4"
   },
   "lint-staged": {
     "packages/**/*.{ts,tsx,less,json,css,md}": "prettier --write --ignore-unknown"

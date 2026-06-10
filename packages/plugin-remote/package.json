@@ -56,8 +56,8 @@
     "access": "public"
   },
   "devDependencies": {
-    "antd": "^5.8.3",
-    "react": "^18.2.0",
-    "webpack": "^5.88.2"
+    "antd": "^6.4.3",
+    "react": "^19.2.7",
+    "webpack": "^5.107.2"
   }
 }
