@@ -6,9 +6,6 @@
     "publish": {
       "ignoreChanges": ["*.md"],
       "message": "chore(release): publish"
-    },
-    "bootstrap": {
-      "ignore": "component-*"
     }
   }
 }
