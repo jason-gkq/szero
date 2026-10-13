@@ -1,6 +1,6 @@
 {
   "name": "@szero/hooks",
-  "version": "4.0.0-alpha.0",
+  "version": "4.0.0-alpha.1",
   "description": "szero hooks",
   "keywords": [
     "szero-hooks"
@@ -80,12 +80,12 @@
     "cross-env": "^10.1.0",
     "platform": "^1.3.6",
     "react": "^19.2.7",
-    "rollup": "^4.61.1",
     "rimraf": "^6.0.1",
+    "rollup": "^4.61.1",
     "rollup-plugin-typescript2": "^0.37.0",
     "typescript": "^6.0.3"
   },
   "dependencies": {
-    "@szero/cache": "^4.0.0-alpha.0"
+    "@szero/cache": "^4.0.0-alpha.1"
   }
 }
