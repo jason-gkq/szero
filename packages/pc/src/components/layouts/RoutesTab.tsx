@@ -57,7 +57,7 @@ export default ({ menusTitle }: { menusTitle: Record<string, string> }) => {
       }
       setActiveKey(pathname);
     },
-    [items]
+    [items],
   );
 
   const onChange = (newActiveKey: string) => {

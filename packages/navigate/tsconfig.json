@@ -25,7 +25,7 @@
 
     "stripInternal": true,
 
-    "jsx": "react-jsx",
+    "jsx": "react-jsx"
   },
   "include": ["src"],
   "exclude": ["node_modules", "lib", "dist", "es"]

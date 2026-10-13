@@ -16,10 +16,10 @@ class CookieStorage {
           new RegExp(
             '(?:(?:^|.*;)\\s*' +
               encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, '\\$&') +
-              '\\s*\\=\\s*([^;]*).*$)|^.*$'
+              '\\s*\\=\\s*([^;]*).*$)|^.*$',
           ),
-          '$1'
-        )
+          '$1',
+        ),
       ) || null
     );
   };
@@ -42,7 +42,7 @@ class CookieStorage {
     vEnd: string | number | Date,
     sPath = '/',
     sDomain = '',
-    bSecure = false
+    bSecure = false,
   ) => {
     if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) {
       return false;
@@ -110,7 +110,7 @@ class CookieStorage {
     return new RegExp(
       '(?:^|;\\s*)' +
         encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, '\\$&') +
-        '\\s*\\='
+        '\\s*\\=',
     ).test(document.cookie);
   };
 

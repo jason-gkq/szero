@@ -79,7 +79,7 @@ export default (appStore: any) => {
             );
         }
       },
-      [appStore.appStatus, JSON.stringify(routes)]
+      [appStore.appStatus, JSON.stringify(routes)],
     );
 
     return (

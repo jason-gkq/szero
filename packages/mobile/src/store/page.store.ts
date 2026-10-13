@@ -60,7 +60,7 @@ export class PageStore implements PageLifeCycle {
       if (this.route) {
         runInAction(() => {
           this.isTabBar = !!rootStore.appStore.tabs.find(
-            (item: any) => item.key === this.route
+            (item: any) => item.key === this.route,
           );
         });
       }
@@ -133,10 +133,10 @@ export class PageStore implements PageLifeCycle {
                   this.route,
                   component,
                   state.lifeCycle as any,
-                  state.args
+                  state.args,
                 );
               }
-            }
+            },
           );
         }
       });
@@ -168,7 +168,7 @@ export class PageStore implements PageLifeCycle {
   private pushCallState(
     page: string,
     lifeCycle: keyof PageLifeCycle,
-    args: any[]
+    args: any[],
   ) {
     if (this.lifeCycleListeners[page].states) {
       const findItem = this.lifeCycleListeners[page].states.find((item) => {
@@ -190,7 +190,7 @@ export class PageStore implements PageLifeCycle {
   private callPageLifeCycle(
     page: string,
     lifeCycle: keyof PageLifeCycle,
-    args: any[]
+    args: any[],
   ) {
     if (!this.lifeCycleListeners[page]) {
       throw new Error(`callLifeCycle page "${page}" not found`);
@@ -210,7 +210,7 @@ export class PageStore implements PageLifeCycle {
     page: string,
     component: string,
     lifeCycle: keyof PageLifeCycle,
-    args: any[]
+    args: any[],
   ) {
     if (!this.lifeCycleListeners[page]) {
       throw new Error(`callLifeCycle page "${page}" not found`);
@@ -220,7 +220,7 @@ export class PageStore implements PageLifeCycle {
       this.lifeCycleListeners[page].listeners[component];
     if (!componentListener) {
       throw new Error(
-        `callLifeCycle page.component: "${page}.${component}" not found`
+        `callLifeCycle page.component: "${page}.${component}" not found`,
       );
     }
     const liveCycleFn = componentListener.lifeCycle[lifeCycle];

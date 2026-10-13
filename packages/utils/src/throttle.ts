@@ -9,7 +9,7 @@ type AnyFunction = (...args: any[]) => any;
 export function throttle(
   func: AnyFunction,
   wait: number,
-  options?: Record<string, any>
+  options?: Record<string, any>,
 ) {
   let timeout: any,
     context: any,

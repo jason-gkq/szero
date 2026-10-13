@@ -28,7 +28,7 @@ export default () => {
       }
       console.warn('addEventListener.error', error);
     },
-    true
+    true,
   );
   // 全局统一处理Promise
   window.addEventListener('unhandledrejection', function (e) {

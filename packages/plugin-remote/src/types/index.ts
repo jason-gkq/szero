@@ -11,7 +11,7 @@ export type WebpackRequire = {
   l: (
     url: string | undefined,
     cb: (event: any) => void,
-    id: string | number
+    id: string | number,
   ) => Record<string, unknown>;
 };
 
@@ -26,7 +26,7 @@ export type WebpackShareScopes = Record<
 };
 
 export declare const __webpack_init_sharing__: (
-  parameter: string
+  parameter: string,
 ) => Promise<void>;
 
 export interface NextFederationPluginExtraOptions {
@@ -38,8 +38,7 @@ export interface NextFederationPluginExtraOptions {
   debug?: boolean;
 }
 
-export interface NextFederationPluginOptions
-  extends ModuleFederationPluginOptions {
+export interface NextFederationPluginOptions extends ModuleFederationPluginOptions {
   extraOptions: NextFederationPluginExtraOptions;
 }
 

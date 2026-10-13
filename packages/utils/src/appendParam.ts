@@ -15,7 +15,7 @@ import objectToParam from './objectToParam';
 export function appendParam(
   url: string,
   key: string | Record<string, any>,
-  value?: string
+  value?: string,
 ) {
   if (!key || isEmptyObject(key)) {
     return url;

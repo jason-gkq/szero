@@ -40,8 +40,8 @@ export default (pageConfig: IPageConfig, WrappedComponent: any) => {
       runInAction(() => {
         pageStore.route = route;
         pageStore.params = params;
-        pageStore.isShowFooter = !!pageConfig.isShowFooter;
-        pageStore.pageStatus = pageConfig.pageStatus || 'success';
+        pageStore.isShowFooter = !!pageConfig?.isShowFooter;
+        pageStore.pageStatus = pageConfig?.pageStatus || 'success';
       });
 
       const isOnload =
@@ -69,7 +69,7 @@ export default (pageConfig: IPageConfig, WrappedComponent: any) => {
     const renderNoSucess = useCallback(() => {
       switch (pageStore.pageStatus) {
         case 'loading':
-          const loadingOptions = pageConfig.loadingOptions || {};
+          const loadingOptions = pageConfig?.loadingOptions || {};
           return (
             <PageContainer pageHeaderRender={false}>
               <div
@@ -85,7 +85,7 @@ export default (pageConfig: IPageConfig, WrappedComponent: any) => {
             </PageContainer>
           );
         case 'skeleton':
-          const skeletonOptions = pageConfig.skeletonOptions || {};
+          const skeletonOptions = pageConfig?.skeletonOptions || {};
           return (
             <PageContainer pageHeaderRender={false}>
               <Skeleton

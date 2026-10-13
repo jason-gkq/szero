@@ -7,7 +7,7 @@ export type KType = string | any[] | number;
 export function get<T = any>(
   obj: any,
   keys: KType = [],
-  defaultValue?: any
+  defaultValue?: any,
 ): T {
   try {
     if (isNumber(keys)) {

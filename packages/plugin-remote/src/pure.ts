@@ -118,7 +118,7 @@ export const loadScript = (keyOrRuntimeRemoteItem: string | RuntimeRemote) => {
 
           reject(__webpack_error__);
         },
-        containerKey
+        containerKey,
       );
     }).catch(function (err) {
       console.error('container is offline, returning fake remote');
@@ -155,7 +155,7 @@ export const getRuntimeRemotes = () => {
   try {
     const runtimeRemotes = Object.entries(remoteVars).reduce(function (
       acc,
-      item
+      item,
     ) {
       const [key, value] = item;
       // if its an object with a thenable (eagerly executing function)
@@ -188,12 +188,11 @@ export const getRuntimeRemotes = () => {
         //@ts-ignore
         console.warn('remotes process', process.env.REMOTES);
         throw new Error(
-          `[mf] Invalid value received for runtime_remote "${key}"`
+          `[mf] Invalid value received for runtime_remote "${key}"`,
         );
       }
       return acc;
-    },
-    {} as RuntimeRemotesMap);
+    }, {} as RuntimeRemotesMap);
 
     return runtimeRemotes;
   } catch (err) {

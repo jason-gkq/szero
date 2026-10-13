@@ -85,25 +85,27 @@ const createApp = (appStore: any) => {
             );
         }
       },
-      [appStore.appStatus]
+      [appStore.appStatus],
     );
 
     return (
       <ConfigProvider locale={zhCN}>
         <div className='page-container'>
-          {useMemo(
+          <NiceNavBar pageStore={pageStore} />
+          {/* {useMemo(
             () => (
               <NiceNavBar pageStore={pageStore} />
             ),
             []
-          )}
+          )} */}
           {renderContent()}
-          {useMemo(
+          {/* {useMemo(
             () => (
               <NiceTabBar tabs={tabs} pageStore={pageStore} />
             ),
             []
-          )}
+          )} */}
+          <NiceTabBar tabs={tabs} pageStore={pageStore} />
         </div>
         <div style={{ background: '#f5f5f5' }}>
           <SafeArea position='bottom' />

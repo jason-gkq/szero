@@ -21,7 +21,7 @@ export default observer(({ pageStore }: IProps) => {
           title: layout.title,
           onBack: () => navigate.goBack(),
         },
-        navBar
+        navBar,
       )
     : { title: layout.title, onBack: () => navigate.goBack() };
 

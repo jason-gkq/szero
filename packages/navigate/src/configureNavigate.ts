@@ -88,7 +88,7 @@ export class ConfigureNavigate {
         window.open(
           `${window.location.protocol}//${window.location.host}${url}`,
           options.target,
-          ''
+          '',
         );
       } else {
         this.history.push(url, payload);

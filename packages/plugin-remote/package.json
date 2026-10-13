@@ -1,6 +1,6 @@
 {
   "name": "@szero/plugin-remote",
-  "version": "2.0.0-alpha.0",
+  "version": "4.0.0-alpha.0",
   "description": "szero动态加载子项目",
   "keywords": [
     "plugin-remote"
@@ -28,7 +28,7 @@
     "es"
   ],
   "engines": {
-    "node": ">=14.17.0"
+    "node": ">=18"
   },
   "sideEffects": [
     "dist/*",
@@ -40,9 +40,7 @@
     "> 0.5%",
     "last 2 versions",
     "Firefox ESR",
-    "not dead",
-    "IE 11",
-    "not IE 10"
+    "not dead"
   ],
   "repository": {
     "type": "git",

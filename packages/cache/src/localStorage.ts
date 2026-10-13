@@ -1,8 +1,8 @@
-import { AbstractStorage } from "./abstractStorage";
+import { AbstractStorage } from './abstractStorage';
 
 class LocalStorage extends AbstractStorage {
   constructor() {
-    super("local");
+    super('local');
   }
 }
 

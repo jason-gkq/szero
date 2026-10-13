@@ -14,7 +14,7 @@ import { useState, type Dispatch, type SetStateAction } from 'react';
  * ```
  */
 export const useMergeState = <T extends Record<string, any> = any>(
-  initialState?: T
+  initialState?: T,
 ) => {
   const [state, setState] = useState<T | undefined>(initialState);
   const setMergeState: Dispatch<SetStateAction<Partial<T>>> = (newState) =>

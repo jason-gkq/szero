@@ -1,8 +1,8 @@
-import { AbstractStorage } from "./abstractStorage";
+import { AbstractStorage } from './abstractStorage';
 
 class SessionStorage extends AbstractStorage {
   constructor() {
-    super("session");
+    super('session');
   }
 }
 

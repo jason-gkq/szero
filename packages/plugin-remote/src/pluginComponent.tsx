@@ -52,7 +52,7 @@ export const onMount = async (props: IOnMountProps) => {
       return onMount(mountProps);
     } else {
       return Promise.reject(
-        `plugin ${scope} has not onMount function exported.`
+        `plugin ${scope} has not onMount function exported.`,
       );
     }
   });

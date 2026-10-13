@@ -1,2 +1,2 @@
-export * from "./basic";
-export type { IMenuProps } from "./layouts/proLayout";
+export * from './basic';
+export type { IMenuProps } from './layouts/proLayout';

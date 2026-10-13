@@ -7,7 +7,7 @@
  * https://segmentfault.com/a/1190000016457844
  * https://blog.csdn.net/qiushisoftware/article/details/80158593
  */
-import axios, { Cancel } from 'axios';
+import axios from 'axios';
 import type {
   AxiosRequestConfig,
   AxiosResponse,
@@ -93,11 +93,11 @@ class Net {
     this.instance = axios.create({ timeout: 15000 }); // , withCredentials: true
     this.instance.interceptors.request.use(
       this.requestHandler,
-      this.requestErrorHandler
+      this.requestErrorHandler,
     );
     this.instance.interceptors.response.use(
       this.responseHandler,
-      this.responseErrorHandler
+      this.responseErrorHandler,
     );
     this.interceptors = {
       request: new InterceptorManager(),
@@ -146,15 +146,15 @@ class Net {
     for (let interceptor of this.interceptors.request.handlers) {
       config = await promise.then<any, any>(
         interceptor.fulfilled,
-        interceptor.fulfilled
+        interceptor.fulfilled,
       );
     }
     /**
      * 赋值取消请求方法
      */
-    config.cancelToken = new CancelToken((c) => {
-      pending[requestData] = c;
-    });
+    const controller = new AbortController();
+    pending[requestData] = (reason?: string) => controller.abort(reason);
+    config.signal = controller.signal;
     return config;
   };
 
@@ -182,7 +182,7 @@ class Net {
       try {
         newData = await promise.then<any, any>(
           interceptor.fulfilled,
-          interceptor.rejected
+          interceptor.rejected,
         );
       } catch (error) {
         errorData = error as AxiosResponse;
@@ -255,9 +255,9 @@ class Net {
     /**
      * 重复请求，错误封装
      */
-    if (resp.toString() && resp.toString().startsWith('Cancel:')) {
+    if (axios.isCancel(resp)) {
       return Promise.reject({
-        msg: resp.message || '',
+        msg: (resp as any).message || '',
         code: 410,
       });
     } //Error: Network Error

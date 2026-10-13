@@ -19,7 +19,7 @@ export const REMOTE_ENTRY_FILE = 'remoteEntry.js';
 const loadRemote = (
   url: ImportRemoteOptions['url'],
   scope: ImportRemoteOptions['scope'],
-  bustRemoteEntryCache: ImportRemoteOptions['bustRemoteEntryCache']
+  bustRemoteEntryCache: ImportRemoteOptions['bustRemoteEntryCache'],
 ) =>
   new Promise<void>((resolve, reject) => {
     const timestamp = bustRemoteEntryCache ? `?t=${new Date().getTime()}` : '';
@@ -38,7 +38,7 @@ const loadRemote = (
         error.name = 'ScriptExternalLoadError';
         reject(error);
       },
-      scope
+      scope,
     );
   });
 
@@ -95,20 +95,20 @@ export const importRemote = async <T>({
       loadRemote(
         `${remoteUrl}/${remoteEntryFileName}`,
         scope,
-        bustRemoteEntryCache
+        bustRemoteEntryCache,
       ),
       initSharing(),
     ]);
     if (!window[remoteScope]) {
       throw new Error(
-        `Remote loaded successfully but ${scope} could not be found! Verify that the name is correct in the Webpack configuration!`
+        `Remote loaded successfully but ${scope} could not be found! Verify that the name is correct in the Webpack configuration!`,
       );
     }
     // Initialize the container to get shared modules and get the module factory:
     const [, moduleFactory] = await Promise.all([
       initContainer(window[remoteScope]),
       (window[remoteScope] as unknown as WebpackRemoteContainer).get(
-        module === '.' || module.startsWith('./') ? module : `./${module}`
+        module === '.' || module.startsWith('./') ? module : `./${module}`,
       ),
     ]);
 

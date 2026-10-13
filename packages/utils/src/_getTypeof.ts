@@ -3,6 +3,6 @@
  */
 export default function getTypeof<T>(obj: T) {
   return Reflect.apply(Object.prototype.toString, obj, []).match(
-    /\s+(\w+)\]$/
+    /\s+(\w+)\]$/,
   )?.[1];
 }
