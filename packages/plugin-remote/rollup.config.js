@@ -1,6 +1,4 @@
-import sourceMaps from 'rollup-plugin-sourcemaps';
 import typescript from 'rollup-plugin-typescript2';
-import clear from 'rollup-plugin-clear';
 
 // const pkg = require("./package.json");
 // --bundleConfigAsCjs
@@ -44,10 +42,6 @@ export default {
   external: ['antd', 'react'],
   // 插件
   plugins: [
-    clear({
-      targets: ['dist', 'es', 'lib'],
-      watch: true, // default: false
-    }),
     resolve({ extensions: ['.ts', '.tsx'] }),
     typescript({ useTsconfigDeclarationDir: true }),
     // 这里有些引入使用某个库的api但报未导出改api通过namedExports来手动导出
@@ -92,6 +86,5 @@ export default {
     }),
     // 生产环境执行terser压缩代码
     env === 'production' && terser(),
-    sourceMaps(),
   ],
 };

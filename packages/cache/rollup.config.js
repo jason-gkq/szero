@@ -1,6 +1,4 @@
-import sourceMaps from 'rollup-plugin-sourcemaps';
 import typescript from 'rollup-plugin-typescript2';
-import clear from 'rollup-plugin-clear';
 
 // Rollup plugins
 import { babel } from '@rollup/plugin-babel';
@@ -34,10 +32,6 @@ export default {
   },
   // 插件
   plugins: [
-    clear({
-      targets: ['dist', 'es', 'lib'],
-      watch: true,
-    }),
     resolve({ extensions: ['.ts'] }),
     typescript({ useTsconfigDeclarationDir: true }),
     commonjs({}),
@@ -75,6 +69,5 @@ export default {
       'process.env.NODE_ENV': JSON.stringify(env || 'development'),
     }),
     env === 'production' && terser(),
-    sourceMaps(),
   ],
 };

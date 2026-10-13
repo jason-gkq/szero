@@ -1,7 +1,5 @@
-import sourceMaps from 'rollup-plugin-sourcemaps';
 import typescript from 'rollup-plugin-typescript2';
 // import typescript from "@rollup/plugin-typescript";
-import clear from 'rollup-plugin-clear';
 import json from '@rollup/plugin-json';
 // // import builtins from 'rollup-plugin-node-builtins';
 
@@ -90,12 +88,6 @@ export default {
   ],
   // 插件
   plugins: [
-    clear({
-      // required, point out which directories should be clear.
-      targets: ['dist', 'es', 'lib'],
-      // optional, whether clear the directores when rollup recompile on --watch mode.
-      watch: true, // default: false
-    }),
     json(),
     image(),
     postcss({
@@ -159,6 +151,5 @@ export default {
     }),
     // 生产环境执行terser压缩代码
     env === 'production' && terser(),
-    sourceMaps(),
   ],
 };
