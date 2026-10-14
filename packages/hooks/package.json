@@ -1,6 +1,6 @@
 {
   "name": "@szero/hooks",
-  "version": "4.0.0-alpha.1",
+  "version": "4.0.0",
   "description": "szero hooks",
   "keywords": [
     "szero-hooks"
@@ -86,7 +86,7 @@
     "typescript": "^6.0.3"
   },
   "dependencies": {
-    "@szero/cache": "^4.0.0-alpha.1"
+    "@szero/cache": "^4.0.0"
   },
   "gitHead": "b944de138e0bc2ae4a472955f460f762295ed3d9"
 }
