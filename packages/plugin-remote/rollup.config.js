@@ -58,8 +58,6 @@ export default {
           {
             modules: false,
             // useBuiltIns: 'entry',
-            useBuiltIns: 'usage',
-            corejs: 3,
             debug: true,
           },
         ],
@@ -72,9 +70,7 @@ export default {
           '@babel/plugin-transform-runtime',
           {
             corejs: 3,
-            helpers: true,
             version: require('@babel/runtime-corejs3/package.json').version,
-            regenerator: true,
           },
         ],
       ],

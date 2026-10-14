@@ -1,6 +1,6 @@
 {
   "name": "@szero/cache",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "缓存包处理",
   "keywords": [
     "szero-cache"
@@ -59,18 +59,18 @@
     "access": "public"
   },
   "devDependencies": {
-    "@babel/cli": "^7.29.7",
-    "@babel/core": "^7.29.7",
-    "@babel/plugin-external-helpers": "^7.29.7",
-    "@babel/plugin-transform-runtime": "^7.29.7",
-    "@babel/preset-env": "^7.29.7",
-    "@babel/runtime-corejs3": "^7.29.7",
+    "@babel/cli": "^8.0.6",
+    "@babel/core": "^8.0.7",
+    "@babel/plugin-external-helpers": "^8.0.1",
+    "@babel/plugin-transform-runtime": "^8.0.6",
+    "@babel/preset-env": "^8.0.7",
+    "@babel/runtime-corejs3": "^8.0.7",
     "@rollup/plugin-babel": "^7.1.0",
     "@rollup/plugin-commonjs": "^29.0.3",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-replace": "^6.0.3",
     "@rollup/plugin-terser": "^1.0.0",
-    "@types/node": "^25.9.2",
+    "@types/node": "^26.6.5",
     "core-js": "^3.49.0",
     "cross-env": "^10.1.0",
     "rimraf": "^6.0.1",

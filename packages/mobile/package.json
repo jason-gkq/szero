@@ -1,6 +1,6 @@
 {
   "name": "@szero/mobile",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "szero-mobile",
   "keywords": [
     "szero-mobile"
@@ -59,13 +59,13 @@
     "access": "public"
   },
   "devDependencies": {
-    "@babel/cli": "^7.29.7",
-    "@babel/core": "^7.29.7",
-    "@babel/plugin-transform-runtime": "^7.29.7",
-    "@babel/preset-env": "^7.29.7",
-    "@babel/preset-react": "^7.29.7",
-    "@babel/preset-typescript": "^7.29.7",
-    "@babel/runtime-corejs3": "^7.29.7",
+    "@babel/cli": "^8.0.6",
+    "@babel/core": "^8.0.7",
+    "@babel/plugin-transform-runtime": "^8.0.6",
+    "@babel/preset-env": "^8.0.7",
+    "@babel/preset-react": "^8.0.1",
+    "@babel/preset-typescript": "^8.0.7",
+    "@babel/runtime-corejs3": "^8.0.7",
     "@rollup/plugin-babel": "^7.1.0",
     "@rollup/plugin-commonjs": "^29.0.3",
     "@rollup/plugin-image": "^3.0.3",
@@ -75,10 +75,10 @@
     "@rollup/plugin-terser": "^1.0.0",
     "autoprefixer": "^10.5.0",
     "cross-env": "^10.1.0",
-    "cssnano": "^8.0.1",
+    "cssnano": "^9.8.0",
     "less": "^4.6.4",
     "postcss": "^8.5.15",
-    "postcss-nested": "^7.0.2",
+    "postcss-nested": "^8.0.1",
     "postcss-preset-env": "^11.3.0",
     "rimraf": "^6.0.1",
     "rollup": "^4.61.1",
@@ -87,25 +87,25 @@
     "typescript": "^6.0.3"
   },
   "dependencies": {
-    "@szero/cache": "^4.0.0",
-    "@szero/hooks": "^4.0.0",
-    "@szero/navigate": "^4.0.0",
-    "@szero/net": "^4.0.0",
-    "@szero/utils": "^4.0.0",
-    "@types/node": "^25.9.2",
+    "@szero/cache": "4.0.1",
+    "@szero/hooks": "4.0.1",
+    "@szero/navigate": "4.0.1",
+    "@szero/net": "4.0.1",
+    "@szero/utils": "4.0.1",
+    "@types/node": "^26.6.5",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@types/react-transition-group": "^4.4.12",
     "antd-mobile": "^5.42.3",
     "core-js": "^3.49.0",
     "dayjs": "^1.11.13",
-    "mobx": "^6.16.1",
-    "mobx-react-lite": "^4.1.1",
+    "mobx": "^7.0.6",
+    "mobx-react-lite": "^5.1.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-router-dom": "^7.17.0",
     "react-transition-group": "^4.4.5",
-    "web-vitals": "^5.3.0"
+    "web-vitals": "^6.2.3"
   },
   "gitHead": "b944de138e0bc2ae4a472955f460f762295ed3d9"
 }

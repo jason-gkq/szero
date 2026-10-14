@@ -29,7 +29,12 @@ import terser from '@rollup/plugin-terser';
 // 处理css定义的变量
 // import simplevars from "postcss-simple-vars";
 // 处理less嵌套样式写法
-import nested from 'postcss-nested';
+import postcssNestedImport from 'postcss-nested';
+// postcss-nested v8 为纯 ESM（export default），兼容 --bundleConfigAsCjs 打包后的默认导入互操作
+const nested =
+  typeof postcssNestedImport === 'function'
+    ? postcssNestedImport
+    : postcssNestedImport.default || postcssNestedImport;
 // 可以提前适用最新css特性（已废弃由postcss-preset-env替代，但还是引用进来了。。。）
 // import cssnext from 'postcss-cssnext';
 // 替代cssnext
@@ -146,9 +151,7 @@ export default {
           {
             modules: false,
             // loose: true,
-            useBuiltIns: 'usage',
             // useBuiltIns: 'entry',
-            corejs: 3,
             debug: true,
           },
         ],
@@ -161,9 +164,7 @@ export default {
           '@babel/plugin-transform-runtime',
           {
             corejs: 3,
-            helpers: true,
             version: require('@babel/runtime-corejs3/package.json').version,
-            regenerator: true,
           },
         ],
         // "@babel/plugin-proposal-class-properties": "^7.18.6",
