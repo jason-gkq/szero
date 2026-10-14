@@ -84,5 +84,6 @@
   "dependencies": {
     "@szero/utils": "^4.0.0-alpha.1",
     "axios": "^1.3.0"
-  }
+  },
+  "gitHead": "b944de138e0bc2ae4a472955f460f762295ed3d9"
 }

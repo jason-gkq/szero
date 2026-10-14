@@ -87,5 +87,6 @@
   },
   "dependencies": {
     "@szero/cache": "^4.0.0-alpha.1"
-  }
+  },
+  "gitHead": "b944de138e0bc2ae4a472955f460f762295ed3d9"
 }

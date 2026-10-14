@@ -102,5 +102,6 @@
     "react-dom": "^19.2.7",
     "react-router-dom": "^7.17.0",
     "web-vitals": "^5.3.0"
-  }
+  },
+  "gitHead": "b944de138e0bc2ae4a472955f460f762295ed3d9"
 }

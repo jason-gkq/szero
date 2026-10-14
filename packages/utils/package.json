@@ -78,5 +78,6 @@
     "rollup-plugin-typescript2": "^0.37.0",
     "typescript": "^6.0.3"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "gitHead": "b944de138e0bc2ae4a472955f460f762295ed3d9"
 }
