@@ -73,6 +73,9 @@ export class PageStore implements PageLifeCycle {
   public setNavBar(navBar: INavBarInfo | undefined | boolean | null) {
     this.navBar = navBar;
   }
+  public setIsShowTabBar(isShowTabBar: boolean) {
+    this.isShowTabBar = isShowTabBar;
+  }
   public setPageTitle(title: string) {
     this.navBar = Object.assign({}, this.navBar, { title });
   }

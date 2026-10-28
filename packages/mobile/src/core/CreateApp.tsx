@@ -105,7 +105,7 @@ const createApp = (appStore: any) => {
             ),
             []
           )} */}
-          <NiceTabBar tabs={tabs} pageStore={pageStore} />
+          <NiceTabBar tabs={tabs} pageStore={pageStore} appStore={appStore} />
         </div>
         <div style={{ background: '#f5f5f5' }}>
           <SafeArea position='bottom' />
